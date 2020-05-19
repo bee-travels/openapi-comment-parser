@@ -1,15 +1,15 @@
 {
   "name": "openapi-comment-parser",
-  "version": "0.0.8",
+  "version": "0.0.9",
   "engines": {
     "node": ">=10.0.0"
   },
   "license": "MIT",
   "description": "JSDoc Comments for the OpenApi Specification",
-  "homepage": "https://github.com/bee-travels/openapi-comment-parser",
+  "homepage": "https://github.com/bee-travels/openapi-comment-parser-v2",
   "repository": {
     "type": "git",
-    "url": "https://github.com/bee-travels/openapi-comment-parser.git"
+    "url": "https://github.com/bee-travels/openapi-comment-parser-v2.git"
   },
   "keywords": [
     "openapi",
@@ -37,7 +37,8 @@
     "start": "nodemon -e yaml,yml,js,mjs,json example/src/app.js",
     "build": "run-s clean bundle",
     "clean": "rimraf dist",
-    "bundle": "rollup -c"
+    "bundle": "npm run xxx && rollup -c && cp src/index.d.ts dist/openapi-comment-parser.d.ts",
+    "xxx": "tsc -p tsconfig.json"
   },
   "dependencies": {
     "comment-parser": "^0.7.4",
