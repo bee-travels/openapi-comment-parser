@@ -1,6 +1,6 @@
 {
   "name": "openapi-comment-parser",
-  "version": "0.0.15",
+  "version": "0.0.16",
   "engines": {
     "node": ">=10.0.0"
   },
