@@ -11,7 +11,7 @@ export default [
       commonjs(), // so Rollup can convert external packages to ES modules
       sucrase({
         // so Rollup can convert TypeScript to JavaScript
-        exclude: ['node_modules/**'],
+        exclude: ['node_modules/**', '**/?(*.)test.ts'],
         transforms: ['typescript'],
       }),
     ],

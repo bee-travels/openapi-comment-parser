@@ -12,7 +12,7 @@ function parseFile(file: string): any[] {
 	if (ext === '.yaml' || ext === '.yml') {
 		return [jsYaml.safeLoad(fileContent)];
 	} else {
-		// (ext === '.js' || ext === '.ts')
+		// (ext === '.js' || ext === '.ts');
 		return commentsToOpenApi(fileContent);
 	}
 }
