@@ -1,22 +1,23 @@
 import parseFile from './util/parseFile';
 import globList from './util/globList';
-import * as specHelper from './util/specHelper';
+import SpecBuilder from './SpecBuilder';
+import { ParserOptions, OpenApiSpec } from './types';
 
 function parseComments({ definition, paths }: ParserOptions): OpenApiSpec {
 	if (!definition && !paths) {
 		throw new Error('Provided options are incorrect.');
 	}
 
-	const files = globList(paths);
+	const spec = new SpecBuilder(definition);
 
-	const specification = specHelper.createSpecification(definition);
+	const files = globList(paths);
 
 	files.forEach((file) => {
 		const parsedFile = parseFile(file);
-		specHelper.addDataToSwaggerObject(specification, parsedFile);
+		spec.addData(parsedFile);
 	});
 
-	return specHelper.finalizeSpecificationObject(specification);
+	return spec;
 }
 
 export default parseComments;

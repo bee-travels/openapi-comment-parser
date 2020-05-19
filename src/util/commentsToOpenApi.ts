@@ -384,7 +384,7 @@ function commentsToOpenApi(fileContents: string) {
 			});
 
 			// Purge all undefined objects/arrays.
-			return JSON.parse(JSON.stringify(docToJSON));
+			return JSON.parse(JSON.stringify({ paths: docToJSON }));
 		});
 	return filteredComments;
 }

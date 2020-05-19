@@ -24,3 +24,8 @@ export interface OpenApiSpec {
 	tags?: any[];
 	externalDocs?: any;
 }
+
+declare function parseComments({
+	definition,
+	paths,
+}: ParserOptions): OpenApiSpec;
