@@ -1,3 +1,5 @@
+import parseComments from 'comment-parser';
+
 const primitiveTypes = [
 	'integer',
 	'number',
@@ -7,7 +9,7 @@ const primitiveTypes = [
 	'array',
 ];
 
-const formatMap = {
+const formatMap: { [key: string]: string } = {
 	int32: 'integer',
 	int64: 'integer',
 	float: 'number',
@@ -19,7 +21,7 @@ const formatMap = {
 	binary: 'string',
 };
 
-function parseDescription(tag) {
+function parseDescription(tag: any) {
 	const rawType = tag.type;
 	const isArray = rawType && rawType.endsWith('[]');
 
@@ -103,13 +105,15 @@ function parseDescription(tag) {
  * @returns {array} JSDoc comments tagged with '@swagger'
  * @requires js-yaml
  */
-function filterJsDocComments(jsDocComments) {
+function commentsToOpenApi(fileContents: string) {
 	const openAPIRegex = /^(GET|PUT|POST|DELETE|OPTIONS|HEAD|PATCH|TRACE) \/.*$/;
+
+	const jsDocComments = parseComments(fileContents);
 
 	const filteredComments = jsDocComments
 		.filter((comment) => openAPIRegex.test(comment.description))
 		.map((comment) => {
-			const docToJSON = {};
+			let docToJSON: any = {};
 			const [_method, path] = comment.description.split(' ');
 			const method = _method.toLowerCase();
 			docToJSON[path] = {};
@@ -359,7 +363,7 @@ function filterJsDocComments(jsDocComments) {
 							}
 
 							let index = docToJSON[path][method].security.findIndex(
-								(item) => item[security] !== undefined
+								(item: any) => item[security] !== undefined
 							);
 
 							if (index < 0) {
@@ -385,4 +389,4 @@ function filterJsDocComments(jsDocComments) {
 	return filteredComments;
 }
 
-export default filterJsDocComments;
+export default commentsToOpenApi;

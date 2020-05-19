@@ -11,10 +11,10 @@ $ yarn add openapi-comment-parser
 ## Usage
 
 ```js
-const commentParser = require('openapi-comment-parser');
+const parseComments = require('openapi-comment-parser');
 
 // normal OpenAPI definition
-const swaggerDefinition = {
+const baseDefinition = {
   openapi: '3.0.0',
   info: {
     title: 'Title of your service',
@@ -22,21 +22,22 @@ const swaggerDefinition = {
   },
 };
 
-const spec = commentParser({
-  definition: swaggerDefinition,
-  apis: ['src/**/*.js'], // paths to files with comments to be parsed
+const spec = parseComments({
+  definition: baseDefinition,
+  paths: ['src/**/*.js'], // paths to files with comments to be parsed
 });
 ```
 
 ### Swagger UI Express example
 
 ```js
+const path = require('path');
 const commentParser = require('openapi-comment-parser');
 const swaggerUi = require('swagger-ui-express');
 
-const spec = commentParser({
-  definition: swaggerDefinition,
-  apis: ['src/routes/my-route.js'],
+const spec = parseComments({
+  definition: baseDefinition,
+  paths: [path.join(__dirname, '**/*.?(js|yaml|yml)')],
 });
 
 app.use('/api-docs', swaggerUi.serve, swaggerUi.setup(spec));

@@ -1,32 +1,22 @@
-import getSpecificationObject from './helpers/getSpecificationObject';
+import parseFile from './util/parseFile';
+import globList from './util/globList';
+import * as specHelper from './util/specHelper';
 
-interface ParserOptions {
-	definition: any;
-	apis: string[];
-}
-
-function commentParser(options: ParserOptions): any {
-	if (!options.definition && !options.apis) {
+function parseComments({ definition, paths }: ParserOptions): OpenApiSpec {
+	if (!definition && !paths) {
 		throw new Error('Provided options are incorrect.');
 	}
 
-	try {
-		const specificationObject = getSpecificationObject(options);
+	const files = globList(paths);
 
-		return specificationObject;
-	} catch (err) {
-		let msg = err.message;
-		if (err.mark && err.mark.buffer && err.mark.line) {
-			const { line } = err.mark;
-			const bufferParts = err.mark.buffer.split('\n');
-			bufferParts[
-				line
-			] = `${bufferParts[line]} -------------- Pay attention at this place`;
-			msg = bufferParts.join('\n');
-		}
-		console.warn(msg);
-		throw new Error(err);
-	}
+	const specification = specHelper.createSpecification(definition);
+
+	files.forEach((file) => {
+		const parsedFile = parseFile(file);
+		specHelper.addDataToSwaggerObject(specification, parsedFile);
+	});
+
+	return specHelper.finalizeSpecificationObject(specification);
 }
 
-export default commentParser;
+export default parseComments;

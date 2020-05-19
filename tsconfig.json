@@ -1,10 +1,14 @@
 {
 	"compilerOptions": {
-		"target": "es6",  
+		"target": "es5",  
 		"module": "commonjs", 
 		"strict": true, 
 		"esModuleInterop": true,
-		"noImplicitAny": false,
+		// "noImplicitAny": false,
+
+		"lib": [
+      "es2019"
+    ],
 
 		"declaration": true,
     // "noEmit": false,

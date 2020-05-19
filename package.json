@@ -37,9 +37,11 @@
     "test": " mocha --timeout 10000 --exit",
     "start": "nodemon -e yaml,yml,js,mjs,json example/src/app.js",
     "build": "run-s clean bundle",
-    "clean": "rimraf dist",
-    "bundle": "npm run xxx && rollup -c && cp src/index.d.ts dist/openapi-comment-parser.d.ts",
-    "xxx": "tsc -p tsconfig.json"
+    "clean": "npm run clean:types && rimraf dist",
+    "clean:types": "rimraf src/*.d.ts && rimraf src/**/*.d.ts",
+    "bundle": "npm run build:types && rollup -c && cp src/index.d.ts dist/openapi-comment-parser.d.ts; npm run clean:types",
+    "build:types": "tsc -p tsconfig.json",
+    "test:typescript": "mocha -r ts-node/register test/**/*.ts"
   },
   "dependencies": {},
   "devDependencies": {
@@ -48,6 +50,8 @@
     "@rollup/plugin-node-resolve": "^7.1.3",
     "@rollup/plugin-sucrase": "^3.0.1",
     "@rollup/plugin-typescript": "^4.1.1",
+    "@types/js-yaml": "^3.12.4",
+    "@types/mocha": "^7.0.2",
     "body-parser": "1.19.0",
     "chai": "4.2.0",
     "chai-jest-snapshot": "2.0.0",
@@ -72,6 +76,7 @@
     "rollup-plugin-typescript": "^1.0.1",
     "supertest": "4.0.2",
     "swagger-parser": "^9.0.1",
+    "ts-node": "^8.10.1",
     "tslib": "^2.0.0",
     "typescript": "^3.9.2"
   }
