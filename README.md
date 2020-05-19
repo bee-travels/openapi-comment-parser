@@ -23,7 +23,7 @@ const swaggerDefinition = {
 };
 
 const spec = commentParser({
-  swaggerDefinition: swaggerDefinition,
+  definition: swaggerDefinition,
   apis: ['src/**/*.js'], // paths to files with comments to be parsed
 });
 ```
@@ -35,7 +35,7 @@ const commentParser = require('openapi-comment-parser');
 const swaggerUi = require('swagger-ui-express');
 
 const spec = commentParser({
-  swaggerDefinition: swaggerDefinition,
+  definition: swaggerDefinition,
   apis: ['src/routes/my-route.js'],
 });
 
