@@ -30,9 +30,8 @@
   ],
   "main": "dist/openapi-comment-parser.js",
   "module": "dist/openapi-comment-parser.esm.js",
-  "typescript": {
-    "definition": "dist/openapi-comment-parser.d.ts"
-  },
+  "types": "openapi-comment-parser.d.ts",
+  "sideEffects": false,
   "scripts": {
     "lint": "eslint .",
     "pretest": "npm run build",

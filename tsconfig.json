@@ -1,0 +1,15 @@
+{
+	"compilerOptions": {
+		"target": "es6",  
+		"module": "commonjs", 
+		"strict": true, 
+		"esModuleInterop": true,
+		"noImplicitAny": false,
+
+		"declaration": true,
+    // "noEmit": false,
+    "emitDeclarationOnly": true
+	},
+	"include": ["src"],
+	"exclude": ["dist", "node_modules"]
+}

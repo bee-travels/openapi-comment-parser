@@ -1,0 +1,14 @@
+components:
+  securitySchemes:
+    ApiKey:
+      type: apiKey
+      name: api_key
+      in: header
+    PetstoreAuth:
+      type: oauth2
+      flows: 
+        implicit:
+          authorizationUrl: https://petstore.swagger.io/oauth/authorize
+          scopes:
+            read:pets: read your pets
+            write:pets: modify pets in your account
