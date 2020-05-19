@@ -6,20 +6,19 @@
   },
   "license": "MIT",
   "description": "JSDoc Comments for the OpenApi Specification",
-  "homepage": "https://github.com/bee-travels/openapi-comment-parser-v2",
+  "homepage": "https://github.com/bee-travels/openapi-comment-parser",
   "repository": {
     "type": "git",
-    "url": "https://github.com/bee-travels/openapi-comment-parser-v2.git"
+    "url": "git://github.com/bee-travels/openapi-comment-parser.git"
+  },
+  "bugs": {
+    "url": "https://github.com/bee-travels/openapi-comment-parser/issues"
   },
   "keywords": [
     "openapi",
     "swagger",
     "jsdoc",
-    "openapi-generator",
-    "swagger-generator",
     "comment",
-    "parser",
-    "restful",
     "api",
     "express"
   ],
