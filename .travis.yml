@@ -1,0 +1,18 @@
+language: node_js
+node_js: 12
+
+jobs:
+  include:
+    - stage: test
+      script: yarn test
+    - stage: deploy
+      if: tag IS present
+      before_deploy:
+        npm version "${TRAVIS_TAG:1}" --allow-same-version --git-tag-version false
+      deploy:
+        provider: npm
+        email: "$NPM_EMAIL"
+        api_key: "$NPM_TOKEN"
+        skip_cleanup: true
+        on:
+          tags: true

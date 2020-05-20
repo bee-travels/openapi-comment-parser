@@ -35,7 +35,8 @@
     "start": "nodemon -e yaml,yml,js,mjs,json example/src/app.js",
     "build": "run-s clean bundle",
     "clean": "rimraf dist",
-    "bundle": "rollup -c && cp src/exported.d.ts dist/openapi-comment-parser.d.ts"
+    "bundle": "rollup -c && cp src/exported.d.ts dist/openapi-comment-parser.d.ts",
+    "prepublishOnly": "npm run build"
   },
   "dependencies": {},
   "devDependencies": {
