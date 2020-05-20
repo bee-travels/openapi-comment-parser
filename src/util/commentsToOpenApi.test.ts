@@ -65,156 +65,160 @@ describe('all of it', () => {
 		});
 
 		const expected1 = {
-			'/pet': {
-				post: {
-					externalDocs: {
-						description: 'Find more info here',
-						url: 'https://example.com',
-					},
-					servers: [
-						{
-							description: 'Development server',
-							url: 'https://development.gigantic-server.com/v1',
+			paths: {
+				'/pet': {
+					post: {
+						externalDocs: {
+							description: 'Find more info here',
+							url: 'https://example.com',
 						},
-						{
-							description: 'production server',
-							url: 'https://gigantic-server.com/v1',
-						},
-					],
-					parameters: [
-						{
-							$ref: '#/components/parameters/ExampleParameter',
-						},
-						{
-							name: 'password',
-							in: 'query',
-							description: 'username to fetch',
-							required: false,
-							schema: {
-								$ref: '#/components/schemas/ExampleSchema',
+						servers: [
+							{
+								description: 'Development server',
+								url: 'https://development.gigantic-server.com/v1',
 							},
-						},
-						{
-							name: 'limit',
-							in: 'query',
-							description: 'the limit to fetch',
-							required: false,
-							schema: {
-								type: 'integer',
-								default: 20,
+							{
+								description: 'production server',
+								url: 'https://gigantic-server.com/v1',
 							},
-						},
-						{
-							name: 'pi',
-							in: 'query',
-							description: 'the limit to fetch',
-							required: false,
-							schema: {
-								type: 'number',
-								default: 3.14,
+						],
+						parameters: [
+							{
+								$ref: '#/components/parameters/ExampleParameter',
 							},
-						},
-						{
-							name: 'name',
-							in: 'query',
-							description: 'the limit to fetch',
-							required: false,
-							schema: {
-								type: 'string',
-								default: 'nick',
-							},
-						},
-					],
-					requestBody: {
-						description: 'an optional description',
-						required: true,
-						content: {
-							'application/json': {
+							{
+								name: 'password',
+								in: 'query',
+								description: 'username to fetch',
+								required: false,
 								schema: {
-									type: 'string',
+									$ref: '#/components/schemas/ExampleSchema',
 								},
 							},
-						},
-					},
-					responses: {
-						'200': {
-							description: 'sup',
+							{
+								name: 'limit',
+								in: 'query',
+								description: 'the limit to fetch',
+								required: false,
+								schema: {
+									type: 'integer',
+									default: 20,
+								},
+							},
+							{
+								name: 'pi',
+								in: 'query',
+								description: 'the limit to fetch',
+								required: false,
+								schema: {
+									type: 'number',
+									default: 3.14,
+								},
+							},
+							{
+								name: 'name',
+								in: 'query',
+								description: 'the limit to fetch',
+								required: false,
+								schema: {
+									type: 'string',
+									default: 'nick',
+								},
+							},
+						],
+						requestBody: {
+							description: 'an optional description',
+							required: true,
 							content: {
 								'application/json': {
 									schema: {
 										type: 'string',
 									},
-									examples: {
-										example1: {
-											$ref: '#/components/examples/ExampleExample',
+								},
+							},
+						},
+						responses: {
+							'200': {
+								description: 'sup',
+								content: {
+									'application/json': {
+										schema: {
+											type: 'string',
 										},
-										example2: {
-											$ref: '#/components/examples/ExampleExample',
+										examples: {
+											example1: {
+												$ref: '#/components/examples/ExampleExample',
+											},
+											example2: {
+												$ref: '#/components/examples/ExampleExample',
+											},
 										},
 									},
 								},
+								headers: {
+									'some-header': {
+										$ref: '#/components/headers/ExampleHeader',
+									},
+									'some-header2': {
+										$ref: '#/components/headers/ExampleHeader',
+									},
+								},
+								links: {
+									'some-link': {
+										$ref: '#/components/links/ExampleLink',
+									},
+									'some-link2': {
+										$ref: '#/components/links/ExampleLink',
+									},
+								},
 							},
-							headers: {
-								'some-header': {
-									$ref: '#/components/headers/ExampleHeader',
-								},
-								'some-header2': {
-									$ref: '#/components/headers/ExampleHeader',
-								},
+							'400': {
+								description: ':(',
 							},
-							links: {
-								'some-link': {
-									$ref: '#/components/links/ExampleLink',
-								},
-								'some-link2': {
-									$ref: '#/components/links/ExampleLink',
-								},
+							default: {
+								$ref: '#/components/responses/ExampleResponse',
 							},
 						},
-						'400': {
-							description: ':(',
+						callbacks: {
+							onSomethin: {
+								$ref: '#/components/callbacks/ExampleCallback',
+							},
+							onSomethin2: {
+								$ref: '#/components/callbacks/ExampleCallback',
+							},
 						},
-						default: {
-							$ref: '#/components/responses/ExampleResponse',
-						},
+						security: [
+							{
+								ExampleSecurity: [],
+							},
+							{
+								ExampleSecurity3: [],
+							},
+						],
 					},
-					callbacks: {
-						onSomethin: {
-							$ref: '#/components/callbacks/ExampleCallback',
-						},
-						onSomethin2: {
-							$ref: '#/components/callbacks/ExampleCallback',
-						},
-					},
-					security: [
-						{
-							ExampleSecurity: [],
-						},
-						{
-							ExampleSecurity3: [],
-						},
-					],
 				},
 			},
 		};
 
 		const expected2 = {
-			'/pet': {
-				put: {
-					deprecated: true,
-					requestBody: {
-						$ref: '#/components/requestBodies/ExampleBody',
-					},
-					responses: {
-						'200': {
-							description: 'fun',
+			paths: {
+				'/pet': {
+					put: {
+						deprecated: true,
+						requestBody: {
+							$ref: '#/components/requestBodies/ExampleBody',
 						},
-					},
-					security: [
-						{
-							ExampleSecurity2: ['write:pets', 'read:pets'],
+						responses: {
+							'200': {
+								description: 'fun',
+							},
 						},
-					],
+						security: [
+							{
+								ExampleSecurity2: ['write:pets', 'read:pets'],
+							},
+						],
+					},
 				},
 			},
 		};
@@ -236,16 +240,18 @@ describe('new doc comments form', () => {
 		});
 
 		const expected = {
-			'/': {
-				get: {
-					operationId: 'listVersionsv2',
-					summary: 'List API versions',
-					responses: {
-						'200': {
-							description: '200 response',
-						},
-						'300': {
-							description: '300 response',
+			paths: {
+				'/': {
+					get: {
+						operationId: 'listVersionsv2',
+						summary: 'List API versions',
+						responses: {
+							'200': {
+								description: '200 response',
+							},
+							'300': {
+								description: '300 response',
+							},
 						},
 					},
 				},
@@ -266,12 +272,14 @@ describe('new doc comments form', () => {
 
 		// TODO: this isn't valid openapi, schema isn't allowed here.
 		const expected = {
-			'/hello': {
-				get: {
-					description: 'Get a "hello world" message.',
-					responses: {
-						'200': {
-							description: 'hello world.',
+			paths: {
+				'/hello': {
+					get: {
+						description: 'Get a "hello world" message.',
+						responses: {
+							'200': {
+								description: 'hello world.',
+							},
 						},
 					},
 				},
@@ -302,16 +310,18 @@ describe('new doc comments form', () => {
 		});
 
 		const expected1 = {
-			'/hello': {
-				post: {
-					description: 'Get a "hello world" message.',
-					responses: {
-						'200': {
-							description: 'hello world.',
-							content: {
-								'text/plain': {
-									schema: {
-										type: 'string',
+			paths: {
+				'/hello': {
+					post: {
+						description: 'Get a "hello world" message.',
+						responses: {
+							'200': {
+								description: 'hello world.',
+								content: {
+									'text/plain': {
+										schema: {
+											type: 'string',
+										},
 									},
 								},
 							},
@@ -322,16 +332,18 @@ describe('new doc comments form', () => {
 		};
 
 		const expected2 = {
-			'/hello': {
-				get: {
-					description: 'Get a "hello world" message.',
-					responses: {
-						'200': {
-							description: 'hello world.',
-							content: {
-								'text/plain': {
-									schema: {
-										type: 'string',
+			paths: {
+				'/hello': {
+					get: {
+						description: 'Get a "hello world" message.',
+						responses: {
+							'200': {
+								description: 'hello world.',
+								content: {
+									'text/plain': {
+										schema: {
+											type: 'string',
+										},
 									},
 								},
 							},
@@ -365,99 +377,101 @@ describe('new doc comments form', () => {
 		});
 
 		const expected = {
-			'/api/v1/cars/{country}/{city}': {
-				get: {
-					description: 'Get a list of cars at a location.',
-					parameters: [
-						{
-							in: 'path',
-							name: 'country',
-							description: 'Country of the rental company.',
-							required: true,
-							schema: {
-								type: 'string',
+			paths: {
+				'/api/v1/cars/{country}/{city}': {
+					get: {
+						description: 'Get a list of cars at a location.',
+						parameters: [
+							{
+								in: 'path',
+								name: 'country',
+								description: 'Country of the rental company.',
+								required: true,
+								schema: {
+									type: 'string',
+								},
 							},
-						},
-						{
-							in: 'path',
-							name: 'city',
-							description: 'City of the rental company.',
-							required: true,
-							schema: {
-								type: 'string',
+							{
+								in: 'path',
+								name: 'city',
+								description: 'City of the rental company.',
+								required: true,
+								schema: {
+									type: 'string',
+								},
 							},
-						},
-						{
-							in: 'query',
-							name: 'company',
-							description: 'Rental Company name.',
-							required: false,
-							schema: {
-								type: 'string',
+							{
+								in: 'query',
+								name: 'company',
+								description: 'Rental Company name.',
+								required: false,
+								schema: {
+									type: 'string',
+								},
 							},
-						},
-						{
-							in: 'query',
-							name: 'car',
-							description: 'Car Name.',
-							required: false,
-							schema: {
-								type: 'string',
+							{
+								in: 'query',
+								name: 'car',
+								description: 'Car Name.',
+								required: false,
+								schema: {
+									type: 'string',
+								},
 							},
-						},
-						{
-							in: 'query',
-							name: 'type',
-							description: 'Car Type.',
-							required: false,
-							schema: {
-								type: 'string',
+							{
+								in: 'query',
+								name: 'type',
+								description: 'Car Type.',
+								required: false,
+								schema: {
+									type: 'string',
+								},
 							},
-						},
-						{
-							in: 'query',
-							name: 'style',
-							description: 'Car Style.',
-							required: false,
-							schema: {
-								type: 'string',
+							{
+								in: 'query',
+								name: 'style',
+								description: 'Car Style.',
+								required: false,
+								schema: {
+									type: 'string',
+								},
 							},
-						},
-						{
-							in: 'query',
-							name: 'mincost',
-							description: 'Min Cost.',
-							required: false,
-							schema: {
-								type: 'number',
+							{
+								in: 'query',
+								name: 'mincost',
+								description: 'Min Cost.',
+								required: false,
+								schema: {
+									type: 'number',
+								},
 							},
-						},
-						{
-							in: 'query',
-							name: 'maxcost',
-							description: 'Max Cost.',
-							required: false,
-							schema: {
-								type: 'number',
+							{
+								in: 'query',
+								name: 'maxcost',
+								description: 'Max Cost.',
+								required: false,
+								schema: {
+									type: 'number',
+								},
 							},
-						},
-					],
-					responses: {
-						'200': {
-							description: 'A list of cars.',
-							content: {
-								'application/json': {
-									schema: {
-										type: 'array',
-										items: {
-											type: 'string',
+						],
+						responses: {
+							'200': {
+								description: 'A list of cars.',
+								content: {
+									'application/json': {
+										schema: {
+											type: 'array',
+											items: {
+												type: 'string',
+											},
 										},
 									},
 								},
 							},
-						},
-						'400': {
-							description: 'Example Error.',
+							'400': {
+								description: 'Example Error.',
+							},
 						},
 					},
 				},
@@ -479,22 +493,24 @@ describe('new doc comments form', () => {
 		});
 
 		const expected = {
-			'/hello': {
-				post: {
-					description: 'Post a "hello world" message.',
-					requestBody: {
-						description: 'Whether or not to say hello world.',
-						content: {
-							'application/json': {
-								schema: {
-									type: 'boolean',
+			paths: {
+				'/hello': {
+					post: {
+						description: 'Post a "hello world" message.',
+						requestBody: {
+							description: 'Whether or not to say hello world.',
+							content: {
+								'application/json': {
+									schema: {
+										type: 'boolean',
+									},
 								},
 							},
 						},
-					},
-					responses: {
-						'200': {
-							description: 'hello world.',
+						responses: {
+							'200': {
+								description: 'hello world.',
+							},
 						},
 					},
 				},
@@ -516,22 +532,24 @@ describe('new doc comments form', () => {
 		});
 
 		const expected = {
-			'/hello': {
-				post: {
-					description: 'Post a "hello world" message.',
-					requestBody: {
-						description: 'A more complicated object.',
-						content: {
-							'application/x-www-form-urlencoded': {
-								schema: {
-									$ref: '#/components/schemas/ExampleObject',
+			paths: {
+				'/hello': {
+					post: {
+						description: 'Post a "hello world" message.',
+						requestBody: {
+							description: 'A more complicated object.',
+							content: {
+								'application/x-www-form-urlencoded': {
+									schema: {
+										$ref: '#/components/schemas/ExampleObject',
+									},
 								},
 							},
 						},
-					},
-					responses: {
-						'200': {
-							description: 'hello world.',
+						responses: {
+							'200': {
+								description: 'hello world.',
+							},
 						},
 					},
 				},
@@ -565,84 +583,86 @@ describe('new doc comments form', () => {
 		});
 
 		const expected = {
-			'/hello': {
-				post: {
-					description: 'Post a "hello world" message.',
-					requestBody: {
-						description: 'A more complicated object.',
-						required: true,
-						content: {
-							'application/x-www-form-urlencoded': {
-								schema: {
-									$ref: '#/components/schemas/ExampleObject',
-								},
-							},
-							'application/json': {
-								schema: {
-									$ref: '#/components/schemas/ExampleObject',
-								},
-							},
-							'image/png': {
-								schema: {
-									type: 'string',
-									format: 'binary',
-								},
-							},
-							'*/*': {
-								schema: {
-									type: 'string',
-								},
-							},
-						},
-					},
-					responses: {
-						'200': {
-							description: 'hello world.',
+			paths: {
+				'/hello': {
+					post: {
+						description: 'Post a "hello world" message.',
+						requestBody: {
+							description: 'A more complicated object.',
+							required: true,
 							content: {
-								'application/json': {
-									description: 'A list of cars',
+								'application/x-www-form-urlencoded': {
 									schema: {
-										type: 'array',
-										items: {
-											$ref: '#/components/schemas/Car',
-										},
-									},
-									examples: {
-										example1: {
-											$ref: '#/components/examples/Example',
-										},
+										$ref: '#/components/schemas/ExampleObject',
 									},
 								},
-							},
-							headers: {
-								'x-next': {
-									description: 'A link to the next page of responses',
+								'application/json': {
+									schema: {
+										$ref: '#/components/schemas/ExampleObject',
+									},
+								},
+								'image/png': {
+									schema: {
+										type: 'string',
+										format: 'binary',
+									},
+								},
+								'*/*': {
 									schema: {
 										type: 'string',
 									},
 								},
 							},
 						},
-						'400': {
-							description: 'error.',
-							content: {
-								'application/json': {
-									description: 'error message',
-									schema: {
-										type: 'string',
+						responses: {
+							'200': {
+								description: 'hello world.',
+								content: {
+									'application/json': {
+										description: 'A list of cars',
+										schema: {
+											type: 'array',
+											items: {
+												$ref: '#/components/schemas/Car',
+											},
+										},
+										examples: {
+											example1: {
+												$ref: '#/components/examples/Example',
+											},
+										},
 									},
-									examples: {
-										example1: {
-											$ref: '#/components/examples/Example',
+								},
+								headers: {
+									'x-next': {
+										description: 'A link to the next page of responses',
+										schema: {
+											type: 'string',
 										},
 									},
 								},
 							},
-							headers: {
-								'fake-header': {
-									description: 'A fake header',
-									schema: {
-										type: 'string',
+							'400': {
+								description: 'error.',
+								content: {
+									'application/json': {
+										description: 'error message',
+										schema: {
+											type: 'string',
+										},
+										examples: {
+											example1: {
+												$ref: '#/components/examples/Example',
+											},
+										},
+									},
+								},
+								headers: {
+									'fake-header': {
+										description: 'A fake header',
+										schema: {
+											type: 'string',
+										},
 									},
 								},
 							},
@@ -673,30 +693,32 @@ describe('open-api-examples', () => {
 		});
 
 		const expected = {
-			'/': {
-				get: {
-					operationId: 'listVersionsv2',
-					summary: 'List API versions',
-					responses: {
-						'200': {
-							description: '200 response',
-							content: {
-								'application/json': {
-									examples: {
-										foo: {
-											$ref: '#/components/examples/Foo',
+			paths: {
+				'/': {
+					get: {
+						operationId: 'listVersionsv2',
+						summary: 'List API versions',
+						responses: {
+							'200': {
+								description: '200 response',
+								content: {
+									'application/json': {
+										examples: {
+											foo: {
+												$ref: '#/components/examples/Foo',
+											},
 										},
 									},
 								},
 							},
-						},
-						'300': {
-							description: '300 response',
-							content: {
-								'application/json': {
-									examples: {
-										foo: {
-											$ref: '#/components/examples/Foo',
+							'300': {
+								description: '300 response',
+								content: {
+									'application/json': {
+										examples: {
+											foo: {
+												$ref: '#/components/examples/Foo',
+											},
 										},
 									},
 								},
@@ -724,36 +746,38 @@ describe('open-api-examples', () => {
 		});
 
 		const expected = {
-			'/streams': {
-				post: {
-					description: 'subscribes a client to receive out-of-band data',
-					parameters: [
-						{
-							name: 'callbackUrl',
-							in: 'query',
-							required: true,
-							description:
-								'the location where data will be sent.  Must be network accessible\nby the source server',
-							schema: {
-								$ref: '#/components/schemas/uri',
+			paths: {
+				'/streams': {
+					post: {
+						description: 'subscribes a client to receive out-of-band data',
+						parameters: [
+							{
+								name: 'callbackUrl',
+								in: 'query',
+								required: true,
+								description:
+									'the location where data will be sent.  Must be network accessible\nby the source server',
+								schema: {
+									$ref: '#/components/schemas/uri',
+								},
 							},
-						},
-					],
-					responses: {
-						'201': {
-							description: 'subscription successfully created',
-							content: {
-								'application/json': {
-									schema: {
-										$ref: '#/components/schemas/Custom',
+						],
+						responses: {
+							'201': {
+								description: 'subscription successfully created',
+								content: {
+									'application/json': {
+										schema: {
+											$ref: '#/components/schemas/Custom',
+										},
 									},
 								},
 							},
 						},
-					},
-					callbacks: {
-						onData: {
-							$ref: '#/components/callbacks/Callback',
+						callbacks: {
+							onData: {
+								$ref: '#/components/callbacks/Callback',
+							},
 						},
 					},
 				},
@@ -776,32 +800,34 @@ describe('open-api-examples', () => {
 		});
 
 		const expected = {
-			'/users/{username}': {
-				get: {
-					operationId: 'getUserByName',
-					parameters: [
-						{
-							name: 'username',
-							in: 'path',
-							required: true,
-							schema: {
-								type: 'string',
-							},
-						},
-					],
-					responses: {
-						'200': {
-							description: 'The User',
-							content: {
-								'application/json': {
-									schema: {
-										$ref: '#/components/schemas/User',
-									},
+			paths: {
+				'/users/{username}': {
+					get: {
+						operationId: 'getUserByName',
+						parameters: [
+							{
+								name: 'username',
+								in: 'path',
+								required: true,
+								schema: {
+									type: 'string',
 								},
 							},
-							links: {
-								userRepositories: {
-									$ref: '#/components/links/UserRepositories',
+						],
+						responses: {
+							'200': {
+								description: 'The User',
+								content: {
+									'application/json': {
+										schema: {
+											$ref: '#/components/schemas/User',
+										},
+									},
+								},
+								links: {
+									userRepositories: {
+										$ref: '#/components/links/UserRepositories',
+									},
 								},
 							},
 						},
@@ -851,48 +877,50 @@ describe('open-api-examples', () => {
 		});
 
 		const expected1 = {
-			'/pets': {
-				get: {
-					summary: 'List all pets',
-					operationId: 'listPets',
-					tags: ['pets'],
-					parameters: [
-						{
-							name: 'limit',
-							in: 'query',
-							description: 'How many items to return at one time (max 100)',
-							required: false,
-							schema: {
-								type: 'integer',
-								format: 'int32',
+			paths: {
+				'/pets': {
+					get: {
+						summary: 'List all pets',
+						operationId: 'listPets',
+						tags: ['pets'],
+						parameters: [
+							{
+								name: 'limit',
+								in: 'query',
+								description: 'How many items to return at one time (max 100)',
+								required: false,
+								schema: {
+									type: 'integer',
+									format: 'int32',
+								},
 							},
-						},
-					],
-					responses: {
-						'200': {
-							description: 'A paged array of pets',
-							headers: {
-								'x-next': {
-									description: 'A link to the next page of responses',
-									schema: {
-										type: 'string',
+						],
+						responses: {
+							'200': {
+								description: 'A paged array of pets',
+								headers: {
+									'x-next': {
+										description: 'A link to the next page of responses',
+										schema: {
+											type: 'string',
+										},
+									},
+								},
+								content: {
+									'application/json': {
+										schema: {
+											$ref: '#/components/schemas/Pets',
+										},
 									},
 								},
 							},
-							content: {
-								'application/json': {
-									schema: {
-										$ref: '#/components/schemas/Pets',
-									},
-								},
-							},
-						},
-						default: {
-							description: 'unexpected error',
-							content: {
-								'application/json': {
-									schema: {
-										$ref: '#/components/schemas/Error',
+							default: {
+								description: 'unexpected error',
+								content: {
+									'application/json': {
+										schema: {
+											$ref: '#/components/schemas/Error',
+										},
 									},
 								},
 							},
@@ -903,21 +931,23 @@ describe('open-api-examples', () => {
 		};
 
 		const expected2 = {
-			'/pets': {
-				post: {
-					summary: 'Create a pet',
-					operationId: 'createPets',
-					tags: ['pets'],
-					responses: {
-						'201': {
-							description: 'Null response',
-						},
-						default: {
-							description: 'unexpected error',
-							content: {
-								'application/json': {
-									schema: {
-										$ref: '#/components/schemas/Error',
+			paths: {
+				'/pets': {
+					post: {
+						summary: 'Create a pet',
+						operationId: 'createPets',
+						tags: ['pets'],
+						responses: {
+							'201': {
+								description: 'Null response',
+							},
+							default: {
+								description: 'unexpected error',
+								content: {
+									'application/json': {
+										schema: {
+											$ref: '#/components/schemas/Error',
+										},
 									},
 								},
 							},
@@ -928,39 +958,41 @@ describe('open-api-examples', () => {
 		};
 
 		const expected3 = {
-			'/pets/{petId}': {
-				get: {
-					summary: 'Info for a specific pet',
-					operationId: 'showPetById',
-					tags: ['pets', 'another tag with space'],
-					parameters: [
-						{
-							name: 'petId',
-							in: 'path',
-							required: true,
-							description: 'The id of the pet to retrieve',
-							schema: {
-								type: 'string',
+			paths: {
+				'/pets/{petId}': {
+					get: {
+						summary: 'Info for a specific pet',
+						operationId: 'showPetById',
+						tags: ['pets', 'another tag with space'],
+						parameters: [
+							{
+								name: 'petId',
+								in: 'path',
+								required: true,
+								description: 'The id of the pet to retrieve',
+								schema: {
+									type: 'string',
+								},
 							},
-						},
-					],
-					responses: {
-						'200': {
-							description: 'Expected response to a valid request',
-							content: {
-								'application/json': {
-									schema: {
-										$ref: '#/components/schemas/Pets',
+						],
+						responses: {
+							'200': {
+								description: 'Expected response to a valid request',
+								content: {
+									'application/json': {
+										schema: {
+											$ref: '#/components/schemas/Pets',
+										},
 									},
 								},
 							},
-						},
-						default: {
-							description: 'unexpected error',
-							content: {
-								'application/json': {
-									schema: {
-										$ref: '#/components/schemas/Error',
+							default: {
+								description: 'unexpected error',
+								content: {
+									'application/json': {
+										schema: {
+											$ref: '#/components/schemas/Error',
+										},
 									},
 								},
 							},
@@ -984,20 +1016,22 @@ describe('open-api-examples', () => {
 		});
 
 		const expected = {
-			'/': {
-				get: {
-					responses: {
-						'200': {
-							description: 'OK',
-							content: {
-								'application/json': {
-									schema: {
-										$ref: '#/components/schemas/Pet',
+			paths: {
+				'/': {
+					get: {
+						responses: {
+							'200': {
+								description: 'OK',
+								content: {
+									'application/json': {
+										schema: {
+											$ref: '#/components/schemas/Pet',
+										},
 									},
-								},
-								'application/xml': {
-									schema: {
-										$ref: '#/components/schemas/Pet',
+									'application/xml': {
+										schema: {
+											$ref: '#/components/schemas/Pet',
+										},
 									},
 								},
 							},

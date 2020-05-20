@@ -1,28 +1,41 @@
-import * as specHelper from './util/specHelper';
-import { BaseSpec, OpenApiSpec } from './types';
+import {
+	BaseDefinition,
+	OpenApiObject,
+	PathsObject,
+	InfoObject,
+	ServerObject,
+	ComponentsObject,
+	SecurityRequirementObject,
+	TagObject,
+	ExternalDocumentationObject,
+} from './exported';
+import objectMerge from './util/objectMerge';
 
-class SpecBuilder implements OpenApiSpec {
+class SpecBuilder implements OpenApiObject {
 	openapi: string;
-	info: any;
-	paths: any;
-	components?: any;
-	externalDocs?: any;
-	servers?: any[];
-	security?: any[];
-	tags?: any[];
+	info: InfoObject;
+	servers?: ServerObject[];
+	paths: PathsObject;
+	components?: ComponentsObject;
+	security?: SecurityRequirementObject[];
+	tags?: TagObject[];
+	externalDocs?: ExternalDocumentationObject;
 
-	constructor(baseDefinition: BaseSpec) {
+	constructor(baseDefinition: BaseDefinition) {
 		this.openapi = baseDefinition.openapi;
+		this.info = baseDefinition.info;
+		this.servers = baseDefinition.servers;
 		this.paths = baseDefinition.paths || {};
 		this.components = baseDefinition.components;
-		this.externalDocs = baseDefinition.externalDocs;
-		this.servers = baseDefinition.servers;
 		this.security = baseDefinition.security;
 		this.tags = baseDefinition.tags;
+		this.externalDocs = baseDefinition.externalDocs;
 	}
 
-	addData(parsedFile: any[]) {
-		specHelper.addDataToSwaggerObject(this, parsedFile);
+	addData(parsedFile: OpenApiObject[]) {
+		parsedFile.forEach((file) => {
+			objectMerge(this, file);
+		});
 	}
 }
 

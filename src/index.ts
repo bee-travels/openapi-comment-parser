@@ -1,9 +1,9 @@
 import parseFile from './util/parseFile';
 import globList from './util/globList';
 import SpecBuilder from './SpecBuilder';
-import { ParserOptions, OpenApiSpec } from './types';
+import { ParserOptions, OpenApiObject } from './exported';
 
-function parseComments({ definition, paths }: ParserOptions): OpenApiSpec {
+function parseComments({ definition, paths }: ParserOptions): OpenApiObject {
 	if (!definition && !paths) {
 		throw new Error('Provided options are incorrect.');
 	}
