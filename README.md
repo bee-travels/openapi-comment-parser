@@ -1,4 +1,4 @@
-# OpenApi Comment Parser
+# OpenAPI Comment Parser
 
 A clean and simple way to document your code for generating OpenAPI (Swagger) specs.
 
@@ -7,6 +7,12 @@ A clean and simple way to document your code for generating OpenAPI (Swagger) sp
 ![goal](/assets/openapi-comment-parser.png)
 
 ## Installation
+
+```bash
+$ npm install openapi-comment-parser --save
+```
+
+or
 
 ```bash
 $ yarn add openapi-comment-parser
