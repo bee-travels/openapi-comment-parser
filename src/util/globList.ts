@@ -1,9 +1,7 @@
-// import { sync as glob } from 'globby';
-// @ts-ignore
-import glob from 'glob';
+import { sync as glob } from 'globby';
 
 function convertGlobPaths(globs: string[]): string[] {
-	return globs.map((globString) => glob.sync(globString)).flat();
+	return globs.map((globString) => glob(globString)).flat();
 }
 
 export default convertGlobPaths;

@@ -4,12 +4,9 @@
 		"module": "commonjs", 
 		"strict": true, 
 		"esModuleInterop": true,
-		// "noImplicitAny": false,
-
 		"lib": [
       "es2019"
     ],
-
     "noEmit": true,
 	},
 	"include": ["src"],
