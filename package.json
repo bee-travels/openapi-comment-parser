@@ -1,6 +1,6 @@
 {
   "name": "openapi-comment-parser",
-  "version": "0.0.17",
+  "version": "0.0.18",
   "engines": {
     "node": ">=10.0.0"
   },
@@ -23,9 +23,7 @@
     "express"
   ],
   "files": [
-    "dist",
-    "README.md",
-    "LICENSE"
+    "/dist"
   ],
   "main": "dist/openapi-comment-parser.js",
   "module": "dist/openapi-comment-parser.esm.js",

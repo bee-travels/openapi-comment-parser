@@ -1,5 +1,5 @@
 import parseComments from 'comment-parser';
-import { OpenApiObject, PathsObject } from '../exported';
+import { OpenApiObject, PathsObject, PathItemObject } from '../exported';
 
 import merge from 'lodash/mergeWith';
 import isArray from 'lodash/isArray';
@@ -345,51 +345,15 @@ function commentsToOpenApi(fileContents: string): OpenApiObject[] {
 
 			fixSecurityObject(res);
 
-			let pathsObject: PathsObject = {};
 			const [method, path] = comment.description.split(' ');
-			pathsObject[path] = {};
-			switch (method) {
-				case 'GET':
-					pathsObject[path].get = {
+
+			const pathsObject: PathsObject = {
+				[path]: {
+					[method.toLowerCase()]: {
 						...res,
-					};
-					break;
-				case 'PUT':
-					pathsObject[path].put = {
-						...res,
-					};
-					break;
-				case 'POST':
-					pathsObject[path].post = {
-						...res,
-					};
-					break;
-				case 'DELETE':
-					pathsObject[path].delete = {
-						...res,
-					};
-					break;
-				case 'OPTIONS':
-					pathsObject[path].options = {
-						...res,
-					};
-					break;
-				case 'HEAD':
-					pathsObject[path].head = {
-						...res,
-					};
-					break;
-				case 'PATCH':
-					pathsObject[path].patch = {
-						...res,
-					};
-					break;
-				case 'TRACE':
-					pathsObject[path].trace = {
-						...res,
-					};
-					break;
-			}
+					},
+				},
+			};
 
 			// Purge all undefined objects/arrays.
 			return JSON.parse(JSON.stringify({ paths: pathsObject }));
