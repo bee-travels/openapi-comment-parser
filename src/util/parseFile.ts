@@ -4,8 +4,9 @@ import path from 'path';
 import jsYaml from 'js-yaml';
 
 import commentsToOpenApi from './commentsToOpenApi';
+import { OpenApiObject } from '../exported';
 
-function parseFile(file: string): any[] {
+function parseFile(file: string): OpenApiObject[] {
 	const fileContent = fs.readFileSync(file, { encoding: 'utf8' });
 	const ext = path.extname(file);
 
