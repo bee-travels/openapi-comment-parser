@@ -1,6 +1,10 @@
-# JSDoc Comments for the OpenApi Specification
+# OpenApi Comment Parser
 
-A fork of `swagger-jsdoc` that brings a cleaner way to document your code for generating OpenAPI (Swagger) specs.
+A clean and simple way to document your code for generating OpenAPI (Swagger) specs.
+
+## Goal
+
+![goal](/assets/openapi-comment-parser)
 
 ## Installation
 
