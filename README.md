@@ -1,4 +1,8 @@
 # OpenAPI Comment Parser
+[![npm Version](https://img.shields.io/npm/v/openapi-comment-parser.svg)](https://www.npmjs.com/package/openapi-comment-parser)
+[![npm Downloads](https://img.shields.io/npm/dw/openapi-comment-parser.svg)](https://www.npmjs.com/package/openapi-comment-parser)
+[![npm Downloads](https://badgen.net/bundlephobia/minzip/openapi-comment-parser)](https://bundlephobia.com/result?p=openapi-comment-parser)
+
 
 A clean and simple way to document your code for generating OpenAPI (Swagger) specs.
 
