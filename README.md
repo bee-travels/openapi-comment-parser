@@ -4,7 +4,7 @@ A clean and simple way to document your code for generating OpenAPI (Swagger) sp
 
 ## Goal
 
-![goal](/assets/openapi-comment-parser)
+![goal](/assets/openapi-comment-parser.png)
 
 ## Installation
 
