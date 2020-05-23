@@ -7,6 +7,7 @@ jobs:
       script: yarn test
     - stage: deploy
       if: tag IS present
+      script: skip
       before_deploy:
         npm version "${TRAVIS_TAG:1}" --allow-same-version --git-tag-version false
       deploy:

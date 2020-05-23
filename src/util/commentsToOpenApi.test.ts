@@ -1,19 +1,15 @@
-import { expect } from 'chai';
+import chai, { expect } from 'chai';
 
 import commentsToOpenApi from './commentsToOpenApi';
 
-function _(func: any) {
-	let str = func;
-	if (typeof func === 'function') {
-		str = func.toString();
-		str = str
-			.slice(str.indexOf('{') + 1, str.lastIndexOf('}'))
-			.replace(/\r\n/g, '\n');
-	}
-	return str;
+function _(func: { (): void }): string {
+	const str = func.toString();
+	return str
+		.slice(str.indexOf('{') + 1, str.lastIndexOf('}'))
+		.replace(/\r\n/g, '\n');
 }
 
-describe('all of it', () => {
+describe('commentsToOpenApi', () => {
 	it('big stuff', () => {
 		const comment = _(() => {
 			/**
@@ -222,12 +218,10 @@ describe('all of it', () => {
 				},
 			},
 		};
-		const specification = commentsToOpenApi(comment);
+		const specification = commentsToOpenApi(comment).map((i) => i.spec);
 		expect(specification).to.deep.equal([expected1, expected2]);
 	});
-});
 
-describe('new doc comments form', () => {
 	it("random properities I don't normally use", () => {
 		const comment = _(() => {
 			/**
@@ -257,7 +251,7 @@ describe('new doc comments form', () => {
 				},
 			},
 		};
-		const [specification] = commentsToOpenApi(comment);
+		const [specification] = commentsToOpenApi(comment).map((i) => i.spec);
 		expect(specification).to.deep.equal(expected);
 	});
 
@@ -285,7 +279,7 @@ describe('new doc comments form', () => {
 				},
 			},
 		};
-		const [specification] = commentsToOpenApi(comment);
+		const [specification] = commentsToOpenApi(comment).map((i) => i.spec);
 		expect(specification).to.deep.equal(expected);
 	});
 
@@ -353,7 +347,7 @@ describe('new doc comments form', () => {
 			},
 		};
 
-		const specification = commentsToOpenApi(comment);
+		const specification = commentsToOpenApi(comment).map((i) => i.spec);
 		expect(specification).to.deep.equal([expected1, expected2]);
 	});
 
@@ -477,7 +471,7 @@ describe('new doc comments form', () => {
 				},
 			},
 		};
-		const [specification] = commentsToOpenApi(comment);
+		const [specification] = commentsToOpenApi(comment).map((i) => i.spec);
 		expect(specification).to.deep.equal(expected);
 	});
 
@@ -516,7 +510,7 @@ describe('new doc comments form', () => {
 				},
 			},
 		};
-		const [specification] = commentsToOpenApi(comment);
+		const [specification] = commentsToOpenApi(comment).map((i) => i.spec);
 		expect(specification).to.deep.equal(expected);
 	});
 
@@ -555,7 +549,7 @@ describe('new doc comments form', () => {
 				},
 			},
 		};
-		const [specification] = commentsToOpenApi(comment);
+		const [specification] = commentsToOpenApi(comment).map((i) => i.spec);
 		expect(specification).to.deep.equal(expected);
 	});
 
@@ -572,10 +566,10 @@ describe('new doc comments form', () => {
 			 * @bodyDescription A more complicated object.
 			 * @bodyRequired
 			 * @response 200 - hello world.
-			 * @responseContent {Car[]} 200.application/json - A list of cars
+			 * @responseContent {Car[]} 200.application/json
 			 * @responseHeader {string} 200.x-next - A link to the next page of responses
 			 * @responseExample {Example} 200.application/json.example1
-			 * @responseContent {string} 400.application/json - error message
+			 * @responseContent {string} 400.application/json
 			 * @responseHeader {string} 400.fake-header - A fake header
 			 * @responseExample {Example} 400.application/json.example1
 			 * @response 400 - error.
@@ -619,7 +613,6 @@ describe('new doc comments form', () => {
 								description: 'hello world.',
 								content: {
 									'application/json': {
-										description: 'A list of cars',
 										schema: {
 											type: 'array',
 											items: {
@@ -646,7 +639,6 @@ describe('new doc comments form', () => {
 								description: 'error.',
 								content: {
 									'application/json': {
-										description: 'error message',
 										schema: {
 											type: 'string',
 										},
@@ -671,12 +663,10 @@ describe('new doc comments form', () => {
 				},
 			},
 		};
-		const [specification] = commentsToOpenApi(comment);
+		const [specification] = commentsToOpenApi(comment).map((i) => i.spec);
 		expect(specification).to.deep.equal(expected);
 	});
-});
 
-describe('open-api-examples', () => {
 	it('api-with-examples', () => {
 		const comment = _(() => {
 			/**
@@ -728,7 +718,7 @@ describe('open-api-examples', () => {
 				},
 			},
 		};
-		const [specification] = commentsToOpenApi(comment);
+		const [specification] = commentsToOpenApi(comment).map((i) => i.spec);
 		expect(specification).to.deep.equal(expected);
 	});
 
@@ -783,7 +773,7 @@ describe('open-api-examples', () => {
 				},
 			},
 		};
-		const [specification] = commentsToOpenApi(comment);
+		const [specification] = commentsToOpenApi(comment).map((i) => i.spec);
 		expect(specification).to.deep.equal(expected);
 	});
 
@@ -835,7 +825,7 @@ describe('open-api-examples', () => {
 				},
 			},
 		};
-		const [specification] = commentsToOpenApi(comment);
+		const [specification] = commentsToOpenApi(comment).map((i) => i.spec);
 		expect(specification).to.deep.equal(expected);
 	});
 
@@ -1001,7 +991,7 @@ describe('open-api-examples', () => {
 				},
 			},
 		};
-		const specification = commentsToOpenApi(comment);
+		const specification = commentsToOpenApi(comment).map((i) => i.spec);
 		expect(specification).to.deep.equal([expected1, expected2, expected3]);
 	});
 
@@ -1040,7 +1030,18 @@ describe('open-api-examples', () => {
 				},
 			},
 		};
-		const [specification] = commentsToOpenApi(comment);
+		const [specification] = commentsToOpenApi(comment).map((i) => i.spec);
 		expect(specification).to.deep.equal(expected);
+	});
+
+	it('does nothing for normal comment', () => {
+		const comment = _(() => {
+			/**
+			 * normal comment
+			 */
+		});
+
+		const specification = commentsToOpenApi(comment).map((i) => i.spec);
+		expect(specification).to.have.lengthOf(0);
 	});
 });

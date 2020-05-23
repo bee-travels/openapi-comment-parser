@@ -5,16 +5,34 @@ import jsYaml from 'js-yaml';
 
 import commentsToOpenApi from './commentsToOpenApi';
 import { OpenApiObject } from '../exported';
+import yamlLOC from './yamlLOC';
+import { yamlParseError, nonJavascriptFileWarning } from './warnings';
 
-function parseFile(file: string): OpenApiObject[] {
+function parseFile(
+	file: string,
+	verbose?: boolean
+): { spec: OpenApiObject; loc: number }[] {
 	const fileContent = fs.readFileSync(file, { encoding: 'utf8' });
 	const ext = path.extname(file);
 
 	if (ext === '.yaml' || ext === '.yml') {
-		return [jsYaml.safeLoad(fileContent)];
+		try {
+			const spec = jsYaml.safeLoad(fileContent);
+			const loc = yamlLOC(fileContent);
+			return [{ spec: spec, loc: loc }];
+		} catch (e) {
+			if (verbose) {
+				yamlParseError(file, e.message);
+			}
+		}
+		return [];
 	} else {
-		// (ext === '.js' || ext === '.ts');
-		return commentsToOpenApi(fileContent);
+		if (verbose) {
+			if (ext !== '.js' && ext !== '.ts') {
+				nonJavascriptFileWarning(file, ext);
+			}
+		}
+		return commentsToOpenApi(fileContent, verbose);
 	}
 }
 

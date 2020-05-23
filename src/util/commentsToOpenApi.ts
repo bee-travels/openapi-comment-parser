@@ -1,5 +1,5 @@
 import parseComments from 'comment-parser';
-import { OpenApiObject, PathsObject, PathItemObject } from '../exported';
+import { OpenApiObject, PathsObject } from '../exported';
 
 import merge from 'lodash/mergeWith';
 import isArray from 'lodash/isArray';
@@ -118,7 +118,7 @@ function parseDescription(tag: any) {
 	};
 }
 
-function tagsToObjects(tags: any[]) {
+function tagsToObjects(tags: any[], verbose?: boolean) {
 	return tags.map((tag) => {
 		const parsedResponse = parseDescription(tag);
 
@@ -215,12 +215,12 @@ function tagsToObjects(tags: any[]) {
 
 			case 'responseContent': {
 				const [status, contentType] = parsedResponse.name.split('.');
+
 				return {
 					responses: {
 						[status]: {
 							content: {
 								[contentType]: {
-									description: parsedResponse.description,
 									schema: parsedResponse.schema,
 								},
 							},
@@ -327,19 +327,35 @@ function tagsToObjects(tags: any[]) {
 					security: { [security]: scope },
 				};
 			}
+
+			default: {
+				return {};
+			}
 		}
 	});
 }
 
-function commentsToOpenApi(fileContents: string): OpenApiObject[] {
+function commentsToOpenApi(
+	fileContents: string,
+	verbose?: boolean
+): { spec: OpenApiObject; loc: number }[] {
 	const openAPIRegex = /^(GET|PUT|POST|DELETE|OPTIONS|HEAD|PATCH|TRACE) \/.*$/;
 
 	const jsDocComments = parseComments(fileContents);
 
 	const filteredComments = jsDocComments
-		.filter((comment) => openAPIRegex.test(comment.description))
+		.filter((comment) => {
+			const validComment = openAPIRegex.test(comment.description);
+
+			return validComment;
+		})
 		.map((comment) => {
-			const objects = tagsToObjects(comment.tags);
+			// Line count, number of tags + 1 for description.
+			// - Don't count line-breaking due to long descriptions
+			// - Don't count empty lines
+			const loc = comment.tags.length + 1;
+
+			const objects = tagsToObjects(comment.tags, verbose);
 
 			const res = merge({}, ...objects, customizer);
 
@@ -356,7 +372,11 @@ function commentsToOpenApi(fileContents: string): OpenApiObject[] {
 			};
 
 			// Purge all undefined objects/arrays.
-			return JSON.parse(JSON.stringify({ paths: pathsObject }));
+			const spec = JSON.parse(JSON.stringify({ paths: pathsObject }));
+			return {
+				spec: spec,
+				loc: loc,
+			};
 		});
 	return filteredComments;
 }

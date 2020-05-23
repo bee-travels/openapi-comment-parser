@@ -1,6 +1,7 @@
 export interface ParserOptions {
 	definition: BaseDefinition;
 	paths: string[];
+	verbose?: boolean;
 }
 
 export interface BaseDefinition {
