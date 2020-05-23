@@ -1,7 +1,9 @@
 {
   "name": "eslint-config-openapi-jsdoc",
-  "version": "1.0.0",
+  "version": "0.0.1",
   "main": "index.js",
   "license": "MIT",
-  "dependencies": {}
+  "dependencies": {
+    "eslint-plugin-openapi-jsdoc": "^0.0.1"
+  }
 }
