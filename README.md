@@ -65,7 +65,7 @@ $ yarn add -D eslint-plugin-openapi-jsdoc
 ```
 
 Create an `.eslintrc.json` with:
-```
+```json
 {
   "extends": ["plugin:openapi-jsdoc/recommended"]
 }
