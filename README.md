@@ -53,6 +53,24 @@ const spec = parseComments({
 app.use('/api-docs', swaggerUi.serve, swaggerUi.setup(spec));
 ```
 
+## Eslint pluggin
+```bash
+$ npm install eslint-plugin-openapi-jsdoc --save-dev
+```
+
+or
+
+```bash
+$ yarn add -D eslint-plugin-openapi-jsdoc
+```
+
+Create an `.eslintrc.json` with:
+```
+{
+  "extends": ["plugin:openapi-jsdoc/recommended"]
+}
+```
+
 ## Basic structure
 You can write OpenAPI definitions in JSDoc comments or YAML files.
 In this guide, we use only JSDoc comments examples but YAML files works equally well.
@@ -194,3 +212,5 @@ Supported authentication methods are:
 - OpenID Connect Discovery
 
 For more information, see [Authentication](/docs/authentication.md).
+
+
