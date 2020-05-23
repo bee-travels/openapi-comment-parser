@@ -53,7 +53,7 @@ const spec = parseComments({
 app.use('/api-docs', swaggerUi.serve, swaggerUi.setup(spec));
 ```
 
-## Eslint pluggin
+## Eslint plugin
 ```bash
 $ npm install eslint-plugin-openapi-jsdoc --save-dev
 ```
