@@ -1,10 +1,10 @@
 {
   "name": "eslint-plugin-openapi-jsdoc",
-  "version": "0.0.1",
+  "version": "0.0.3",
   "main": "index.js",
   "license": "MIT",
   "scripts": {
-    "publish": "yarn publish --no-git-tag-version"
+    "patch": "yarn publish --no-git-tag-version"
   },
   "dependencies": {
     "comment-parser": "^0.7.4"

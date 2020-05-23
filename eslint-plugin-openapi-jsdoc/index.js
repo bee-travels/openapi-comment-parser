@@ -395,18 +395,27 @@ function getComments(cb) {
 
 module.exports = {
   rules: {
-    'valid-openapi-errors': {
+    errors: {
       create: function (context) {
         return getComments((comment) => {
           parseErrors(comment, context);
         });
       },
     },
-    'valid-openapi-warnings': {
+    warnings: {
       create: (context) => {
         return getComments((comment) => {
           parse(comment, context);
         });
+      },
+    },
+  },
+  configs: {
+    recommended: {
+      plugins: ['openapi-jsdoc'],
+      rules: {
+        'openapi-jsdoc/warnings': 'warn',
+        'openapi-jsdoc/errors': 'error',
       },
     },
   },
