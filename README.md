@@ -36,6 +36,8 @@ const spec = commentParser(baseDefinition);
 ```
 
 ### Swagger UI Express example
+Swagger UI Express is a popular module that allows you to serve OpenAPI docs from express.
+The result is living documentation for your API hosted from your API server via a route.
 
 ```js
 const path = require('path');
@@ -47,7 +49,7 @@ const spec = commentParser(baseDefinition);
 app.use('/api-docs', swaggerUi.serve, swaggerUi.setup(spec));
 ```
 
-## Configuration options
+### Configuration options
 There are a few configuring options. For example, including and excluding certain
 files and paths:
 ```js
@@ -56,7 +58,7 @@ const spec = commentParser(baseDefinition, {
 });
 ```
 
-### Options
+#### Options
 | Option name | Default |
 | ----------- | ------- |
 | `root`      | The directory where `commentParser` was called |
@@ -68,17 +70,18 @@ const spec = commentParser(baseDefinition, {
 
 
 ## Eslint plugin
+To enable linting of the OpenAPI jsdoc comments, install the `eslint` plugin:
 ```bash
 $ npm install eslint-plugin-openapi-jsdoc --save-dev
 ```
 
-or
+or with yarn:
 
 ```bash
 $ yarn add -D eslint-plugin-openapi-jsdoc
 ```
 
-Create an `.eslintrc.json` with:
+Then create an `.eslintrc.json`:
 ```json
 {
   "extends": ["plugin:openapi-jsdoc/recommended"]
