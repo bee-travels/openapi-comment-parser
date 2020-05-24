@@ -62,7 +62,7 @@ const spec = commentParser(baseDefinition, {
 | `root`      | The directory where `commentParser` was called |
 | `extension` | `['.js', '.cjs', '.mjs', '.ts', '.tsx', '.jsx', '.yaml', '.yml']` |
 | `include`   | `['**']`|
-| `exclude`   | A large list that covers: tests, coverage, and various development configs |
+| `exclude`   | A large list that covers tests, coverage, and various development configs |
 | `excludeNodeModules` | `true` |
 | `verbose`   | `true` |
 
