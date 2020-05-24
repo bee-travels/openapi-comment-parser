@@ -21,7 +21,7 @@ $ yarn add openapi-comment-parser
 ## Usage
 
 ```js
-const parseComments = require('openapi-comment-parser');
+const commentParser = require('openapi-comment-parser');
 
 // normal OpenAPI definition
 const baseDefinition = {
@@ -32,7 +32,7 @@ const baseDefinition = {
   },
 };
 
-const spec = parseComments(baseDefinition);
+const spec = commentParser(baseDefinition);
 ```
 
 ### Swagger UI Express example
@@ -42,7 +42,7 @@ const path = require('path');
 const commentParser = require('openapi-comment-parser');
 const swaggerUi = require('swagger-ui-express');
 
-const spec = parseComments(baseDefinition);
+const spec = commentParser(baseDefinition);
 
 app.use('/api-docs', swaggerUi.serve, swaggerUi.setup(spec));
 ```
