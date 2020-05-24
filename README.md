@@ -32,10 +32,7 @@ const baseDefinition = {
   },
 };
 
-const spec = parseComments({
-  definition: baseDefinition,
-  paths: ['src/**/*.js'], // paths to files with comments to be parsed
-});
+const spec = parseComments(baseDefinition);
 ```
 
 ### Swagger UI Express example
@@ -45,10 +42,7 @@ const path = require('path');
 const commentParser = require('openapi-comment-parser');
 const swaggerUi = require('swagger-ui-express');
 
-const spec = parseComments({
-  definition: baseDefinition,
-  paths: [path.join(__dirname, '**/*.?(js|yaml|yml)')],
-});
+const spec = parseComments(baseDefinition);
 
 app.use('/api-docs', swaggerUi.serve, swaggerUi.setup(spec));
 ```
