@@ -47,6 +47,26 @@ const spec = commentParser(baseDefinition);
 app.use('/api-docs', swaggerUi.serve, swaggerUi.setup(spec));
 ```
 
+## Configuration options
+There are a few configuring options. For example, including and excluding certain
+files and paths:
+```js
+const spec = commentParser(baseDefinition, {
+  exclude: ['**/some/path/**']
+});
+```
+
+### Options
+| Option name | Default |
+| ----------- | ------- |
+| `root`      | The directory where `commentParser` was called |
+| `extension` | `['.js', '.cjs', '.mjs', '.ts', '.tsx', '.jsx', '.yaml', '.yml']` |
+| `include`   | `['**']`|
+| `exclude`   | A large list that covers: node_modules, tests, coverage, and common development configs |
+| `excludeNodeModules` | `true` |
+| `verbose`   | `true` |
+
+
 ## Eslint plugin
 ```bash
 $ npm install eslint-plugin-openapi-jsdoc --save-dev
