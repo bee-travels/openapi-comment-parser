@@ -6,33 +6,77 @@ import jsYaml from 'js-yaml';
 import commentsToOpenApi from './commentsToOpenApi';
 import { OpenApiObject } from '../exported';
 import yamlLOC from './yamlLOC';
-import { yamlParseError, nonJavascriptFileWarning } from './warnings';
 
 function parseFile(
 	file: string,
+	linter: any,
 	verbose?: boolean
-): { spec: OpenApiObject; loc: number }[] {
+): { parsedFile: { spec: OpenApiObject; loc: number }[]; messages: any[] } {
 	const fileContent = fs.readFileSync(file, { encoding: 'utf8' });
 	const ext = path.extname(file);
 
 	if (ext === '.yaml' || ext === '.yml') {
 		try {
 			const spec = jsYaml.safeLoad(fileContent);
-			const loc = yamlLOC(fileContent);
-			return [{ spec: spec, loc: loc }];
+			const invalidKeys = Object.keys(spec).filter(
+				(key) => key !== 'components' && key !== 'paths'
+			);
+
+			let messages: any = [];
+			if (invalidKeys.length > 0) {
+				invalidKeys.forEach((key) => {
+					messages.push({
+						severity: 1,
+						message: `unexpected key '${key}'`,
+						line: 0,
+						column: 0,
+					});
+					delete spec[key];
+				});
+			}
+
+			if (spec.paths || spec.components) {
+				const loc = yamlLOC(fileContent);
+				return {
+					parsedFile: [{ spec: spec, loc: loc }],
+					messages: messages,
+				};
+			}
+
+			return { parsedFile: [], messages: messages };
 		} catch (e) {
-			if (verbose) {
-				yamlParseError(file, e.message);
-			}
+			return {
+				parsedFile: [],
+				messages: [
+					{
+						severity: 2,
+						message: e.reason,
+						line: e.mark.line + 1, // eslint indexed by 1 for line.
+						column: e.mark.column,
+					},
+				],
+			};
 		}
-		return [];
 	} else {
-		if (verbose) {
-			if (ext !== '.js' && ext !== '.ts') {
-				nonJavascriptFileWarning(file, ext);
-			}
-		}
-		return commentsToOpenApi(fileContent, verbose);
+		const messages = linter.verify(fileContent, {
+			env: {
+				es6: true,
+				node: true,
+			},
+
+			parserOptions: {
+				ecmaVersion: 2018,
+				sourceType: 'module',
+			},
+			rules: {
+				warnings: 'warn',
+				errors: 'error',
+			},
+		});
+		return {
+			parsedFile: commentsToOpenApi(fileContent, verbose),
+			messages: messages,
+		};
 	}
 }
 

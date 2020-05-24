@@ -1,4 +1,4 @@
-const swaggerDefinition = {
+const definition = {
   openapi: '3.0.3',
   info: {
     title: 'Swagger Petstore',
@@ -42,4 +42,4 @@ const swaggerDefinition = {
   },
 };
 
-module.exports = swaggerDefinition;
+module.exports = definition;

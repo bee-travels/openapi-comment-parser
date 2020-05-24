@@ -1,6 +1,9 @@
 export interface ParserOptions {
-	definition: BaseDefinition;
-	paths: string[];
+	root?: string;
+	extension?: string[];
+	include?: string[];
+	exclude?: string[];
+	excludeNodeModules?: boolean;
 	verbose?: boolean;
 }
 
@@ -262,7 +265,7 @@ export interface Map<T> {
 	[key: string]: T;
 }
 
-declare function parseComments({
-	definition,
-	paths,
-}: ParserOptions): OpenApiObject;
+declare function parseComments(
+	definition: BaseDefinition | string,
+	options: ParserOptions
+): OpenApiObject;

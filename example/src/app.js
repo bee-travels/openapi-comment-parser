@@ -1,14 +1,12 @@
-const path = require('path');
-
 const swaggerUi = require('swagger-ui-express');
 const express = require('express');
 
 const parseComments = require('../../dist/openapi-comment-parser');
 
-const swaggerDefinition = require('./swaggerDefinition');
 const petRouter = require('./routes/pet');
 const storeRouter = require('./routes/store');
 const userRouter = require('./routes/user');
+const definition = require('./openapi-definition');
 
 const app = express();
 const PORT = 3000;
@@ -17,10 +15,7 @@ const PORT = 3000;
 app.use(express.json());
 app.use(express.urlencoded({ extended: false }));
 
-const spec = parseComments({
-  definition: swaggerDefinition,
-  paths: [path.join(__dirname, '**/*.?(js|yaml|yml)')],
-});
+const spec = parseComments(definition);
 
 app.use('/api-docs', swaggerUi.serve, swaggerUi.setup(spec));
 
