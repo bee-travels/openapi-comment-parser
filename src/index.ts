@@ -6,7 +6,7 @@ import chalk from 'chalk';
 // @ts-ignore
 import { Linter } from 'eslint';
 // @ts-ignore
-import openapiEslintPlugin from 'eslint-plugin-openapi-jsdoc';
+import openapiEslintPlugin from 'eslint-plugin-openapi';
 
 import parseFile from './util/parseFile';
 import globList from './util/globList';

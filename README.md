@@ -72,19 +72,19 @@ const spec = commentParser(baseDefinition, {
 ## Eslint plugin
 To enable linting of the OpenAPI jsdoc comments, install the `eslint` plugin:
 ```bash
-$ npm install eslint-plugin-openapi-jsdoc --save-dev
+$ npm install eslint-plugin-openapi --save-dev
 ```
 
 or with yarn:
 
 ```bash
-$ yarn add -D eslint-plugin-openapi-jsdoc
+$ yarn add -D eslint-plugin-openapi
 ```
 
 Then create an `.eslintrc.json`:
 ```json
 {
-  "extends": ["plugin:openapi-jsdoc/recommended"]
+  "extends": ["plugin:openapi/recommended"]
 }
 ```
 

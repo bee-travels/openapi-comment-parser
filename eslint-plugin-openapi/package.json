@@ -1,6 +1,6 @@
 {
-  "name": "eslint-plugin-openapi-jsdoc",
-  "version": "0.0.3",
+  "name": "eslint-plugin-openapi",
+  "version": "0.0.1",
   "main": "index.js",
   "license": "MIT",
   "scripts": {

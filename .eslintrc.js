@@ -3,7 +3,7 @@ module.exports = {
   extends: [
     'airbnb-base',
     'plugin:prettier/recommended',
-    'plugin:openapi-jsdoc/recommended',
+    'plugin:openapi/recommended',
   ],
   rules: {
     'func-names': 'off',

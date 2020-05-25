@@ -933,10 +933,10 @@ eslint-plugin-import@2.20.1:
     read-pkg-up "^2.0.0"
     resolve "^1.12.0"
 
-eslint-plugin-openapi-jsdoc@^0.0.3:
-  version "0.0.3"
-  resolved "https://registry.yarnpkg.com/eslint-plugin-openapi-jsdoc/-/eslint-plugin-openapi-jsdoc-0.0.3.tgz#a3011532f06a843d69150993fbfdbc9b853bb0c0"
-  integrity sha512-/mCdlUwIsP5dDOiSPhCS2yB3hZJzb+08aA5FSc/nktb6SnOq/muDM6toY6tOhCqNnoiFaoaG6FXG2zh7RUXNSA==
+eslint-plugin-openapi@^0.0.1:
+  version "0.0.1"
+  resolved "https://registry.yarnpkg.com/eslint-plugin-openapi/-/eslint-plugin-openapi-0.0.1.tgz#72eacac81ea57f1f6c8b441a23b8912aa29e4e07"
+  integrity sha512-w+yXP7JHFa+S6H7Hr6f1gc1BuK8zVi7AD4ZZLQtaog4e9S/SGFmYpq0wmjMBdlkpPPiq3Wzc0DW8cvwRGYBEsw==
   dependencies:
     comment-parser "^0.7.4"
 
