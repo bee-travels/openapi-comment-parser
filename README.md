@@ -1,4 +1,4 @@
-# OpenAPI Comment Parser <br/> [![npm Version](https://img.shields.io/npm/v/openapi-comment-parser)](https://www.npmjs.com/package/openapi-comment-parser) [![travis](https://img.shields.io/travis/bee-travels/openapi-comment-parser)](https://travis-ci.org/github/bee-travels/openapi-comment-parser) [![npm Downloads](https://img.shields.io/npm/dw/openapi-comment-parser)](https://www.npmjs.com/package/openapi-comment-parser)
+# OpenAPI Comment Parser <br/> [![npm Version](https://img.shields.io/npm/v/openapi-comment-parser)](https://www.npmjs.com/package/openapi-comment-parser) [![travis](https://img.shields.io/travis/bee-travels/openapi-comment-parser)](https://travis-ci.org/github/bee-travels/openapi-comment-parser) [![npm Downloads](https://img.shields.io/npm/dm/openapi-comment-parser)](https://www.npmjs.com/package/openapi-comment-parser)
 
 A clean and simple way to document your code for generating OpenAPI (Swagger) specs.
 
