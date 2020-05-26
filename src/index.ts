@@ -44,6 +44,8 @@ function parseComments(
 			'**/jest.config.{js,cjs,mjs,ts}',
 			'**/{karma,rollup,webpack}.config.js',
 			'**/.{eslint,mocha}rc.{js,cjs}',
+			'**/.{travis,yarnrc}.yml',
+			'**/{docker-compose}.yml',
 
 			// always ignore '**/node_modules/**'
 		],
