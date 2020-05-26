@@ -67,6 +67,7 @@ const spec = commentParser(baseDefinition, {
 | `exclude`   | A large list that covers tests, coverage, and various development configs |
 | `excludeNodeModules` | `true` |
 | `verbose`   | `true` |
+| `throwLevel` | `off` |
 
 
 ## Eslint plugin

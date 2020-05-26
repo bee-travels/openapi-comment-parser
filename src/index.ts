@@ -49,6 +49,7 @@ function parseComments(
 		],
 		excludeNodeModules = true,
 		verbose = true,
+		throwLevel = 'off',
 	}: ParserOptions = {}
 ): OpenApiObject {
 	if (!definition) {
@@ -87,7 +88,44 @@ function parseComments(
 		if (errorTable) {
 			console.log(errorTable);
 		}
+	}
 
+	if (throwLevel !== 'off') {
+		let errorCount = 0;
+		let warningCount = 0;
+
+		allMessages.forEach((result) => {
+			result.messages.map((message: any) => {
+				if (message.severity === 2) {
+					errorCount++;
+				} else {
+					warningCount++;
+				}
+			});
+		});
+
+		const problemCount = errorCount + warningCount;
+
+		if (throwLevel === 'error' && errorCount > 0) {
+			throw new Error(
+				`openapi-comment-parser: Found ${errorCount} problem${
+					errorCount > 1 ? 's' : ''
+				}.`
+			);
+		}
+		if (
+			(throwLevel === 'warn' || throwLevel === 'warning') &&
+			problemCount > 0
+		) {
+			throw new Error(
+				`openapi-comment-parser: Found ${problemCount} problem${
+					problemCount > 1 ? 's' : ''
+				}.`
+			);
+		}
+	}
+
+	if (verbose) {
 		// Only measure paths and components.
 		let pathsAsYaml = '';
 		if (spec.paths) {

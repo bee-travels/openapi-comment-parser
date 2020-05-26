@@ -5,6 +5,7 @@ export interface ParserOptions {
 	exclude?: string[];
 	excludeNodeModules?: boolean;
 	verbose?: boolean;
+	throwLevel?: string;
 }
 
 export interface BaseDefinition {
