@@ -7,6 +7,17 @@ import commentsToOpenApi from './commentsToOpenApi';
 import { OpenApiObject } from '../exported';
 import yamlLOC from './yamlLOC';
 
+const ALLOWED_KEYS = [
+	'openapi',
+	'info',
+	'servers',
+	'security',
+	'tags',
+	'externalDocs',
+	'components',
+	'paths',
+];
+
 function parseFile(
 	file: string,
 	linter: any,
@@ -19,7 +30,7 @@ function parseFile(
 		try {
 			const spec = jsYaml.safeLoad(fileContent);
 			const invalidKeys = Object.keys(spec).filter(
-				(key) => key !== 'components' && key !== 'paths'
+				(key) => !ALLOWED_KEYS.includes(key)
 			);
 
 			let messages: any = [];
@@ -35,7 +46,7 @@ function parseFile(
 				});
 			}
 
-			if (spec.paths || spec.components) {
+			if (Object.keys(spec).find((key) => ALLOWED_KEYS.includes(key))) {
 				const loc = yamlLOC(fileContent);
 				return {
 					parsedFile: [{ spec: spec, loc: loc }],

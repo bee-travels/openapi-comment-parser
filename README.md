@@ -20,19 +20,19 @@ $ yarn add openapi-comment-parser
 
 ## Usage
 
+Create a yaml file with a base OpenAPI definition:
+```yaml
+openapi: 3.0.0
+info: 
+  title: Title of your service
+  version: 1.0.0
+```
+
+Add the following to your code:
 ```js
-const commentParser = require('openapi-comment-parser');
+const openapi = require('openapi-comment-parser');
 
-// normal OpenAPI definition
-const baseDefinition = {
-  openapi: '3.0.0',
-  info: {
-    title: 'Title of your service',
-    version: '1.0.0',
-  },
-};
-
-const spec = commentParser(baseDefinition);
+const spec = openapi();
 ```
 
 ### Swagger UI Express example
@@ -40,11 +40,10 @@ Swagger UI Express is a popular module that allows you to serve OpenAPI docs fro
 The result is living documentation for your API hosted from your API server via a route.
 
 ```js
-const path = require('path');
-const commentParser = require('openapi-comment-parser');
+const openapi = require('openapi-comment-parser');
 const swaggerUi = require('swagger-ui-express');
 
-const spec = commentParser(baseDefinition);
+const spec = openapi();
 
 app.use('/api-docs', swaggerUi.serve, swaggerUi.setup(spec));
 ```
@@ -53,7 +52,7 @@ app.use('/api-docs', swaggerUi.serve, swaggerUi.setup(spec));
 There are a few configuring options. For example, including and excluding certain
 files and paths:
 ```js
-const spec = commentParser(baseDefinition, {
+const spec = openapi({
   exclude: ['**/some/path/**']
 });
 ```

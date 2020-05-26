@@ -34,7 +34,18 @@ class SpecBuilder implements OpenApiObject {
 
 	addData(parsedFile: OpenApiObject[]) {
 		parsedFile.forEach((file) => {
-			objectMerge(this, file);
+			const { paths, components, ...rest } = file;
+
+			// only merge paths and components
+			objectMerge(this, {
+				paths: paths,
+				components: components,
+			} as OpenApiObject);
+
+			// overwrite everthing else:
+			Object.entries(rest).forEach(([key, value]) => {
+				this[key as keyof OpenApiObject] = value;
+			});
 		});
 	}
 }

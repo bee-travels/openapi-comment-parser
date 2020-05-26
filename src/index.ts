@@ -11,9 +11,8 @@ import openapiEslintPlugin from 'eslint-plugin-openapi';
 import parseFile from './util/parseFile';
 import globList from './util/globList';
 import SpecBuilder from './SpecBuilder';
-import { ParserOptions, OpenApiObject, BaseDefinition } from './exported';
+import { ParserOptions, OpenApiObject } from './exported';
 import yamlLOC from './util/yamlLOC';
-import loadDefinition from './util/loadDefinition';
 import formatter from './util/formatter';
 
 function getCallerPath() {
@@ -24,50 +23,56 @@ function getCallerPath() {
 	return '';
 }
 
-function parseComments(
-	definition: BaseDefinition | string,
-	{
-		root = getCallerPath(),
-		extension = ['.js', '.cjs', '.mjs', '.ts', '.tsx', '.jsx', '.yaml', '.yml'],
-		include = ['**'],
-		exclude = [
-			'coverage/**',
-			'packages/*/test{,s}/**',
-			'**/*.d.ts',
-			'test{,s}/**',
-			`test{,-*}.{js,cjs,mjs,ts,tsx,jsx,yaml,yml}`,
-			`**/*{.,-}test.{js,cjs,mjs,ts,tsx,jsx,yaml,yml}`,
-			'**/__tests__/**',
+const DEFAULT_OPTIONS = {
+	cwd: undefined,
+	extension: ['.js', '.cjs', '.mjs', '.ts', '.tsx', '.jsx', '.yaml', '.yml'],
+	include: ['**'],
+	exclude: [
+		'coverage/**',
+		'packages/*/test{,s}/**',
+		'**/*.d.ts',
+		'test{,s}/**',
+		`test{,-*}.{js,cjs,mjs,ts,tsx,jsx,yaml,yml}`,
+		`**/*{.,-}test.{js,cjs,mjs,ts,tsx,jsx,yaml,yml}`,
+		'**/__tests__/**',
 
-			/* Exclude common development tool configuration files */
-			'**/{ava,babel,nyc}.config.{js,cjs,mjs}',
-			'**/jest.config.{js,cjs,mjs,ts}',
-			'**/{karma,rollup,webpack}.config.js',
-			'**/.{eslint,mocha}rc.{js,cjs}',
-			'**/.{travis,yarnrc}.yml',
-			'**/{docker-compose}.yml',
+		/* Exclude common development tool configuration files */
+		'**/{ava,babel,nyc}.config.{js,cjs,mjs}',
+		'**/jest.config.{js,cjs,mjs,ts}',
+		'**/{karma,rollup,webpack}.config.js',
+		'**/.{eslint,mocha}rc.{js,cjs}',
+		'**/.{travis,yarnrc}.yml',
+		'**/{docker-compose}.yml',
 
-			// always ignore '**/node_modules/**'
-		],
-		excludeNodeModules = true,
-		verbose = true,
-		throwLevel = 'off',
-	}: ParserOptions = {}
-): OpenApiObject {
-	if (!definition) {
-		throw new Error('A base OpenAPI definition is required.');
-	}
+		// always ignore '**/node_modules/**'
+	],
+	excludeNodeModules: true,
+	verbose: true,
+	throwLevel: 'off',
+};
 
-	let definitionObject: BaseDefinition;
-	if (typeof definition === 'string') {
-		definitionObject = loadDefinition(definition);
-	} else {
-		definitionObject = definition;
-	}
+function parseComments(options: ParserOptions = {}): OpenApiObject {
+	const definition = {
+		openapi: '',
+		info: {
+			title: '',
+			version: '',
+		},
+	};
 
-	const spec = new SpecBuilder(definitionObject);
+	const {
+		cwd = getCallerPath(),
+		extension = DEFAULT_OPTIONS.extension,
+		include = DEFAULT_OPTIONS.include,
+		exclude = DEFAULT_OPTIONS.exclude,
+		excludeNodeModules = DEFAULT_OPTIONS.excludeNodeModules,
+		verbose = DEFAULT_OPTIONS.verbose,
+		throwLevel = DEFAULT_OPTIONS.throwLevel,
+	} = options;
 
-	const files = globList(root, extension, include, exclude, excludeNodeModules);
+	const spec = new SpecBuilder(definition);
+
+	const files = globList(cwd, extension, include, exclude, excludeNodeModules);
 
 	const linter = new Linter();
 	linter.defineRules({

@@ -2,33 +2,34 @@ import path from 'path';
 import { sync as glob } from 'globby';
 
 function convertGlobPaths(
-	root: string,
+	cwd: string,
 	extension: string[],
 	include: string[],
 	exclude: string[],
 	excludeNodeModules: boolean
 ): string[] {
-	const included = include
-		.map((globString) => glob(path.join(root, globString)))
-		.flat();
-
 	if (excludeNodeModules) {
 		exclude.push('**/node_modules/**');
 	}
 
-	const excluded = exclude
-		.map((globString) => glob(path.join(root, globString)))
-		.flat();
-
-	return included.filter((file) => {
-		if (excluded.includes(file)) {
+	const included = include
+		.map((globString) =>
+			glob(globString, {
+				cwd: cwd,
+				absolute: true,
+				onlyFiles: true,
+				ignore: exclude,
+			})
+		)
+		.flat()
+		.filter((file) => {
+			if (extension.includes(path.extname(file))) {
+				return true;
+			}
 			return false;
-		}
-		if (extension.includes(path.extname(file))) {
-			return true;
-		}
-		return false;
-	});
+		});
+
+	return included;
 }
 
 export default convertGlobPaths;
