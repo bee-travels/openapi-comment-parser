@@ -49,8 +49,8 @@ app.use('/api-docs', swaggerUi.serve, swaggerUi.setup(spec));
 ```
 
 ### Configuration options
-There are a few configuring options. For example, including and excluding certain
-files and paths:
+There are several configuration options for parsing. For example, including and
+excluding certain files and paths:
 ```js
 const spec = openapi({
   exclude: ['**/some/path/**']
@@ -58,15 +58,15 @@ const spec = openapi({
 ```
 
 #### Options
-| Option name | Default |
-| ----------- | ------- |
-| `root`      | The directory where `commentParser` was called |
-| `extension` | `['.js', '.cjs', '.mjs', '.ts', '.tsx', '.jsx', '.yaml', '.yml']` |
-| `include`   | `['**']`|
-| `exclude`   | A large list that covers tests, coverage, and various development configs |
+| Option name          | Default |
+| -------------------- | ------- |
+| `cwd`                | The directory where `commentParser` was called |
+| `extension`          | `['.js', '.cjs', '.mjs', '.ts', '.tsx', '.jsx', '.yaml', '.yml']` |
+| `include`            | `['**']`|
+| `exclude`            | A large list that covers tests, coverage, and various development configs |
 | `excludeNodeModules` | `true` |
-| `verbose`   | `true` |
-| `throwLevel` | `off` |
+| `verbose`            | `true` |
+| `throwLevel`         | `off` |
 
 
 ## Eslint plugin
