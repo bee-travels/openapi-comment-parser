@@ -8,7 +8,7 @@ describe('index', () => {
 	it('works with example app', () => {
 		const spec = parseComments({
 			cwd: path.join(__dirname, '../example/src'),
-			verbose: true,
+			verbose: false,
 			throwLevel: 'warn',
 		});
 

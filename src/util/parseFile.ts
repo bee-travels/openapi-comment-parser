@@ -2,6 +2,7 @@ import fs from 'fs';
 import path from 'path';
 
 import jsYaml from 'js-yaml';
+import parseComments, { stringify } from 'comment-parser';
 
 import commentsToOpenApi from './commentsToOpenApi';
 import { OpenApiObject } from '../exported';
@@ -69,16 +70,14 @@ function parseFile(
 			};
 		}
 	} else {
-		const messages = linter.verify(fileContent, {
-			env: {
-				es6: true,
-				node: true,
-			},
+		const jsDocComments = parseComments(fileContent);
 
-			parserOptions: {
-				ecmaVersion: 2018,
-				sourceType: 'module',
-			},
+		const rawCommentString = jsDocComments.reduce((acc, c) => {
+			acc += '\n' + stringify([c]);
+			return acc;
+		}, '');
+
+		const messages = linter.verify(rawCommentString, {
 			rules: {
 				warnings: 'warn',
 				errors: 'error',
