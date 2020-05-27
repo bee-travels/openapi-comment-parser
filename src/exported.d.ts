@@ -266,4 +266,4 @@ export interface Map<T> {
 	[key: string]: T;
 }
 
-declare function parseComments(options: ParserOptions): OpenApiObject;
+export declare function openapi(options?: ParserOptions): OpenApiObject;
