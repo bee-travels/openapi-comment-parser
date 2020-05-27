@@ -412,10 +412,10 @@ module.exports = {
   },
   configs: {
     recommended: {
-      plugins: ['openapi-jsdoc'],
+      plugins: ['openapi'],
       rules: {
-        'openapi-jsdoc/warnings': 'warn',
-        'openapi-jsdoc/errors': 'error',
+        'openapi/warnings': 'warn',
+        'openapi/errors': 'error',
       },
     },
   },

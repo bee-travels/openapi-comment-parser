@@ -305,10 +305,18 @@ ipaddr.js@1.9.1:
   resolved "https://registry.yarnpkg.com/ipaddr.js/-/ipaddr.js-1.9.1.tgz#bff38543eeb8984825079ff3a2a8e6cbd46781b3"
   integrity sha512-0KI/607xoxSToH7GjN1FfSbLoU0+btTicjsQSWQlh/hZykN8KpmMf7uYwPW3R+akZ6R/w18ZlXSHBYXiYUPO3g==
 
-js-yaml@3.13.1, js-yaml@^3.13.1:
+js-yaml@3.13.1:
   version "3.13.1"
   resolved "https://registry.yarnpkg.com/js-yaml/-/js-yaml-3.13.1.tgz#aff151b30bfdfa8e49e05da22e7415e9dfa37847"
   integrity sha512-YfbcO7jXDdyj0DGxYVSlSeQNHbD7XPWvrVWeVUujrQEoZzWJIRrCPoyk6kL6IAjAG2IolMK4T0hNUe0HOUs5Jw==
+  dependencies:
+    argparse "^1.0.7"
+    esprima "^4.0.0"
+
+js-yaml@^3.13.1:
+  version "3.14.0"
+  resolved "https://registry.yarnpkg.com/js-yaml/-/js-yaml-3.14.0.tgz#a7a34170f26a21bb162424d8adacb4113a69e482"
+  integrity sha512-/4IbIeHcD9VMHFqDR/gQ7EdZdLimOvW2DdcxFjdyyZ9NsbS+ccrXqVWDtab/lRl5AlUqmpBx8EhPaWR+OtY17A==
   dependencies:
     argparse "^1.0.7"
     esprima "^4.0.0"
@@ -511,9 +519,9 @@ swagger-parser@9.0.1:
     "@apidevtools/swagger-parser" "9.0.1"
 
 swagger-ui-dist@^3.18.1:
-  version "3.25.3"
-  resolved "https://registry.yarnpkg.com/swagger-ui-dist/-/swagger-ui-dist-3.25.3.tgz#15a985381c6a2120982618cca37363dd8e9071e8"
-  integrity sha512-/8DSx431mdN94t8mIZejhVUdN9r8zM+V1l+VGT0h7smrzYFa9vWi2sLVCg4YfgKgMjXYhU4OKADHPnWkbLb+ZQ==
+  version "3.25.4"
+  resolved "https://registry.yarnpkg.com/swagger-ui-dist/-/swagger-ui-dist-3.25.4.tgz#045fdcc37d4b756c00bc228eec82153014474f00"
+  integrity sha512-IiupbwT2znZ/BXDgSv9gIaxTL+oVSvhaSe5K4NxSCxRe6bTFK/Q4JwOGzYLep5I2h460xSbwdIuUUblNDolTNg==
 
 swagger-ui-express@^4.1.4:
   version "4.1.4"
