@@ -266,4 +266,6 @@ export interface Map<T> {
 	[key: string]: T;
 }
 
-export declare function openapi(options?: ParserOptions): OpenApiObject;
+declare function openapi(options?: ParserOptions): OpenApiObject;
+
+export default openapi;
