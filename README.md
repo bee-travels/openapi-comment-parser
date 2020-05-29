@@ -36,7 +36,7 @@ const spec = openapi();
 ```
 
 ### Swagger UI Express example
-Swagger UI Express is a popular module that allows you to serve OpenAPI docs from express.
+[Swagger UI Express](https://github.com/scottie1984/swagger-ui-express) is a popular module that allows you to serve OpenAPI docs from express.
 The result is living documentation for your API hosted from your API server via a route.
 
 ```js
@@ -90,7 +90,7 @@ Then create an `.eslintrc.json`:
 
 ## Basic structure
 You can write OpenAPI definitions in JSDoc comments or YAML files.
-In this guide, we use only JSDoc comments examples but YAML files works equally well.
+In this guide, we use only JSDoc comments examples. However, YAML files work equally as well.
 
 Each comment defines individual endpoints (paths) in your API, and the HTTP methods (operations) supported by these endpoints.
 For example, `GET /users` can be described as:
