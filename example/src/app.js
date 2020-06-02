@@ -8,7 +8,7 @@ const storeRouter = require('./routes/store');
 const userRouter = require('./routes/user');
 
 const app = express();
-const PORT = 3000;
+const PORT = 4000;
 
 // Body parsing.
 app.use(express.json());

@@ -3,71 +3,6 @@ const { Router } = require('express');
 const router = Router();
 
 /**
- * GET /pet/{petId}
- * @tag pet
- * @summary Find pet by ID
- * @description Returns a single pet
- * @operationId getPetById
- * @pathParam {int64} petId - ID of pet to return
- * @response 200 - successful operation
- * @responseContent {Pet} 200.application/json
- * @responseContent {Pet} 200.application/xml
- * @response 400 - Invalid ID supplied
- * @response 404 - Pet not found
- * @security ApiKey
- */
-router.get('/:petId', async (req, res, next) => {
-  res.end();
-});
-
-/**
- * POST /pet/{petId}
- * @tag pet
- * @summary Updates a pet in the store with form data
- * @operationId updatePetWithForm
- * @pathParam {int64} petId - ID of pet that needs to be updated
- * @bodyContent {UpdatePetObject} application/x-www-form-urlencoded
- * @response 405 - Invalid input
- * @security PetstoreAuth.write:pets
- * @security PetstoreAuth.read:pets
- */
-router.post('/:petId', async (req, res, next) => {
-  res.end();
-});
-
-/**
- * DELETE /pet/{petId}
- * @tag pet
- * @summary Deletes a pet
- * @operationId deletePet
- * @headerParam {string} [apikey]
- * @pathParam {int64} petId - Pet id to delete
- * @response 400 - Invalid ID supplied
- * @response 404 - Pet not found
- * @security PetstoreAuth.write:pets
- * @security PetstoreAuth.read:pets
- */
-router.delete('/:petId', async (req, res, next) => {
-  res.end();
-});
-
-/**
- * POST /pet/{petId}/uploadImage
- * @tag pet
- * @summary uploads an image
- * @operationId uploadFile
- * @pathParam {int64} petId - ID of pet to update
- * @bodyContent {UploadPetImageObject} multipart/form-data
- * @response 200 - successful operation
- * @responseContent {ApiResponse} 200.application/json
- * @security PetstoreAuth.write:pets
- * @security PetstoreAuth.read:pets
- */
-router.post('/:petId/uploadImage', async (req, res, next) => {
-  res.end();
-});
-
-/**
  * POST /pet
  * @tag pet
  * @summary Add a new pet to the store
@@ -136,6 +71,78 @@ router.get('/findByStatus', async (req, res, next) => {
  * @security PetstoreAuth.read:pets
  */
 router.get('/findByTags', async (req, res, next) => {
+  res.end();
+});
+
+/**
+ * GET /pet/{petId}
+ * @tag pet
+ * @summary Find pet by ID
+ * @description Returns a single pet
+ * @operationId getPetById
+ * @pathParam {int64} petId - ID of pet to return
+ * @response 200 - successful operation
+ * @responseContent {Pet} 200.application/json
+ * @responseContent {Pet} 200.application/xml
+ * @response 400 - Invalid ID supplied
+ * @response 404 - Pet not found
+ * @security ApiKey
+ */
+router.get('/:petId', async (req, res, next) => {
+  res.format({
+    'application/xml': () => {
+      res.send(`<pet><id>${req.params.petId}</id></pet>`);
+    },
+    'application/json': () => {
+      res.send({ id: req.params.petId });
+    },
+  });
+});
+
+/**
+ * POST /pet/{petId}
+ * @tag pet
+ * @summary Updates a pet in the store with form data
+ * @operationId updatePetWithForm
+ * @pathParam {int64} petId - ID of pet that needs to be updated
+ * @bodyContent {UpdatePetObject} application/x-www-form-urlencoded
+ * @response 405 - Invalid input
+ * @security PetstoreAuth.write:pets
+ * @security PetstoreAuth.read:pets
+ */
+router.post('/:petId', async (req, res, next) => {
+  res.end();
+});
+
+/**
+ * DELETE /pet/{petId}
+ * @tag pet
+ * @summary Deletes a pet
+ * @operationId deletePet
+ * @headerParam {string} [apikey]
+ * @pathParam {int64} petId - Pet id to delete
+ * @response 400 - Invalid ID supplied
+ * @response 404 - Pet not found
+ * @security PetstoreAuth.write:pets
+ * @security PetstoreAuth.read:pets
+ */
+router.delete('/:petId', async (req, res, next) => {
+  res.end();
+});
+
+/**
+ * POST /pet/{petId}/uploadImage
+ * @tag pet
+ * @summary uploads an image
+ * @operationId uploadFile
+ * @pathParam {int64} petId - ID of pet to update
+ * @bodyContent {UploadPetImageObject} multipart/form-data
+ * @response 200 - successful operation
+ * @responseContent {ApiResponse} 200.application/json
+ * @security PetstoreAuth.write:pets
+ * @security PetstoreAuth.read:pets
+ */
+router.post('/:petId/uploadImage', async (req, res, next) => {
   res.end();
 });
 
