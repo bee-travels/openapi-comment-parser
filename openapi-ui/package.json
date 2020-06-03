@@ -3,6 +3,7 @@
   "version": "0.1.0",
   "private": true,
   "dependencies": {
+    "@apidevtools/swagger-parser": "^9.0.1",
     "@docusaurus/core": "^2.0.0-alpha.40",
     "@docusaurus/theme-classic": "^2.0.0-alpha.37",
     "@monaco-editor/react": "^3.3.1",

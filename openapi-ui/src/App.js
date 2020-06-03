@@ -1,10 +1,12 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect, useRef } from 'react';
 
 import { BrowserRouter as Router, Route } from 'react-router-dom';
 
 import MagicDropzone from 'react-magic-dropzone';
 // import Editor from 'react-monaco-editor';
 import Editor, { monaco } from '@monaco-editor/react';
+
+import SwaggerParser from '@apidevtools/swagger-parser';
 
 import queryString from 'query-string';
 
@@ -13,6 +15,8 @@ import DocSidebar from './DocSidebar';
 import styles from './App.module.css';
 
 import spec from './spec.json';
+
+import { sampleFromSchema } from './x-utils';
 
 import './default-dark.css';
 
@@ -25,10 +29,10 @@ monaco
       inherit: false,
       rules: [
         { token: '', foreground: '7f7f7f' },
-        // { token: 'string.key.json', foreground: 'd4d4d4' },
         { token: 'string.key.json', foreground: 'f5f6f7' },
         { token: 'string.value.json', foreground: '85d996' },
         { token: 'number', foreground: 'a4cdfe' },
+        { token: 'keyword.json', foreground: 'a4cdfe' },
       ],
       colors: {
         // 'editor.background': '#393939',
@@ -127,28 +131,74 @@ function organizeSpec(spec) {
   });
 }
 
-function Curl({ item, path, query, header, cookie, accept }) {
-  const multiline = accept !== undefined;
-
+function Curl({
+  theref,
+  item,
+  path,
+  query,
+  header,
+  cookie,
+  accept,
+  body,
+  contentType,
+}) {
   const qs = queryString.stringify(query);
 
+  let bodyString;
+  try {
+    bodyString = JSON.stringify(JSON.stringify(JSON.parse(body)));
+  } catch {
+    bodyString = '"{}"';
+  }
+
   return (
-    <>
-      <div>
+    <code ref={theref} className={styles.curlything}>
+      <span>
         curl -X <span>{item.method.toUpperCase()}</span> "
         {window.location.origin}
         {item.path.replace(/{([a-z0-9-_]+)}/gi, (_, p1) => {
           return path[p1] || `:${p1}`;
         })}
         {qs && '?'}
-        {qs}" {multiline && '\\'}
-      </div>
+        {qs}"
+      </span>
+
       {accept && (
-        <div>
-          {'  '}-H <span style={{ color: '#85d996' }}>"accept: {accept}"</span>
-        </div>
+        <>
+          {' \\'}
+          <br />
+          <span>
+            {' '}
+            -H <span style={{ color: '#85d996' }}>"Accept: {accept}"</span>
+          </span>
+        </>
       )}
-    </>
+
+      {contentType && (
+        <>
+          {' \\'}
+          <br />
+          <span>
+            {' '}
+            -H{' '}
+            <span style={{ color: '#85d996' }}>
+              "Content-Type: {contentType}"
+            </span>
+          </span>
+        </>
+      )}
+
+      {body && (
+        <>
+          {' \\'}
+          <br />
+          <span>
+            {' '}
+            -d <span style={{ color: '#85d996' }}>{bodyString}</span>
+          </span>
+        </>
+      )}
+    </code>
   );
 }
 
@@ -249,6 +299,9 @@ function TryItOut({ item }) {
   ];
 
   const [accept, setAccept] = useState(acceptArray[0]);
+  const [contentType, setContentType] = useState(
+    Object.keys(item.requestBody?.content || {})[0]
+  );
   const [path, setPath] = useState({});
   const [query, setQuery] = useState({});
   const [header, setHeader] = useState({});
@@ -258,6 +311,11 @@ function TryItOut({ item }) {
   const [editorFocused, setEditorFocused] = useState(false);
 
   const [copyText, setCopyText] = useState('Copy');
+
+  const [body, setBody] = useState(undefined);
+
+  const curlRef = useRef(null);
+  // console.log(curlRef);
 
   const requiredParams = item?.parameters?.filter((param) => param.required);
 
@@ -310,20 +368,16 @@ function TryItOut({ item }) {
     setAccept(e.target.value);
   };
 
-  const handleCurlCopy = (item, path, query, header, cookie, accept) => (e) => {
+  const handleContentTypeChange = (e) => {
+    setContentType(e.target.value);
+  };
+
+  const handleCurlCopy = () => {
     setCopyText('Copied');
     setTimeout(() => {
       setCopyText('Copy');
     }, 2000);
-    const qs = queryString.stringify(query);
-
-    const x = `curl -X ${item.method.toUpperCase()} "${
-      window.location.origin
-    }${item.path.replace(/{([a-z0-9-_]+)}/gi, (_, p1) => {
-      return path[p1] || `:${p1}`;
-    })}${qs && '?'}${qs}"${accept && ` -H "accept: ${accept}"`}`;
-
-    navigator.clipboard.writeText(x);
+    navigator.clipboard.writeText(curlRef.current.innerText);
   };
 
   async function buildAndExecute(item, path, query, header, cookie, accept) {
@@ -395,8 +449,27 @@ function TryItOut({ item }) {
 
           {/* TODO: Optional params */}
 
+          {/* TODO: Content-Type dropdown */}
+          {item.requestBody?.content &&
+            Object.keys(item.requestBody?.content).length > 0 && (
+              <div className={styles.formItem}>
+                <code>Content-Type</code>
+                <div>
+                  <select
+                    className={styles.selectInput}
+                    value={contentType}
+                    onChange={handleContentTypeChange}
+                  >
+                    {Object.keys(item.requestBody?.content).map((type) => {
+                      return <option value={type}>{type}</option>;
+                    })}
+                  </select>
+                </div>
+              </div>
+            )}
+
           <>
-            {item.requestBody?.content && (
+            {item.requestBody?.content?.['application/json'] && (
               <div className={styles.formItem}>
                 <code>Body</code>
                 <div
@@ -408,10 +481,16 @@ function TryItOut({ item }) {
                 >
                   {/* monaco */}
                   <Editor
-                    value={JSON.stringify({ example: 'thing' }, null, 2)}
+                    value={JSON.stringify(
+                      sampleFromSchema(
+                        item.requestBody?.content?.['application/json']?.schema
+                      ),
+                      null,
+                      2
+                    )}
                     language="json"
                     theme="myCustomTheme"
-                    height="200px"
+                    // height="200px"
                     options={{
                       contentLeft: 0,
                       lineNumbers: 'off',
@@ -427,16 +506,47 @@ function TryItOut({ item }) {
                       lineDecorationsWidth: 0,
                       contextmenu: false,
                     }}
-                    editorDidMount={(_, editor) => {
+                    editorDidMount={(_valueGetter, editor) => {
                       editor.onDidFocusEditorText(() => {
                         setEditorFocused(true);
                       });
                       editor.onDidBlurEditorText(() => {
                         setEditorFocused(false);
                       });
+                      editor.onDidChangeModelDecorations(() => {
+                        updateEditorHeight(); // typing
+                        requestAnimationFrame(updateEditorHeight); // folding
+                        setBody(editor.getValue());
+                      });
+
+                      let prevHeight = 0;
+
+                      const updateEditorHeight = () => {
+                        const editorElement = editor.getDomNode();
+
+                        if (!editorElement) {
+                          return;
+                        }
+
+                        const lineHeight = 22;
+                        const lineCount =
+                          editor.getModel()?.getLineCount() || 1;
+                        const height =
+                          editor.getTopForLineNumber(lineCount + 1) +
+                          lineHeight;
+
+                        const clippedHeight = Math.min(height, 500);
+
+                        if (prevHeight !== clippedHeight) {
+                          prevHeight = clippedHeight;
+                          editorElement.style.height = `${clippedHeight}px`;
+                          editor.layout();
+                        }
+                      };
                     }}
                   />
 
+                  {/* schema: string + binary */}
                   {/* <MagicDropzone className={styles.dropzone} onDrop={() => {}}>
                     <div className={styles.dropzoneContent}>
                       {item.requestBody.description || 'file upload'}
@@ -466,23 +576,23 @@ function TryItOut({ item }) {
         </div>
       )}
       <div className={styles.floatingButton}>
-        <button
-          onClick={handleCurlCopy(item, path, query, header, cookie, accept)}
-        >
-          {copyText}
-        </button>
+        <button onClick={handleCurlCopy}>{copyText}</button>
         <pre
           style={{
             background: '#242526',
+            paddingRight: '60px',
           }}
         >
           <Curl
+            theref={curlRef}
             item={item}
             path={path}
             query={query}
             header={header}
             cookie={cookie}
             accept={accept}
+            contentType={contentType}
+            body={body}
           />
         </pre>
       </div>
@@ -515,7 +625,15 @@ function TryItOut({ item }) {
 }
 
 function App() {
-  const order = organizeSpec(spec);
+  const [order, setOrder] = useState(organizeSpec(spec));
+
+  useEffect(() => {
+    SwaggerParser.dereference(spec).then((api) => {
+      console.log(api);
+      // TODO: This ruins our variable names...
+      setOrder(organizeSpec(api));
+    });
+  }, []);
 
   const docsSidebars = {
     default: order.map((x) => {
