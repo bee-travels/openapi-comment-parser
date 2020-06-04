@@ -2,6 +2,12 @@ const { Router } = require('express');
 
 const router = Router();
 
+/* block comment */
+
+/**
+ * Doc comment
+ */
+
 /**
  * POST /pet
  * @tag pet

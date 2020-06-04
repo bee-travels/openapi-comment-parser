@@ -16,6 +16,8 @@ const tagToName = {
   security: 'security scheme name',
 };
 
+const openAPIRegex = /^(GET|PUT|POST|DELETE|OPTIONS|HEAD|PATCH|TRACE) \/.*$/;
+
 const missing = (context, comment, tag, name) => {
   const commentLines = comment.value.split(/\r\n|\r|\n/);
   const start = commentLines[tag.line].indexOf(`@${tag.tag}`);
@@ -56,12 +58,8 @@ const statusCodeUndefined = (context, comment, tag, status) => {
   });
 };
 
-function parseErrors(comment, context) {
+function parseErrors(comment, jsDocComment, context) {
   const seenResponses = [];
-
-  const openAPIRegex = /^(GET|PUT|POST|DELETE|OPTIONS|HEAD|PATCH|TRACE) \/.*$/;
-
-  const [jsDocComment] = parseComments(`/*${comment.value}*/`);
 
   if (openAPIRegex.test(jsDocComment.description)) {
     jsDocComment.tags.forEach((tag) => {
@@ -226,11 +224,7 @@ function parseErrors(comment, context) {
   }
 }
 
-function parse(comment, context) {
-  const openAPIRegex = /^(GET|PUT|POST|DELETE|OPTIONS|HEAD|PATCH|TRACE) \/.*$/;
-
-  const [jsDocComment] = parseComments(`/*${comment.value}*/`);
-
+function parse(comment, jsDocComment, context) {
   if (openAPIRegex.test(jsDocComment.description)) {
     const [method, path] = jsDocComment.description.split(' ');
 
@@ -387,7 +381,10 @@ function getComments(cb) {
       node.comments
         .filter((comment) => comment.type === 'Block')
         .forEach((comment) => {
-          cb(comment);
+          const [jsDocComment] = parseComments(`/*${comment.value}*/`);
+          if (jsDocComment) {
+            cb(comment, jsDocComment);
+          }
         });
     },
   };
@@ -397,15 +394,15 @@ module.exports = {
   rules: {
     errors: {
       create: function (context) {
-        return getComments((comment) => {
-          parseErrors(comment, context);
+        return getComments((comment, jsDocComment) => {
+          parseErrors(comment, jsDocComment, context);
         });
       },
     },
     warnings: {
       create: (context) => {
-        return getComments((comment) => {
-          parse(comment, context);
+        return getComments((comment, jsDocComment) => {
+          parse(comment, jsDocComment, context);
         });
       },
     },
