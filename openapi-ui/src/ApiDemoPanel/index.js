@@ -1,4 +1,10 @@
-import React, { useState, useRef } from 'react';
+import React, {
+  useState,
+  useRef,
+  useReducer,
+  useMemo,
+  useContext,
+} from 'react';
 import queryString from 'query-string';
 // import MagicDropzone from 'react-magic-dropzone';
 
@@ -7,6 +13,7 @@ import Curl from 'Curl';
 import { sampleFromSchema } from 'x-utils';
 
 import styles from './styles.module.css';
+import Context, { useMe } from './useMe';
 
 function colorForMethod(method) {
   switch (method.toLowerCase()) {
@@ -42,31 +49,26 @@ function MethodPath({ method, path }) {
 function ParamOptions({ params }) {
   return (
     <>
-      {params?.length > 0 &&
-        params.map((param) => {
-          return (
-            <ParamTextFormItem
-              param={param}
-              value={groupedState[param.in][param.name] || ''}
-              onChange={handleInputChange(param)}
-            />
-          );
-        })}
+      {params.map((param) => {
+        return <ParamTextFormItem param={param} />;
+      })}
     </>
   );
 }
 
-function ParamTextFormItem({ param, value, onChange }) {
+function ParamTextFormItem({ param }) {
+  const { updateParam } = useContext(Context);
   return (
     <div className={styles.formItem}>
       <code>{param.name}</code>
+      <span style={{ opacity: 0.6 }}> — {param.type}</span>
       <div>
         <input
           className={styles.input}
           type="text"
-          placeholder={param.description}
-          value={value}
-          onChange={() => onChange(param)}
+          placeholder={param.description || param.name}
+          value={param.value}
+          onChange={(e) => updateParam({ ...param, value: e.target.value })}
         />
       </div>
     </div>
@@ -74,86 +76,68 @@ function ParamTextFormItem({ param, value, onChange }) {
 }
 
 function ApiDemoPanel({ item }) {
-  const acceptArray = [
-    ...new Set(
-      Object.values(item.responses)
-        .map((val) => Object.keys(val?.content || {}))
-        .flat()
-    ),
-  ];
-
-  const [accept, setAccept] = useState(acceptArray[0]);
-  const [contentType, setContentType] = useState(
-    Object.keys(item.requestBody?.content || {})[0]
-  );
-  const [path, setPath] = useState({});
-  const [query, setQuery] = useState({});
-  const [header, setHeader] = useState({});
-  const [cookie, setCookie] = useState({});
-  const [response, setResponse] = useState(undefined);
+  const state = useMe(item);
+  const { params } = state;
 
   const [copyText, setCopyText] = useState('Copy');
 
-  const [body, setBody] = useState(undefined);
-
   const curlRef = useRef(null);
-  // console.log(curlRef);
 
-  const requiredParams = item?.parameters?.filter((param) => param.required);
-  const optionalParams = item?.parameters?.filter((param) => !param.required);
+  // const requiredParams = item?.parameters?.filter((param) => param.required);
+  // const optionalParams = item?.parameters?.filter((param) => !param.required);
 
-  let finishedRequest = true;
-  if (requiredParams) {
-    requiredParams.forEach((param) => {
-      switch (param.in) {
-        case 'path':
-          if (!path[param.name]) {
-            finishedRequest = false;
-          }
-          break;
-        case 'query':
-          if (!query[param.name]) {
-            finishedRequest = false;
-          }
-          break;
-        case 'header':
-          if (!header[param.name]) {
-            finishedRequest = false;
-          }
-          break;
-        case 'cookie':
-          if (!cookie[param.name]) {
-            finishedRequest = false;
-          }
-          break;
-      }
-    });
-  }
+  // let finishedRequest = true;
+  // if (requiredParams) {
+  //   requiredParams.forEach((param) => {
+  //     switch (param.in) {
+  //       case 'path':
+  //         if (!path[param.name]) {
+  //           finishedRequest = false;
+  //         }
+  //         break;
+  //       case 'query':
+  //         if (!query[param.name]) {
+  //           finishedRequest = false;
+  //         }
+  //         break;
+  //       case 'header':
+  //         if (!header[param.name]) {
+  //           finishedRequest = false;
+  //         }
+  //         break;
+  //       case 'cookie':
+  //         if (!cookie[param.name]) {
+  //           finishedRequest = false;
+  //         }
+  //         break;
+  //     }
+  //   });
+  // }
 
-  const handleInputChange = (param) => (e) => {
-    switch (param.in) {
-      case 'path':
-        setPath({ ...path, [param.name]: e.target.value });
-        break;
-      case 'query':
-        setQuery({ ...query, [param.name]: e.target.value });
-        break;
-      case 'header':
-        setHeader({ ...header, [param.name]: e.target.value });
-        break;
-      case 'cookie':
-        setCookie({ ...cookie, [param.name]: e.target.value });
-        break;
-    }
-  };
+  // const handleInputChange = (param) => (e) => {
+  //   switch (param.in) {
+  //     case 'path':
+  //       setPath({ ...path, [param.name]: e.target.value });
+  //       break;
+  //     case 'query':
+  //       setQuery({ ...query, [param.name]: e.target.value });
+  //       break;
+  //     case 'header':
+  //       setHeader({ ...header, [param.name]: e.target.value });
+  //       break;
+  //     case 'cookie':
+  //       setCookie({ ...cookie, [param.name]: e.target.value });
+  //       break;
+  //   }
+  // };
 
-  const handleAcceptChange = (e) => {
-    setAccept(e.target.value);
-  };
+  // const handleAcceptChange = (e) => {
+  //   setAccept(e.target.value);
+  // };
 
-  const handleContentTypeChange = (e) => {
-    setContentType(e.target.value);
-  };
+  // const handleContentTypeChange = (e) => {
+  //   setContentType(e.target.value);
+  // };
 
   const handleCurlCopy = () => {
     setCopyText('Copied');
@@ -163,33 +147,35 @@ function ApiDemoPanel({ item }) {
     navigator.clipboard.writeText(curlRef.current.innerText);
   };
 
-  async function buildAndExecute(item, path, query, header, cookie, accept) {
-    const url = item.path.replace(/{([a-z0-9-_]+)}/gi, (_, p1) => {
-      return path[p1] || `:${p1}`;
-    });
+  // async function buildAndExecute(item, path, query, header, cookie, accept) {
+  //   const url = item.path.replace(/{([a-z0-9-_]+)}/gi, (_, p1) => {
+  //     return path[p1] || `:${p1}`;
+  //   });
 
-    const fullPath = queryString.stringifyUrl({ url: url, query: query });
+  //   const fullPath = queryString.stringifyUrl({ url: url, query: query });
 
-    const response = await fetch(fullPath, {
-      method: item.method.toUpperCase(),
-      headers: {
-        Accept: accept,
-      },
-    });
+  //   const response = await fetch(fullPath, {
+  //     method: item.method.toUpperCase(),
+  //     headers: {
+  //       Accept: accept,
+  //     },
+  //   });
 
-    const text = await response.text();
-    setResponse(text);
-  }
+  //   const text = await response.text();
+  //   setResponse(text);
+  // }
 
-  const groupedState = { path, query, header, cookie };
+  // const groupedState = { path, query, header, cookie };
 
-  const hasOptions =
-    item.requestBody?.content ||
-    acceptArray.length > 0 ||
-    requiredParams?.length > 0;
+  // const hasOptions =
+  //   item.requestBody?.content ||
+  //   acceptArray.length > 0 ||
+  //   requiredParams?.length > 0;
+
+  const hasOptions = true;
 
   return (
-    <>
+    <Context.Provider value={state}>
       <MethodPath method={item.method} path={item.path} />
 
       {/* Options */}
@@ -206,21 +192,29 @@ function ApiDemoPanel({ item }) {
             padding: 'var(--ifm-pre-padding)',
           }}
         >
-          <ParamOptions params={requiredParams} />
+          {/* Required params */}
+          <ParamOptions params={params.path.filter((p) => p.required)} />
+          <ParamOptions params={params.query.filter((p) => p.required)} />
+          <ParamOptions params={params.cookie.filter((p) => p.required)} />
+          <ParamOptions params={params.header.filter((p) => p.required)} />
 
+          {/* Optional params */}
           {/* TODO: make this expand/collapsable */}
-          <ParamOptions params={optionalParams} />
+          <ParamOptions params={params.path.filter((p) => !p.required)} />
+          <ParamOptions params={params.query.filter((p) => !p.required)} />
+          <ParamOptions params={params.cookie.filter((p) => !p.required)} />
+          <ParamOptions params={params.header.filter((p) => !p.required)} />
 
           {/* Content-Type dropdown */}
-          {item.requestBody?.content &&
+          {/* {item.requestBody?.content &&
             Object.keys(item.requestBody?.content).length > 0 && (
               <div className={styles.formItem}>
                 <code>Content-Type</code>
                 <div>
                   <select
                     className={styles.selectInput}
-                    value={contentType}
-                    onChange={handleContentTypeChange}
+                    value={state.contentType}
+                    // onChange={handleContentTypeChange}
                   >
                     {Object.keys(item.requestBody?.content).map((type) => {
                       return <option value={type}>{type}</option>;
@@ -228,10 +222,9 @@ function ApiDemoPanel({ item }) {
                   </select>
                 </div>
               </div>
-            )}
-
+            )} */}
           {/* Request body */}
-          {(item.requestBody?.content?.['application/json'] ||
+          {/* {(item.requestBody?.content?.['application/json'] ||
             item.requestBody?.content?.['application/xml']) && (
             <div className={styles.formItem}>
               <code>Body</code>
@@ -243,23 +236,13 @@ function ApiDemoPanel({ item }) {
                   null,
                   2
                 )}
-                language={contentType.replace('application/', '')}
-                onChange={setBody}
+                language={state.contentType.replace('application/', '')}
+                // onChange={setBody}
               />
-
-              {/* schema: string + binary */}
-              {/* <MagicDropzone className={styles.dropzone} onDrop={() => {}}>
-                    <div className={styles.dropzoneContent}>
-                      {item.requestBody.description || 'file upload'}
-                    </div>
-                  </MagicDropzone> */}
-              {/* TODO: form */}
-              {/* TODO: anything else */}
             </div>
-          )}
-
+          )} */}
           {/* Accept dropdown */}
-          {acceptArray.length > 0 && (
+          {/* {acceptArray.length > 0 && (
             <div className={styles.formItem}>
               <code>Accept</code>
               <div>
@@ -274,12 +257,12 @@ function ApiDemoPanel({ item }) {
                 </select>
               </div>
             </div>
-          )}
+          )} */}
         </div>
       )}
 
       {/* Curl */}
-      <div className={styles.floatingButton}>
+      {/* <div className={styles.floatingButton}>
         <button onClick={handleCurlCopy}>{copyText}</button>
         <pre
           style={{
@@ -299,10 +282,10 @@ function ApiDemoPanel({ item }) {
             body={body}
           />
         </pre>
-      </div>
+      </div> */}
 
       {/* Execute */}
-      <button
+      {/* <button
         // class="button button--block button--primary"
         className={styles.executeButton}
         disabled={!finishedRequest}
@@ -311,10 +294,10 @@ function ApiDemoPanel({ item }) {
         }
       >
         Execute
-      </button>
+      </button> */}
 
       {/* Response */}
-      {response !== undefined && (
+      {/* {response !== undefined && (
         <div className={styles.floatingButton}>
           <button onClick={() => setResponse(undefined)}>Clear</button>
           <pre
@@ -325,8 +308,8 @@ function ApiDemoPanel({ item }) {
             {response || 'No Response'}
           </pre>
         </div>
-      )}
-    </>
+      )} */}
+    </Context.Provider>
   );
 }
 
