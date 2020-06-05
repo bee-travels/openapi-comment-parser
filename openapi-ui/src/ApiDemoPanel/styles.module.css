@@ -1,0 +1,238 @@
+.executeButton {
+  -webkit-appearance: none;
+  -moz-appearance: none;
+  appearance: none;
+
+  cursor: pointer;
+  font-size: calc(0.875rem * var(--ifm-button-size-multiplier));
+  font-weight: var(--ifm-button-font-weight);
+  line-height: 1.5;
+
+  padding: calc(
+      var(--ifm-button-padding-vertical) * var(--ifm-button-size-multiplier)
+    )
+    calc(
+      var(--ifm-button-padding-horizontal) * var(--ifm-button-size-multiplier)
+    );
+
+  text-align: center;
+
+  transition: color var(--ifm-button-transition-duration)
+      cubic-bezier(0.08, 0.52, 0.52, 1),
+    background var(--ifm-button-transition-duration)
+      cubic-bezier(0.08, 0.52, 0.52, 1),
+    border-color var(--ifm-button-transition-duration)
+      cubic-bezier(0.08, 0.52, 0.52, 1);
+  -webkit-user-select: none;
+  user-select: none;
+  white-space: nowrap;
+
+  background: #0f62fe;
+  color: var(--ifm-color-gray-100);
+  border: 0px solid transparent;
+  border-radius: var(--ifm-pre-border-radius);
+  height: 48px;
+  margin-bottom: var(--ifm-spacing-vertical);
+
+  display: block;
+  width: 100%;
+}
+
+.executeButton:hover {
+  background-color: #0353e9;
+}
+
+.executeButton:focus {
+  outline: 0;
+}
+
+.executeButton:active {
+  background-color: #054ada;
+}
+
+.executeButton:disabled {
+  background-color: #525252;
+  color: #8d8d8d;
+  opacity: 0.65;
+  pointer-events: none;
+}
+
+.dropzone {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  cursor: pointer;
+  border: 1px dashed rgba(255, 255, 255, 0.4);
+  background-color: #393939;
+
+  width: 100%;
+  /* min-height: 120px; */
+  /* padding: 16px 11px; */
+  border-radius: 4px;
+  padding: calc(var(--ifm-pre-padding) * 2) var(--ifm-pre-padding);
+  margin-top: calc(var(--ifm-pre-padding) / 2);
+  font-size: var(--ifm-code-font-size);
+
+  color: var(--ifm-pre-color);
+}
+
+.dropzoneContent {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  flex-wrap: wrap;
+  color: rgba(255, 255, 255, 0.4);
+}
+
+.inputBase {
+  margin-top: calc(var(--ifm-pre-padding) / 2);
+  /* height: 40px; */
+  background-color: #393939;
+  border: none;
+  outline: none;
+  width: 100%;
+  font-size: var(--ifm-code-font-size);
+  color: var(--ifm-pre-color);
+  padding: 12px var(--ifm-pre-padding);
+
+  border-radius: 4px;
+}
+
+.input {
+  composes: inputBase;
+}
+
+.input:focus {
+  box-shadow: inset 0px 0px 0px 2px white;
+}
+
+.selectInput {
+  composes: inputBase;
+  -moz-appearance: none;
+  -webkit-appearance: none;
+  appearance: none;
+
+  background-image: url('data:image/svg+xml;charset=US-ASCII,<svg focusable="false" preserveAspectRatio="xMidYMid meet" xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 16 16" aria-hidden="true" fill="white"><path d="M8 11L3 6 3.7 5.3 8 9.6 12.3 5.3 13 6z"></path></svg>');
+  background-repeat: no-repeat;
+  background-position: right var(--ifm-pre-padding) top 50%;
+  background-size: auto auto;
+}
+
+.formItem {
+  margin-top: calc(var(--ifm-pre-padding));
+}
+
+.formItem:first-child {
+  margin-top: 0;
+}
+
+.floatingButton {
+  position: relative;
+}
+
+.floatingButton button {
+  position: relative;
+  background: rgba(25, 26, 27, 0.9);
+  border: none;
+  border-radius: var(--ifm-global-radius);
+  color: var(--ifm-color-white);
+  cursor: pointer;
+  outline: none;
+  padding: 0.4rem 0.5rem;
+  opacity: 0;
+  visibility: hidden;
+  transition: opacity 0.2s ease-in-out, visibility 0.2s ease-in-out,
+    bottom 0.2s ease-in-out;
+  position: absolute;
+  top: calc(var(--ifm-pre-padding) / 2);
+  right: calc(var(--ifm-pre-padding) / 2);
+}
+
+.floatingButton:hover button {
+  visibility: visible;
+  opacity: 1;
+}
+
+.docPage {
+  display: flex;
+}
+
+.docSidebarContainer {
+  border-right: 1px solid var(--ifm-contents-border-color);
+  box-sizing: border-box;
+  width: 300px;
+}
+
+.docMainContainer {
+  flex-grow: 1;
+}
+
+@media (max-width: 996px) {
+  .docPage {
+    display: inherit;
+  }
+}
+
+/**
+ * Copyright (c) 2017-present, Facebook, Inc.
+ *
+ * This source code is licensed under the MIT license found in the
+ * LICENSE file in the root directory of this source tree.
+ */
+
+.docTitle {
+  font-size: 3rem;
+  margin-bottom: 3rem;
+}
+
+@media only screen and (max-width: 996px) {
+  .docTitle {
+    font-size: 2rem;
+    margin-bottom: 2rem;
+  }
+}
+
+.docItemContainer {
+  margin: 0 auto;
+  padding: 0 0.5rem;
+}
+
+.tableOfContents {
+  display: inherit;
+  max-height: calc(100vh - (var(--ifm-navbar-height) + 2rem));
+  overflow-y: auto;
+  position: sticky;
+  top: calc(var(--ifm-navbar-height) + 2rem);
+}
+
+.tableOfContents::-webkit-scrollbar {
+  width: 7px;
+}
+
+.tableOfContents::-webkit-scrollbar-track {
+  background: #f1f1f1;
+  border-radius: 10px;
+}
+
+.tableOfContents::-webkit-scrollbar-thumb {
+  background: #888;
+  border-radius: 10px;
+}
+
+.tableOfContents::-webkit-scrollbar-thumb:hover {
+  background: #555;
+}
+
+@media only screen and (max-width: 996px) {
+  .tableOfContents {
+    display: none;
+  }
+
+  .docItemContainer {
+    padding: 0 0.3rem;
+  }
+}
+
+.docLastUpdatedAt {
+  font-weight: bold;
+}

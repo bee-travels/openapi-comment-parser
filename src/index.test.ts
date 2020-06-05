@@ -2,11 +2,11 @@ import path from 'path';
 
 import { expect } from 'chai';
 
-import parseComments from './index';
+import openapi from './index';
 
 describe('index', () => {
 	it('works with example app', () => {
-		const spec = parseComments({
+		const spec = openapi({
 			cwd: path.join(__dirname, '../example/src'),
 			verbose: false,
 			throwLevel: 'warn',
