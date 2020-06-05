@@ -39,6 +39,8 @@ function init({
   });
 
   return {
+    acceptOptions: acceptArray,
+    contentTypeOptions: contentTypeArray,
     endpoint: path,
     method: method,
     params: params,
@@ -67,6 +69,14 @@ const reducer = produce((draft, action) => {
       draft.body = action.body;
       break;
     }
+    case actions.setAccept: {
+      draft.accept = action.accept;
+      break;
+    }
+    case actions.setContentType: {
+      draft.contentType = action.contentType;
+      break;
+    }
     default:
       break;
   }
@@ -76,6 +86,8 @@ const actions = {
   updateParam: 'UPDATE_PARAM',
   setResponse: 'SET_RESPONSE',
   setBody: 'SET_BODY',
+  setAccept: 'SET_ACCEPT',
+  setContentType: 'SET_CONTENT_TYPE',
 };
 
 export function useMe(item) {
@@ -95,6 +107,14 @@ export function useMe(item) {
 
   function setBody(body) {
     dispatch({ type: actions.setBody, body });
+  }
+
+  function setAccept(accept) {
+    dispatch({ type: actions.setAccept, accept });
+  }
+
+  function setContentType(contentType) {
+    dispatch({ type: actions.setContentType, contentType });
   }
 
   async function makeFetch() {
@@ -126,6 +146,9 @@ export function useMe(item) {
 
   return {
     ...state,
+    requestBodyMetadata: item.requestBody, // TODO: no...
+    setAccept,
+    setContentType,
     updateParam,
     setResponse,
     clearResponse,

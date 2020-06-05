@@ -55,7 +55,7 @@ function ParamOptions() {
 function ParamTextFormItem({ param }) {
   const { updateParam } = useContext(Context);
   return (
-    <div className={styles.formItem}>
+    <div className="nick-form-item">
       <code>{param.name}</code>
       <span style={{ opacity: 0.6 }}> — {param.type}</span>
       <div>

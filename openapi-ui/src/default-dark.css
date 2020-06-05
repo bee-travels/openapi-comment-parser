@@ -2671,6 +2671,14 @@ html[data-theme='dark'] {
   opacity: 1;
 }
 
+.nick-form-item {
+  margin-top: calc(var(--ifm-pre-padding));
+}
+
+.nick-form-item:first-child {
+  margin-top: 0;
+}
+
 /* NICK OVERRIDES */
 
 html[data-theme='dark'] {

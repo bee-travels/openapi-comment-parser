@@ -20,14 +20,6 @@
   box-shadow: inset 0px 0px 0px 2px white;
 }
 
-.formItem {
-  margin-top: calc(var(--ifm-pre-padding));
-}
-
-.formItem:first-child {
-  margin-top: 0;
-}
-
 .showMoreButton {
   -webkit-appearance: none;
   -moz-appearance: none;
