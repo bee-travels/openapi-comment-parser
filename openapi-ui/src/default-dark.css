@@ -2644,6 +2644,33 @@ html[data-theme='dark'] {
   border: 2px solid white;
 }
 
+.nick-floating-button {
+  position: relative;
+}
+
+.nick-floating-button button {
+  position: relative;
+  background: rgba(25, 26, 27, 0.9);
+  border: none;
+  border-radius: var(--ifm-global-radius);
+  color: var(--ifm-color-white);
+  cursor: pointer;
+  outline: none;
+  padding: 0.4rem 0.5rem;
+  opacity: 0;
+  visibility: hidden;
+  transition: opacity 0.2s ease-in-out, visibility 0.2s ease-in-out,
+    bottom 0.2s ease-in-out;
+  position: absolute;
+  top: calc(var(--ifm-pre-padding) / 2);
+  right: calc(var(--ifm-pre-padding) / 2);
+}
+
+.nick-floating-button:hover button {
+  visibility: visible;
+  opacity: 1;
+}
+
 /* NICK OVERRIDES */
 
 html[data-theme='dark'] {

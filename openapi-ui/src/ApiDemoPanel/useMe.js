@@ -1,7 +1,14 @@
 import React, { useReducer } from 'react';
 import produce from 'immer';
+import queryString from 'query-string';
 
-function init({ parameters = [], requestBody = {}, responses = {} }) {
+function init({
+  path,
+  method,
+  parameters = [],
+  requestBody = {},
+  responses = {},
+}) {
   const { content = {} } = requestBody;
 
   const contentTypeArray = Object.keys(content);
@@ -32,6 +39,8 @@ function init({ parameters = [], requestBody = {}, responses = {} }) {
   });
 
   return {
+    endpoint: path,
+    method: method,
     params: params,
     contentType: contentTypeArray[0],
     accept: acceptArray[0],
@@ -50,25 +59,23 @@ const reducer = produce((draft, action) => {
       ] = action.param;
       break;
     }
+    case actions.setResponse: {
+      draft.response = action.response;
+      break;
+    }
+    case actions.setBody: {
+      draft.body = action.body;
+      break;
+    }
     default:
       break;
   }
 });
 
-// function reducer(state, action) {
-//   switch (action.type) {
-//     case actions.updateParam: {
-//       return produce(state, (draftState) => {
-//         draftState.params[action.param.type] = action.param;
-//       });
-//     }
-//     default:
-//       throw new Error();
-//   }
-// }
-
 const actions = {
   updateParam: 'UPDATE_PARAM',
+  setResponse: 'SET_RESPONSE',
+  setBody: 'SET_BODY',
 };
 
 export function useMe(item) {
@@ -78,7 +85,53 @@ export function useMe(item) {
     dispatch({ type: actions.updateParam, param });
   }
 
-  return { ...state, updateParam };
+  function setResponse(response) {
+    dispatch({ type: actions.setResponse, response });
+  }
+
+  function clearResponse() {
+    dispatch({ type: actions.setResponse, response: undefined });
+  }
+
+  function setBody(body) {
+    dispatch({ type: actions.setBody, body });
+  }
+
+  async function makeFetch() {
+    const url = state.endpoint.replace(/{([a-z0-9-_]+)}/gi, (_, p1) => {
+      return state.params.path.find((p) => p.name === p1).value || `:${p1}`;
+    });
+
+    const queryObj = {};
+    state.params.query.forEach((q) => {
+      if (q.value) {
+        queryObj[q.name] = q.value;
+      }
+    });
+
+    const fullPath = queryString.stringifyUrl({ url: url, query: queryObj });
+
+    const response = await fetch(fullPath, {
+      method: state.method.toUpperCase(),
+      headers: {
+        Accept: state.accept,
+        'Content-Type': state.contextType,
+      },
+    });
+
+    const text = await response.text();
+
+    setResponse(text);
+  }
+
+  return {
+    ...state,
+    updateParam,
+    setResponse,
+    clearResponse,
+    setBody,
+    makeFetch,
+  };
 }
 
 const Context = React.createContext();

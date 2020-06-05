@@ -1,3 +1,18 @@
+.optionsPanel:empty {
+  display: none;
+}
+
+.optionsPanel {
+  background: #242526;
+  border-radius: var(--ifm-pre-border-radius);
+  color: var(--ifm-pre-color);
+  line-height: var(--ifm-pre-line-height);
+  margin-bottom: var(--ifm-spacing-vertical);
+  margin-top: 0;
+  overflow: auto;
+  padding: var(--ifm-pre-padding);
+}
+
 .executeButton {
   -webkit-appearance: none;
   -moz-appearance: none;
