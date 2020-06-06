@@ -1,6 +1,7 @@
 import React from 'react';
 import { Provider } from 'react-redux';
 import { createStore } from 'redux';
+import { composeWithDevTools } from 'redux-devtools-extension';
 
 import reducer from 'redux/reducer';
 import init from 'redux/init';
@@ -16,7 +17,11 @@ import ContentType from 'DemoPanelComponents/ContentType';
 import styles from './styles.module.css';
 
 function ApiDemoPanel({ item }) {
-  const store = createStore(reducer, init(item));
+  const store = createStore(
+    reducer,
+    init(item),
+    composeWithDevTools({ name: `${item.method} ${item.path}` })()
+  );
 
   return (
     <Provider store={store}>

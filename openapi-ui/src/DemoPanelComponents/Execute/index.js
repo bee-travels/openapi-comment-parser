@@ -5,7 +5,7 @@ import queryString from 'query-string';
 import styles from './styles.module.css';
 import { useActions } from 'redux/actions';
 
-async function buildAndMakeFetch(state, cb) {
+async function buildAndMakeFetch(state) {
   const url = state.endpoint.replace(/{([a-z0-9-_]+)}/gi, (_, p1) => {
     return state.params.path.find((p) => p.name === p1).value || `:${p1}`;
   });
