@@ -43,7 +43,7 @@ function organizeSpec(spec) {
 }
 
 function App() {
-  const [order, setOrder] = useState(organizeSpec(spec));
+  const [order, setOrder] = useState(undefined);
 
   useEffect(() => {
     SwaggerParser.dereference(spec).then((api) => {
@@ -52,6 +52,10 @@ function App() {
       setOrder(organizeSpec(api));
     });
   }, []);
+
+  if (order === undefined) {
+    return <div>loading...</div>;
+  }
 
   const docsSidebars = {
     default: order.map((x) => {

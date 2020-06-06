@@ -1,8 +1,10 @@
-import React, { useContext } from 'react';
-import Context from 'ApiDemoPanel/useMe';
+import React from 'react';
+import { useSelector } from 'react-redux';
+import { useActions } from 'redux/actions';
 
 function Response() {
-  const { response, clearResponse } = useContext(Context);
+  const response = useSelector((state) => state.response);
+  const { clearResponse } = useActions();
 
   if (response === undefined) {
     return null;

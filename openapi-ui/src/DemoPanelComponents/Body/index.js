@@ -1,10 +1,15 @@
-import React, { useContext } from 'react';
+import React from 'react';
 import VSCode from 'DemoPanelComponents/VSCode';
 import { sampleFromSchema } from 'x-utils';
-import Context from 'ApiDemoPanel/useMe';
+import { useSelector } from 'react-redux';
+import { useActions } from 'redux/actions';
 
 function Body() {
-  const { contentType, setBody, requestBodyMetadata } = useContext(Context);
+  const contentType = useSelector((state) => state.contentType);
+  const requestBodyMetadata = useSelector((state) => state.requestBodyMetadata);
+  const { setBody } = useActions();
+
+  console.log(requestBodyMetadata);
 
   if (contentType !== 'application/json' && contentType !== 'application/xml') {
     return null;

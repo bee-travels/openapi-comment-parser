@@ -1,9 +1,13 @@
-import React, { useContext } from 'react';
-import Context from 'ApiDemoPanel/useMe';
+import React from 'react';
 import FormSelect from 'DemoPanelComponents/FormSelect';
+import { useSelector } from 'react-redux';
+import { useActions } from 'redux/actions';
 
 function Accept() {
-  const { acceptOptions, accept, setAccept } = useContext(Context);
+  const acceptOptions = useSelector((state) => state.acceptOptions);
+  const accept = useSelector((state) => state.accept);
+  const { setAccept } = useActions();
+
   return (
     <FormSelect
       label="Accept"

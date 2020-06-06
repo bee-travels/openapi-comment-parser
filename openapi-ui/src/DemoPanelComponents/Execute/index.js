@@ -1,25 +1,60 @@
-import React, { useContext } from 'react';
-import Context from 'ApiDemoPanel/useMe';
+import React from 'react';
+import { useSelector } from 'react-redux';
+import queryString from 'query-string';
 
 import styles from './styles.module.css';
+import { useActions } from 'redux/actions';
 
-function Execute() {
-  const { params, makeFetch } = useContext(Context);
+async function buildAndMakeFetch(state, cb) {
+  const url = state.endpoint.replace(/{([a-z0-9-_]+)}/gi, (_, p1) => {
+    return state.params.path.find((p) => p.name === p1).value || `:${p1}`;
+  });
 
-  let finishedRequest = true;
+  const queryObj = {};
+  state.params.query.forEach((q) => {
+    if (q.value) {
+      queryObj[q.name] = q.value;
+    }
+  });
+
+  const fullPath = queryString.stringifyUrl({ url: url, query: queryObj });
+
+  const response = await fetch(fullPath, {
+    method: state.method.toUpperCase(),
+    headers: {
+      Accept: state.accept,
+      'Content-Type': state.contextType,
+    },
+  });
+
+  return await response.text();
+}
+
+function isRequestComplete(params) {
   Object.values(params).forEach((paramList) => {
     paramList.forEach((param) => {
       if (param.required && !param.value) {
-        finishedRequest = false;
+        return false;
       }
     });
   });
+  return true;
+}
+
+function Execute() {
+  const state = useSelector((state) => state);
+  const { setResponse } = useActions();
+
+  const finishedRequest = isRequestComplete(state.params);
 
   return (
     <button
       className={styles.executeButton}
       disabled={!finishedRequest}
-      onClick={() => makeFetch()}
+      onClick={async () => {
+        const res = await buildAndMakeFetch(state);
+        setResponse(res);
+      }}
     >
       Execute
     </button>

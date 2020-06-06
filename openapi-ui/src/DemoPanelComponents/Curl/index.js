@@ -1,16 +1,24 @@
-import React, { useRef, useState, useContext } from 'react';
+import React, { useRef, useState } from 'react';
 
 import queryString from 'query-string';
 
-import Context from 'ApiDemoPanel/useMe';
+import { useSelector } from 'react-redux';
 
 function Curl() {
-  const state = useContext(Context);
-  const ref = useRef(null);
   const [copyText, setCopyText] = useState('Copy');
 
+  const method = useSelector((state) => state.method);
+  const endpoint = useSelector((state) => state.endpoint);
+  const pathParams = useSelector((state) => state.params.path);
+  const queryParams = useSelector((state) => state.params.query);
+  const contentType = useSelector((state) => state.contentType);
+  const body = useSelector((state) => state.body);
+  const accept = useSelector((state) => state.accept);
+
+  const ref = useRef(null);
+
   let query = {};
-  state.params.query.forEach((param) => {
+  queryParams.forEach((param) => {
     if (param.value) {
       query[param.name] = param.value;
     }
@@ -28,7 +36,7 @@ function Curl() {
 
   let bodyString;
   try {
-    bodyString = JSON.stringify(JSON.stringify(JSON.parse(state.body)));
+    bodyString = JSON.stringify(JSON.stringify(JSON.parse(body)));
   } catch {
     bodyString = '"{}"';
   }
@@ -44,18 +52,27 @@ function Curl() {
       >
         <code ref={ref}>
           <span>
-            curl -X <span>{state.method.toUpperCase()}</span> "
+            curl -X <span>{method.toUpperCase()}</span> "
             {window.location.origin}
-            {state.endpoint.replace(/{([a-z0-9-_]+)}/gi, (_, p1) => {
-              return (
-                state.params.path.find((p) => p.name === p1).value || `:${p1}`
-              );
+            {endpoint.replace(/{([a-z0-9-_]+)}/gi, (_, p1) => {
+              return pathParams.find((p) => p.name === p1).value || `:${p1}`;
             })}
             {qs && '?'}
             {qs}"
           </span>
 
-          {state.accept && (
+          {accept && (
+            <>
+              {' \\'}
+              <br />
+              <span>
+                {' '}
+                -H <span style={{ color: '#85d996' }}>"Accept: {accept}"</span>
+              </span>
+            </>
+          )}
+
+          {contentType && (
             <>
               {' \\'}
               <br />
@@ -63,27 +80,13 @@ function Curl() {
                 {' '}
                 -H{' '}
                 <span style={{ color: '#85d996' }}>
-                  "Accept: {state.accept}"
+                  "Content-Type: {contentType}"
                 </span>
               </span>
             </>
           )}
 
-          {state.contentType && (
-            <>
-              {' \\'}
-              <br />
-              <span>
-                {' '}
-                -H{' '}
-                <span style={{ color: '#85d996' }}>
-                  "Content-Type: {state.contentType}"
-                </span>
-              </span>
-            </>
-          )}
-
-          {state.body && (
+          {body && (
             <>
               {' \\'}
               <br />

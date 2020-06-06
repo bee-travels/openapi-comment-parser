@@ -1,11 +1,13 @@
-import React, { useContext } from 'react';
-import Context from 'ApiDemoPanel/useMe';
+import React from 'react';
 import FormSelect from 'DemoPanelComponents/FormSelect';
+import { useSelector } from 'react-redux';
+import { useActions } from 'redux/actions';
 
 function ContentType() {
-  const { contentTypeOptions, contentType, setContentType } = useContext(
-    Context
-  );
+  const contentTypeOptions = useSelector((state) => state.contentTypeOptions);
+  const contentType = useSelector((state) => state.contentType);
+  const { setContentType } = useActions();
+
   return (
     <FormSelect
       label="Content-Type"

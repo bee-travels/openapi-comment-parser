@@ -1,6 +1,9 @@
 import React from 'react';
+import { Provider } from 'react-redux';
+import { createStore } from 'redux';
 
-import Context, { useMe } from './useMe';
+import reducer from 'redux/reducer';
+import init from 'redux/init';
 import MethodEndpoint from 'DemoPanelComponents/MethodEndpoint';
 import ParamOptions from 'DemoPanelComponents/ParamOptions';
 import Body from 'DemoPanelComponents/Body';
@@ -13,10 +16,10 @@ import ContentType from 'DemoPanelComponents/ContentType';
 import styles from './styles.module.css';
 
 function ApiDemoPanel({ item }) {
-  const state = useMe(item);
+  const store = createStore(reducer, init(item));
 
   return (
-    <Context.Provider value={state}>
+    <Provider store={store}>
       <MethodEndpoint />
 
       <div className={styles.optionsPanel}>
@@ -29,7 +32,7 @@ function ApiDemoPanel({ item }) {
       <Curl />
       <Execute />
       <Response />
-    </Context.Provider>
+    </Provider>
   );
 }
 

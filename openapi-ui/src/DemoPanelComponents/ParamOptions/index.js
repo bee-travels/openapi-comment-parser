@@ -1,20 +1,27 @@
-import React, { useContext, useState } from 'react';
-
-import Context from 'ApiDemoPanel/useMe';
+import React, { useState } from 'react';
 
 import styles from './styles.module.css';
+import { useSelector } from 'react-redux';
+import { useActions } from 'redux/actions';
 
 function ParamOptions() {
-  const { params } = useContext(Context);
   const [showOptional, setShowOptional] = useState(false);
+
+  const pathParams = useSelector((state) => state.params.path);
+  const queryParams = useSelector((state) => state.params.query);
+  const cookieParams = useSelector((state) => state.params.cookie);
+  const headerParams = useSelector((state) => state.params.header);
+
   const allParams = [
-    ...params.path,
-    ...params.query,
-    ...params.cookie,
-    ...params.header,
+    ...pathParams,
+    ...queryParams,
+    ...cookieParams,
+    ...headerParams,
   ];
+
   const requiredParams = allParams.filter((p) => p.required);
   const optionalParams = allParams.filter((p) => !p.required);
+
   return (
     <>
       {requiredParams.map((param) => {
@@ -53,7 +60,7 @@ function ParamOptions() {
 }
 
 function ParamTextFormItem({ param }) {
-  const { updateParam } = useContext(Context);
+  const { updateParam } = useActions();
   return (
     <div className="nick-form-item">
       <code>{param.name}</code>

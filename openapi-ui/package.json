@@ -16,8 +16,10 @@
     "react-dom": "^16.13.1",
     "react-magic-dropzone": "^1.0.1",
     "react-monaco-editor": "^0.36.0",
+    "react-redux": "^7.2.0",
     "react-router-dom": "^5.2.0",
-    "react-scripts": "3.4.1"
+    "react-scripts": "3.4.1",
+    "redux": "^4.0.5"
   },
   "scripts": {
     "start": "react-scripts start",

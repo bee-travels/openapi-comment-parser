@@ -1,6 +1,6 @@
-import React, { useContext } from 'react';
+import React from 'react';
 
-import Context from 'ApiDemoPanel/useMe';
+import { useSelector } from 'react-redux';
 
 function colorForMethod(method) {
   switch (method.toLowerCase()) {
@@ -18,7 +18,9 @@ function colorForMethod(method) {
 }
 
 function MethodEndpoint() {
-  const { method, endpoint } = useContext(Context);
+  const method = useSelector((state) => state.method);
+  const endpoint = useSelector((state) => state.endpoint);
+
   return (
     <pre
       style={{
