@@ -6,18 +6,14 @@ import StatusCodesTable from 'StatusCodesTable';
 
 import styles from './styles.module.css';
 
-function slugify(string) {
-  return string.toLowerCase().replace(/\s/g, '-');
-}
-
 function DocItem({ item }) {
   return (
-    <div className="row">
+    <div id={item.hashId} className="row">
       <div className="col">
         <div className={styles.docItemContainer}>
           <article>
             <div className="markdown">
-              <h2 id={slugify(item.summary)}>{item.summary}</h2>
+              <h2>{item.summary}</h2>
               <p>{item.description}</p>
               <ParamsTable parameters={item.parameters} type="path" />
               <ParamsTable parameters={item.parameters} type="query" />

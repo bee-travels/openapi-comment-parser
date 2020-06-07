@@ -15,14 +15,27 @@ function slugify(string) {
 }
 
 function getPathsForTag(spec, tag) {
+  let seen = new Map();
   return Object.entries(spec.paths)
     .map(([path, pathObj]) => {
       const entries = Object.entries(pathObj);
       return entries.map(([method, methodObj]) => {
+        let baseId = slugify(methodObj.summary);
+        let count = seen.get(baseId);
+
+        // Random doesn't work because it needs to stay consistent.
+        if (count) {
+          baseId += `-${count}`;
+          seen.set(baseId, count + 1);
+        } else {
+          seen.set(baseId, 1);
+        }
+
         return {
           ...methodObj,
           method: method,
           path: path,
+          hashId: baseId,
         };
       });
     })
@@ -43,7 +56,7 @@ function organizeSpec(spec) {
 
 function findActivePage(pages, hash) {
   const index = pages.findIndex((page) =>
-    page.items.find((item) => `#${slugify(item.summary)}` === hash)
+    page.items.find((item) => `#${item.hashId}` === hash)
   );
   return Math.max(0, index);
 }
@@ -58,7 +71,7 @@ function Page({ spec }) {
       return {
         items: x.items.map((y) => {
           return {
-            href: `#${slugify(y.summary)}`,
+            href: `#${y.hashId}`,
             label: y.summary,
             type: 'link',
           };
@@ -88,7 +101,7 @@ function Page({ spec }) {
       )}
       <main className={styles.docMainContainer}>
         <div className="padding-vert--lg">
-          <div className="container">
+          <div className="container" id={`page-${activePage}`}>
             <DocPageTitle page={order[activePage]} />
 
             {order[activePage].items.map((item) => (

@@ -24,6 +24,7 @@
     "react-redux": "^7.2.0",
     "react-router-dom": "^5.2.0",
     "react-scripts": "3.4.1",
+    "react-scrollspy": "^3.4.2",
     "redux": "^4.0.5",
     "redux-devtools-extension": "^2.13.8",
     "traverse": "^0.6.6"

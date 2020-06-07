@@ -7,13 +7,14 @@
 
 import React, { useState } from 'react';
 import classnames from 'classnames';
+import Scrollspy from 'react-scrollspy';
 
 import styles from './styles.module.css';
 
 const MOBILE_TOGGLE_SIZE = 24;
 
 function DocSidebarItem({ item, onItemClick, collapsible, location }) {
-  const { items, href, label, type } = item;
+  const { items, label } = item;
   const [collapsed, setCollapsed] = useState(item.collapsed);
   const [prevCollapsedProp, setPreviousCollapsedProp] = useState(null);
 
@@ -30,59 +31,52 @@ function DocSidebarItem({ item, onItemClick, collapsible, location }) {
     setCollapsed((state) => !state);
   };
 
-  switch (type) {
-    case 'category':
-      return (
-        items.length > 0 && (
-          <li
-            className={classnames('menu__list-item', {
-              'menu__list-item--collapsed': collapsed,
-            })}
-            key={label}
-          >
-            <a
-              className={classnames('menu__link', {
-                'menu__link--sublist': collapsible,
-                'menu__link--active': collapsible && !item.collapsed,
-              })}
-              href="#!"
-              onClick={collapsible ? handleItemClick : undefined}
-            >
-              {label}
-            </a>
-            <ul className="menu__list">
-              {items.map((childItem) => (
-                <DocSidebarItem
-                  key={childItem.label}
-                  item={childItem}
-                  onItemClick={onItemClick}
-                  collapsible={collapsible}
-                  location={location}
-                />
-              ))}
-            </ul>
-          </li>
-        )
-      );
+  const spyItems = items.map((i) => i.href.replace(/^#/, ''));
 
-    case 'link':
-    default:
-      return (
-        <li className="menu__list-item" key={label}>
-          <a
-            className={`menu__link ${
-              href === location.hash && 'menu__link--active'
-            }`}
-            // className="menu__link"
-            exact
-            href={href}
-            onClick={onItemClick}
-          >
-            {label}
-          </a>
-        </li>
-      );
-  }
+  const spy = spyItems.includes(location.hash.replace(/^#/, ''));
+
+  // only spy when on proper page.
+  const ListComponent = spy ? Scrollspy : 'ul';
+
+  return (
+    items.length > 0 && (
+      <li
+        className={classnames('menu__list-item', {
+          'menu__list-item--collapsed': collapsed,
+        })}
+        key={label}
+      >
+        <a
+          className={classnames('menu__link', {
+            'menu__link--sublist': collapsible,
+            'menu__link--active': collapsible && !item.collapsed,
+          })}
+          href="#!"
+          onClick={collapsible ? handleItemClick : undefined}
+        >
+          {label}
+        </a>
+        <ListComponent
+          items={spyItems}
+          className="menu__list"
+          currentClassName="nick-is-active"
+          offset={-50}
+        >
+          {items.map((childItem) => (
+            <li className="menu__list-item" key={childItem.href}>
+              <a
+                className="menu__link"
+                href={childItem.href}
+                onClick={onItemClick}
+              >
+                {childItem.label}
+              </a>
+            </li>
+          ))}
+        </ListComponent>
+      </li>
+    )
+  );
 }
 
 // Calculate the category collapsing state when a page navigation occurs.
@@ -179,6 +173,7 @@ function DocSidebar(props) {
             </svg>
           )}
         </button>
+
         <ul className="menu__list">
           {sidebarData.map((item) => (
             <DocSidebarItem

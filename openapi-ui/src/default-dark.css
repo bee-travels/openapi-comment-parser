@@ -2679,6 +2679,11 @@ html[data-theme='dark'] {
   margin-top: 0;
 }
 
+.nick-is-active .menu__link {
+  color: var(--ifm-menu-color-active);
+  background: var(--ifm-menu-color-background-active);
+}
+
 /* NICK OVERRIDES */
 
 html[data-theme='dark'] {
