@@ -5,15 +5,14 @@
  * LICENSE file in the root directory of this source tree.
  */
 
-import React, { useState, useCallback } from 'react';
+import React, { useState } from 'react';
 import classnames from 'classnames';
-import { NavLink } from 'react-router-dom';
 
 import styles from './styles.module.css';
 
 const MOBILE_TOGGLE_SIZE = 24;
 
-function DocSidebarItem({ item, onItemClick, collapsible }) {
+function DocSidebarItem({ item, onItemClick, collapsible, location }) {
   const { items, href, label, type } = item;
   const [collapsed, setCollapsed] = useState(item.collapsed);
   const [prevCollapsedProp, setPreviousCollapsedProp] = useState(null);
@@ -26,10 +25,10 @@ function DocSidebarItem({ item, onItemClick, collapsible }) {
     setCollapsed(item.collapsed);
   }
 
-  const handleItemClick = useCallback((e) => {
+  const handleItemClick = (e) => {
     e.preventDefault();
     setCollapsed((state) => !state);
-  });
+  };
 
   switch (type) {
     case 'category':
@@ -58,6 +57,7 @@ function DocSidebarItem({ item, onItemClick, collapsible }) {
                   item={childItem}
                   onItemClick={onItemClick}
                   collapsible={collapsible}
+                  location={location}
                 />
               ))}
             </ul>
@@ -69,15 +69,17 @@ function DocSidebarItem({ item, onItemClick, collapsible }) {
     default:
       return (
         <li className="menu__list-item" key={label}>
-          <NavLink
-            activeClassName="menu__link--active"
-            className="menu__link"
+          <a
+            className={`menu__link ${
+              href === location.hash && 'menu__link--active'
+            }`}
+            // className="menu__link"
             exact
-            to={href}
+            href={href}
             onClick={onItemClick}
           >
             {label}
-          </NavLink>
+          </a>
         </li>
       );
   }
@@ -100,7 +102,7 @@ function mutateSidebarCollapsingState(item, location) {
 
     case 'link':
     default:
-      return href === location.pathname.replace(/\/$/, '');
+      return href === location.hash;
   }
 }
 
@@ -186,6 +188,7 @@ function DocSidebar(props) {
                 setShowResponsiveSidebar(false);
               }}
               collapsible={sidebarCollapsible}
+              location={location}
             />
           ))}
         </ul>

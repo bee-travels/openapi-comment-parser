@@ -3,12 +3,16 @@ import ReactDOM from 'react-dom';
 import App from './App';
 import * as serviceWorker from './serviceWorker';
 
-ReactDOM.render(
-  <React.StrictMode>
-    <App />
-  </React.StrictMode>,
-  document.getElementById('root')
-);
+fetch(process.env.PUBLIC_URL + '/spec.json')
+  .then((r) => r.json())
+  .then((spec) => {
+    ReactDOM.render(
+      <React.StrictMode>
+        <App spec={spec} />
+      </React.StrictMode>,
+      document.getElementById('root')
+    );
+  });
 
 // If you want your app to work offline and load faster, you can change
 // unregister() to register() below. Note this comes with some pitfalls.

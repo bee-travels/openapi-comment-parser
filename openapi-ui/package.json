@@ -6,11 +6,16 @@
     "@apidevtools/swagger-parser": "^9.0.1",
     "@docusaurus/core": "^2.0.0-alpha.40",
     "@docusaurus/theme-classic": "^2.0.0-alpha.37",
+    "@kyleshockey/object-assign-deep": "^0.4.2",
+    "@kyleshockey/xml": "^1.0.2",
     "@monaco-editor/react": "^3.3.1",
     "@testing-library/jest-dom": "^4.2.4",
     "@testing-library/react": "^9.3.2",
     "@testing-library/user-event": "^7.1.2",
+    "dag-map": "^2.0.2",
     "immer": "^6.0.9",
+    "lodash": "^4.17.15",
+    "md5": "^2.2.1",
     "query-string": "^6.12.1",
     "react": "^16.13.1",
     "react-dom": "^16.13.1",
@@ -20,7 +25,8 @@
     "react-router-dom": "^5.2.0",
     "react-scripts": "3.4.1",
     "redux": "^4.0.5",
-    "redux-devtools-extension": "^2.13.8"
+    "redux-devtools-extension": "^2.13.8",
+    "traverse": "^0.6.6"
   },
   "scripts": {
     "start": "react-scripts start",

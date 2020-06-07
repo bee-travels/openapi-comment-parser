@@ -1,21 +1,20 @@
-import React, { useState, useEffect } from 'react';
-import { BrowserRouter as Router, Route } from 'react-router-dom';
-import SwaggerParser from '@apidevtools/swagger-parser';
+import React from 'react';
+import { BrowserRouter as Router, useLocation } from 'react-router-dom';
 
 import DocSidebar from 'DocSidebar';
 import DocItem from 'DocItem';
 import DocPageTitle from 'DocPageTitle';
 
 import styles from './App.module.css';
-import spec from './spec.json';
 
 import './default-dark.css';
+import { dereference } from 'x-dereference';
 
 function slugify(string) {
   return string.toLowerCase().replace(/\s/g, '-');
 }
 
-function getPathsForTag(tag) {
+function getPathsForTag(spec, tag) {
   return Object.entries(spec.paths)
     .map(([path, pathObj]) => {
       const entries = Object.entries(pathObj);
@@ -37,32 +36,29 @@ function organizeSpec(spec) {
     return {
       title: tag.name,
       description: tag.description,
-      items: getPathsForTag(tag.name),
+      items: getPathsForTag(spec, tag.name),
     };
   });
 }
 
-function App() {
-  const [order, setOrder] = useState(undefined);
+function findActivePage(pages, hash) {
+  const index = pages.findIndex((page) =>
+    page.items.find((item) => `#${slugify(item.summary)}` === hash)
+  );
+  return Math.max(0, index);
+}
 
-  useEffect(() => {
-    SwaggerParser.dereference(spec).then((api) => {
-      console.log(api);
-      // TODO: This ruins our variable names...
-      setOrder(organizeSpec(api));
-    });
-  }, []);
+function Page({ spec }) {
+  const location = useLocation();
 
-  if (order === undefined) {
-    return <div>loading...</div>;
-  }
+  const order = organizeSpec(dereference(spec));
 
   const docsSidebars = {
     default: order.map((x) => {
       return {
         items: x.items.map((y) => {
           return {
-            href: `${slugify(y.summary)}`,
+            href: `#${slugify(y.summary)}`,
             label: y.summary,
             type: 'link',
           };
@@ -72,39 +68,43 @@ function App() {
       };
     }),
   };
-  const location = { pathname: window.location.pathname };
+
   const sidebar = 'default';
   const sidebarCollapsible = true;
 
-  const activePage = 0;
+  const activePage = findActivePage(order, location.hash);
 
   return (
-    <Router>
-      <Route path="/">
-        <div className={styles.docPage}>
-          {sidebar && (
-            <div className={styles.docSidebarContainer}>
-              <DocSidebar
-                docsSidebars={docsSidebars}
-                location={location}
-                sidebar={sidebar}
-                sidebarCollapsible={sidebarCollapsible}
-              />
-            </div>
-          )}
-          <main className={styles.docMainContainer}>
-            <div className="padding-vert--lg">
-              <div className="container">
-                <DocPageTitle page={order[activePage]} />
-
-                {order[activePage].items.map((item) => (
-                  <DocItem item={item} />
-                ))}
-              </div>
-            </div>
-          </main>
+    <div className={styles.docPage}>
+      {sidebar && (
+        <div className={styles.docSidebarContainer}>
+          <DocSidebar
+            docsSidebars={docsSidebars}
+            location={location}
+            sidebar={sidebar}
+            sidebarCollapsible={sidebarCollapsible}
+          />
         </div>
-      </Route>
+      )}
+      <main className={styles.docMainContainer}>
+        <div className="padding-vert--lg">
+          <div className="container">
+            <DocPageTitle page={order[activePage]} />
+
+            {order[activePage].items.map((item) => (
+              <DocItem item={item} />
+            ))}
+          </div>
+        </div>
+      </main>
+    </div>
+  );
+}
+
+function App({ spec }) {
+  return (
+    <Router>
+      <Page spec={spec} />
     </Router>
   );
 }

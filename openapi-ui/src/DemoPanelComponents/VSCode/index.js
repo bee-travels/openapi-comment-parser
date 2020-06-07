@@ -1,6 +1,15 @@
 import React, { useState } from 'react';
 import Editor, { monaco } from '@monaco-editor/react';
 
+const BRIGHT = 'f5f6f7';
+const DIM = '7f7f7f';
+const BLUE = 'a4cdfe';
+const GREEN = '85d996';
+const ORANGE = 'f8b886';
+
+const BACKGROUND = '#18191a';
+const SELECT = '#515151';
+
 monaco
   .init()
   .then((monaco) => {
@@ -8,23 +17,25 @@ monaco
       base: 'vs-dark',
       inherit: false,
       rules: [
-        { token: '', foreground: 'f5f6f7' },
-        { token: 'string.key.json', foreground: 'f5f6f7' },
-        { token: 'string.value.json', foreground: '85d996' },
-        { token: 'number', foreground: 'a4cdfe' },
-        { token: 'keyword.json', foreground: 'a4cdfe' },
-        { token: 'delimiter', foreground: '7f7f7f' },
-        { token: 'tag.xml', foreground: '7f7f7f' },
-        { token: 'metatag.xml', foreground: '7f7f7f' },
-        { token: 'attribute.name.xml', foreground: 'f5f6f7' },
-        { token: 'attribute.value.xml', foreground: '85d996' },
+        { token: '', foreground: BRIGHT },
+        { token: 'string.key.json', foreground: BRIGHT },
+        { token: 'string.value.json', foreground: GREEN },
+        { token: 'number', foreground: BLUE },
+        { token: 'keyword.json', foreground: BLUE },
+        { token: 'delimiter', foreground: DIM },
+        { token: 'tag.xml', foreground: DIM },
+        { token: 'metatag.xml', foreground: DIM },
+        { token: 'attribute.name.xml', foreground: BRIGHT },
+        { token: 'attribute.value.xml', foreground: GREEN },
+        { token: 'metatag.xml', foreground: BLUE },
+        { token: 'tag.xml', foreground: BLUE },
       ],
       colors: {
-        'editor.background': '#18191a',
-        'editor.lineHighlightBackground': '#18191a',
-        'editorBracketMatch.background': '#18191a',
-        'editorBracketMatch.border': '#18191a',
-        'editor.selectionBackground': '#515151',
+        'editor.background': BACKGROUND,
+        'editor.lineHighlightBackground': BACKGROUND,
+        'editorBracketMatch.background': BACKGROUND,
+        'editorBracketMatch.border': BACKGROUND,
+        'editor.selectionBackground': SELECT,
       },
     });
   })
@@ -57,6 +68,9 @@ function VSCode({ value, language, onChange }) {
           folding: false,
           lineDecorationsWidth: 0,
           contextmenu: false,
+          scrollbar: {
+            horizontal: 'hidden',
+          },
         }}
         editorDidMount={(_valueGetter, editor) => {
           editor.onDidFocusEditorText(() => {
