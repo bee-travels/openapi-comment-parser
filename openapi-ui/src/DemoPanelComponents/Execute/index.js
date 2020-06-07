@@ -31,13 +31,13 @@ async function buildAndMakeFetch(state) {
 }
 
 function isRequestComplete(params) {
-  Object.values(params).forEach((paramList) => {
-    paramList.forEach((param) => {
+  for (let paramList of Object.values(params)) {
+    for (let param of paramList) {
       if (param.required && !param.value) {
         return false;
       }
-    });
-  });
+    }
+  }
   return true;
 }
 
