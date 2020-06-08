@@ -5,20 +5,54 @@
  * LICENSE file in the root directory of this source tree.
  */
 
-import React, { useCallback, useState } from 'react';
+import React, { useCallback, useState, useEffect } from 'react';
 // import Link from '@docusaurus/Link';
 // import Head from '@docusaurus/Head';
 // import useDocusaurusContext from '@docusaurus/useDocusaurusContext';
 // import useBaseUrl from '@docusaurus/useBaseUrl';
 
 // import SearchBar from '@theme/SearchBar';
-// import Toggle from '@theme/Toggle';
+import Toggle from 'Toggle';
 
 import classnames from 'classnames';
 
 // import useTheme from '@theme/hooks/useTheme';
 
 import styles from './styles.module.css';
+
+const inittheme = localStorage.getItem('theme');
+
+const useTheme = () => {
+  const [theme, setTheme] = useState(
+    typeof document !== 'undefined'
+      ? inittheme || document.querySelector('html').getAttribute('data-theme')
+      : inittheme || ''
+  );
+
+  useEffect(() => {
+    try {
+      const savedTheme = localStorage.getItem('theme');
+      if (savedTheme) {
+        document.querySelector('html').setAttribute('data-theme', savedTheme);
+        setTheme(savedTheme);
+      }
+    } catch (err) {
+      console.error(err);
+    }
+  }, []);
+
+  const setThemeSyncWithLocalStorage = useCallback((nextTheme) => {
+    try {
+      document.querySelector('html').setAttribute('data-theme', nextTheme);
+      localStorage.setItem('theme', nextTheme);
+      setTheme(nextTheme);
+    } catch (err) {
+      console.error(err);
+    }
+  }, []);
+
+  return [theme, setThemeSyncWithLocalStorage];
+};
 
 // function NavLink({ to, href, label, position, ...props }) {
 //   const toUrl = useBaseUrl(to);
@@ -42,11 +76,11 @@ import styles from './styles.module.css';
 //   );
 // }
 
-function Navbar({ title, logo }) {
+function Navbar({ title, logo, github, version }) {
   // const context = useDocusaurusContext();
   const [sidebarShown, setSidebarShown] = useState(false);
   const [isSearchBarExpanded, setIsSearchBarExpanded] = useState(false);
-  // const [theme, setTheme] = useTheme();
+  const [theme, setTheme] = useTheme();
   // const { siteConfig = {} } = context;
   // const { baseUrl, themeConfig = {} } = siteConfig;
   // const { navbar = {}, disableDarkMode = false } = themeConfig;
@@ -63,10 +97,16 @@ function Navbar({ title, logo }) {
   //   setSidebarShown(false);
   // }, [setSidebarShown]);
 
-  // const onToggleChange = useCallback(
-  //   (e) => setTheme(e.target.checked ? 'dark' : ''),
-  //   [setTheme]
-  // );
+  const onToggleChange = useCallback(
+    (e) => setTheme(e.target.checked ? 'dark' : 'light'),
+    [setTheme]
+  );
+
+  // const [isClient, setIsClient] = useState(false);
+
+  // useEffect(() => {
+  //   setIsClient(true);
+  // }, []);
 
   // const logoUrl = useBaseUrl(logo.src);
   return (
@@ -116,6 +156,7 @@ function Navbar({ title, logo }) {
                 </strong>
               )}
             </span>
+            <span>{version}</span>
             {/* {links
               .filter((linkItem) => linkItem.position !== 'right')
               .map((linkItem, i) => (
@@ -124,25 +165,36 @@ function Navbar({ title, logo }) {
                 </a>
               ))} */}
           </div>
-          {/* <div className="navbar__items navbar__items--right">
-            {links
+          <div className="navbar__items navbar__items--right">
+            {github && (
+              // eslint-disable-next-line jsx-a11y/anchor-has-content
+              <a
+                href={github}
+                target="_blank"
+                rel="noopener noreferrer"
+                class="navbar__item navbar__link header-github-link"
+                aria-label="GitHub repository"
+              ></a>
+            )}
+            {/* {links
               .filter((linkItem) => linkItem.position === 'right')
               .map((linkItem, i) => (
                 <NavLink {...linkItem} key={i} />
-              ))}
-            {!disableDarkMode && (
-              <Toggle
-                className={styles.displayOnlyInLargeViewport}
-                aria-label="Dark mode toggle"
-                checked={theme === 'dark'}
-                onChange={onToggleChange}
-              />
-            )}
-            <SearchBar
+              ))} */}
+
+            <Toggle
+              className={styles.displayOnlyInLargeViewport}
+              aria-label="Dark mode toggle"
+              checked={theme === 'dark'}
+              onChange={onToggleChange}
+              // checked={true}
+              // onChange={() => {}}
+            />
+            {/* <SearchBar
               handleSearchBarToggle={setIsSearchBarExpanded}
               isSearchBarExpanded={isSearchBarExpanded}
-            />
-          </div> */}
+            /> */}
+          </div>
         </div>
         {/* <div
           role="presentation"

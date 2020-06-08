@@ -122,6 +122,7 @@ function Page({ spec }) {
 
 function App({ spec }) {
   const title = spec.info.title;
+  const version = spec.info.version;
   document.title = title;
   document.querySelector("link[rel*='icon']").href = spec.info['x-logo'];
   const logo = {
@@ -129,7 +130,12 @@ function App({ spec }) {
   };
   return (
     <Router>
-      <Navbar title={title} logo={logo} />
+      <Navbar
+        title={title}
+        version={version}
+        logo={logo}
+        github={spec.info['x-github']}
+      />
       <div className="main-wrapper">
         <Page spec={spec} />
       </div>
