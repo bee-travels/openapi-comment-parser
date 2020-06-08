@@ -122,6 +122,8 @@ function Page({ spec }) {
 
 function App({ spec }) {
   const title = spec.info.title;
+  document.title = title;
+  document.querySelector("link[rel*='icon']").href = spec.info['x-logo'];
   const logo = {
     src: spec.info['x-logo'],
   };

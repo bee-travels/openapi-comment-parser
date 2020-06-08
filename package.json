@@ -32,7 +32,7 @@
   "scripts": {
     "lint": "eslint .",
     "test": "mocha -r ts-node/register \"src/**/?(*.)test.ts\"",
-    "prestartx": "npm run build && cd openapi-ui-express && npm run build",
+    "prestart": "npm run build && cd openapi-ui-express && npm run build",
     "start": "nodemon -e yaml,yml,js,mjs,json --exec \"LOCAL_DEVELOPMENT=1 node example/src/app.js\"",
     "build": "run-s clean bundle",
     "clean": "rimraf dist",
