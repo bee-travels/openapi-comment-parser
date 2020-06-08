@@ -1,8 +1,16 @@
 {
-  "name": "openapi-ui",
-  "version": "0.1.0",
-  "private": true,
+  "name": "openapi-ui-express",
+  "version": "0.0.2",
+  "license": "MIT",
   "dependencies": {
+    "express": "^4.17.1"
+  },
+  "files": [
+    "index.js",
+    "/build"
+  ],
+  "main": "index.js",
+  "devDependencies": {
     "@apidevtools/swagger-parser": "^9.0.1",
     "@docusaurus/core": "^2.0.0-alpha.40",
     "@docusaurus/theme-classic": "^2.0.0-alpha.37",
@@ -27,13 +35,15 @@
     "react-scrollspy": "^3.4.2",
     "redux": "^4.0.5",
     "redux-devtools-extension": "^2.13.8",
+    "rimraf": "^3.0.2",
     "traverse": "^0.6.6"
   },
   "scripts": {
     "start": "react-scripts start",
-    "build": "react-scripts build",
+    "build": "react-scripts build && rimraf build/spec.json",
     "test": "react-scripts test",
-    "eject": "react-scripts eject"
+    "eject": "react-scripts eject",
+    "patch": "yarn build && yarn publish --no-git-tag-version"
   },
   "proxy": "http://localhost:4000",
   "eslintConfig": {

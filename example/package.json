@@ -8,6 +8,7 @@
   "dependencies": {
     "express": "^4.17.1",
     "openapi-comment-parser": "^0.3.4",
+    "openapi-ui-express": "^0.0.2",
     "swagger-ui-express": "^4.1.4"
   }
 }

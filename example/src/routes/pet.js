@@ -2,6 +2,12 @@ const { Router } = require('express');
 
 const router = Router();
 
+/**
+ * GET /hello-world
+ * @summary Hello World
+ * @response 200 - OK
+ */
+
 /* block comment */
 
 /**
@@ -10,7 +16,7 @@ const router = Router();
 
 /**
  * POST /pet
- * @tag pet
+ * @tag Pet
  * @summary Add a new pet to the store
  * @operationId addPet
  * @bodyDescription Pet object that needs to be added to the store
@@ -27,7 +33,7 @@ router.post('/', async (req, res, next) => {
 
 /**
  * PUT /pet
- * @tag pet
+ * @tag Pet
  * @summary Update an existing pet
  * @operationId updatePet
  * @bodyDescription Pet object that needs to be added to the store
@@ -46,7 +52,7 @@ router.put('/', async (req, res, next) => {
 
 /**
  * GET /pet/findByStatus
- * @tag pet
+ * @tag Pet
  * @summary Finds Pets by status
  * @description Multiple status values can be provided with comma separated strings
  * @operationId findPetsByStatus
@@ -65,7 +71,7 @@ router.get('/findByStatus', async (req, res, next) => {
 /**
  * GET /pet/findByTags
  * @deprecated
- * @tag pet
+ * @tag Pet
  * @summary Finds Pets by tags
  * @description 'Multiple tags can be provided with comma separated strings. Use tag1, tag2, tag3 for testing.'
  * @operationId findPetsByTags
@@ -82,7 +88,7 @@ router.get('/findByTags', async (req, res, next) => {
 
 /**
  * GET /pet/{petId}
- * @tag pet
+ * @tag Pet
  * @summary Find pet by ID
  * @description Returns a single pet
  * @operationId getPetById
@@ -107,7 +113,7 @@ router.get('/:petId', async (req, res, next) => {
 
 /**
  * POST /pet/{petId}
- * @tag pet
+ * @tag Pet
  * @summary Updates a pet in the store with form data
  * @operationId updatePetWithForm
  * @pathParam {int64} petId - ID of pet that needs to be updated
@@ -122,7 +128,7 @@ router.post('/:petId', async (req, res, next) => {
 
 /**
  * DELETE /pet/{petId}
- * @tag pet
+ * @tag Pet
  * @summary Deletes a pet
  * @operationId deletePet
  * @headerParam {string} [apikey]
@@ -138,7 +144,7 @@ router.delete('/:petId', async (req, res, next) => {
 
 /**
  * POST /pet/{petId}/uploadImage
- * @tag pet
+ * @tag Pet
  * @summary uploads an image
  * @operationId uploadFile
  * @pathParam {int64} petId - ID of pet to update

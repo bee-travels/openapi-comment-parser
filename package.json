@@ -32,7 +32,7 @@
   "scripts": {
     "lint": "eslint .",
     "test": "mocha -r ts-node/register \"src/**/?(*.)test.ts\"",
-    "prestart":"npm run build",
+    "prestart": "npm run build",
     "start": "nodemon -e yaml,yml,js,mjs,json example/src/app.js",
     "build": "run-s clean bundle",
     "clean": "rimraf dist",

@@ -1,4 +1,5 @@
 const swaggerUi = require('swagger-ui-express');
+const openapiUI = require('openapi-ui-express');
 const express = require('express');
 
 const openapi = require('../../dist/openapi-comment-parser');
@@ -16,7 +17,8 @@ app.use(express.urlencoded({ extended: false }));
 
 const spec = openapi();
 
-app.use('/api-docs', swaggerUi.serve, swaggerUi.setup(spec));
+app.use('/v1/api-docs', swaggerUi.serve, swaggerUi.setup(spec));
+app.use('/v2/api-docs', openapiUI(spec));
 
 app.use('/pet', petRouter);
 app.use('/store', storeRouter);

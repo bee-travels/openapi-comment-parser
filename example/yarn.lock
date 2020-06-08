@@ -257,6 +257,13 @@ openapi-comment-parser@^0.3.4:
   resolved "https://registry.yarnpkg.com/openapi-comment-parser/-/openapi-comment-parser-0.3.4.tgz#f993d581789009c4a0ed988d9831b7c8b89a98e4"
   integrity sha512-MKypziuf+WAklECHVqBiH9uRPHKuPEldbCUtURzlvqC3M9p1fDEvuayilutXPw7rkwjeFe3olthzccM6bzZdrQ==
 
+openapi-ui-express@^0.0.2:
+  version "0.0.2"
+  resolved "https://registry.yarnpkg.com/openapi-ui-express/-/openapi-ui-express-0.0.2.tgz#3c7f3238cbc12ca3a988763e57747615a6a2cdbe"
+  integrity sha512-xHFf8qa9IWXRWT9btbdFewf5H5pPjDv3lSAuoI+algVGUhEVcBhsAQi93FM1T5or+aQYofZoI3hA06lVAFjgxA==
+  dependencies:
+    express "^4.17.1"
+
 parseurl@~1.3.3:
   version "1.3.3"
   resolved "https://registry.yarnpkg.com/parseurl/-/parseurl-1.3.3.tgz#9da19e7bee8d12dff0513ed5b76957793bc2e8d4"

@@ -14,7 +14,7 @@ info:
     url: http://www.apache.org/licenses/LICENSE-2.0.html
 
 tags: 
-- name: pet
+- name: Pet
   description: Everything about your Pets
   externalDocs: 
     description: Find out more

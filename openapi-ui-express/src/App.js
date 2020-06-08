@@ -14,7 +14,7 @@ function slugify(string) {
   return string.toLowerCase().replace(/\s/g, '-');
 }
 
-function getPathsForTag(spec, tag) {
+function getPaths(spec) {
   let seen = new Map();
   return Object.entries(spec.paths)
     .map(([path, pathObj]) => {
@@ -39,19 +39,30 @@ function getPathsForTag(spec, tag) {
         };
       });
     })
-    .flat()
-    .filter((x) => x.tags.includes(tag));
+    .flat();
 }
 
 function organizeSpec(spec) {
+  const paths = getPaths(spec);
   // TODO: untagged go into default
-  return spec.tags.map((tag) => {
+  const tagged = spec.tags.map((tag) => {
     return {
       title: tag.name,
       description: tag.description,
-      items: getPathsForTag(spec, tag.name),
+      items: paths.filter((p) => p.tags && p.tags.includes(tag.name)),
     };
   });
+
+  const all = [
+    ...tagged,
+    {
+      title: 'API',
+      description: '',
+      items: paths.filter((p) => p.tags === undefined || p.tags.length === 0),
+    },
+  ];
+
+  return all;
 }
 
 function findActivePage(pages, hash) {
