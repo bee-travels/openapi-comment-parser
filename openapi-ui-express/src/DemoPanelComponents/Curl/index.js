@@ -60,7 +60,6 @@ function Curl() {
             {qs && '?'}
             {qs}"
           </span>
-
           {accept && (
             <>
               {' \\'}
@@ -74,7 +73,6 @@ function Curl() {
               </span>
             </>
           )}
-
           {contentType && (
             <>
               {' \\'}
@@ -89,6 +87,7 @@ function Curl() {
             </>
           )}
 
+          {/* TODO: buggy when really long */}
           {body && (
             <>
               {' \\'}
