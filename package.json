@@ -32,8 +32,8 @@
   "scripts": {
     "lint": "eslint .",
     "test": "mocha -r ts-node/register \"src/**/?(*.)test.ts\"",
-    "prestart": "npm run build",
-    "start": "nodemon -e yaml,yml,js,mjs,json example/src/app.js",
+    "prestartx": "npm run build && cd openapi-ui-express && npm run build",
+    "start": "nodemon -e yaml,yml,js,mjs,json --exec \"LOCAL_DEVELOPMENT=1 node example/src/app.js\"",
     "build": "run-s clean bundle",
     "clean": "rimraf dist",
     "bundle": "rollup -c && cp src/exported.d.ts dist/openapi-comment-parser.d.ts",

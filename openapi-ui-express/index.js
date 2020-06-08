@@ -5,12 +5,18 @@ const router = Router();
 
 const buildPath = path.join(__dirname, 'build');
 
-function openapiUI(spec) {
+function openapiUI(spec, { logo }) {
+  spec.info['x-logo'] = './logo';
+
   router.get('/spec.json', function (req, res) {
     res.json(spec);
   });
 
   router.use(express.static(buildPath));
+
+  router.get('/logo', function (req, res) {
+    res.sendFile(logo);
+  });
 
   router.get('/', function (req, res) {
     res.sendFile(path.join(buildPath, 'index.html'));
