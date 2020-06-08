@@ -14,7 +14,7 @@ const petRouter = require('./routes/pet');
 const storeRouter = require('./routes/store');
 const userRouter = require('./routes/user');
 
-const LOGO_PATH = path.join(__dirname, 'download.svg');
+const LOGO_PATH = path.join(__dirname, 'logo.svg');
 
 const app = express();
 const PORT = 4000;

@@ -5,13 +5,13 @@ import { useSelector } from 'react-redux';
 function colorForMethod(method) {
   switch (method.toLowerCase()) {
     case 'get':
-      return '#a4cdfe';
+      return 'var(--code-blue)';
     case 'put':
-      return '#f8b886';
+      return 'var(--code-orange)';
     case 'post':
-      return '#85d996';
+      return 'var(--code-green)';
     case 'delete':
-      return '#ff83c0';
+      return 'var(--code-red)';
     default:
       return undefined;
   }
@@ -25,7 +25,7 @@ function MethodEndpoint() {
     <pre
       style={{
         marginTop: '3.5em',
-        background: '#242526',
+        background: 'var(--ifm-codeblock-background-color)',
       }}
     >
       <span style={{ color: colorForMethod(method) }}>

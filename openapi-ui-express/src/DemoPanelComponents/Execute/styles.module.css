@@ -51,7 +51,7 @@
 }
 
 .executeButton:disabled {
-  background-color: #525252;
+  background-color: var(--button-dissabled);
   color: #8d8d8d;
   opacity: 0.65;
   pointer-events: none;

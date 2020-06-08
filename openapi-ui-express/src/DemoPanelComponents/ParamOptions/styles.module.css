@@ -1,7 +1,7 @@
 .inputBase {
   margin-top: calc(var(--ifm-pre-padding) / 2);
   /* height: 40px; */
-  background-color: #393939;
+  background-color: var(--input-background);
   border: none;
   outline: none;
   width: 100%;
@@ -17,7 +17,7 @@
 }
 
 .input:focus {
-  box-shadow: inset 0px 0px 0px 2px white;
+  box-shadow: inset 0px 0px 0px 2px var(--input-border);
 }
 
 .showMoreButton {

@@ -2617,9 +2617,29 @@ html[data-theme='dark'] {
 /* NICK OVERRIDES */
 :root {
   --ifm-color-primary: #0f62fe;
+  --ifm-codeblock-background-color: #f6f8fa;
+
+  --code-blue: #2688fd;
+  --code-green: #35aa4c;
+  --code-orange: #f1710e;
+  --code-red: #ff037f;
+
+  --input-background: var(--ifm-code-background);
+  --input-border: #0f62fe;
+  --button-dissabled: #c6c6c6;
 }
 html[data-theme='dark'] {
   --ifm-color-primary: #78a9ff;
+  --ifm-codeblock-background-color: #242526;
+
+  --code-blue: #a4cdfe;
+  --code-green: #85d996;
+  --code-orange: #f8b886;
+  --code-red: #ff83c0;
+
+  --input-background: #393939;
+  --input-border: white;
+  --button-dissabled: #525252;
 }
 
 .nick-monaco-padding {

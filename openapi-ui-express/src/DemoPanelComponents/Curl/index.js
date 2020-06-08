@@ -46,7 +46,7 @@ function Curl() {
       <button onClick={handleCurlCopy}>{copyText}</button>
       <pre
         style={{
-          background: '#242526',
+          background: 'var(--ifm-codeblock-background-color)',
           paddingRight: '60px',
         }}
       >
@@ -67,7 +67,10 @@ function Curl() {
               <br />
               <span>
                 {' '}
-                -H <span style={{ color: '#85d996' }}>"Accept: {accept}"</span>
+                -H{' '}
+                <span style={{ color: 'var(--code-green)' }}>
+                  "Accept: {accept}"
+                </span>
               </span>
             </>
           )}
@@ -79,7 +82,7 @@ function Curl() {
               <span>
                 {' '}
                 -H{' '}
-                <span style={{ color: '#85d996' }}>
+                <span style={{ color: 'var(--code-green)' }}>
                   "Content-Type: {contentType}"
                 </span>
               </span>
@@ -92,7 +95,8 @@ function Curl() {
               <br />
               <span>
                 {' '}
-                -d <span style={{ color: '#85d996' }}>{bodyString}</span>
+                -d{' '}
+                <span style={{ color: 'var(--code-green)' }}>{bodyString}</span>
               </span>
             </>
           )}

@@ -15,7 +15,7 @@ function Response() {
       <button onClick={() => clearResponse()}>Clear</button>
       <pre
         style={{
-          background: '#242526',
+          background: 'var(--ifm-codeblock-background-color)',
         }}
       >
         {response || 'No Response'}
