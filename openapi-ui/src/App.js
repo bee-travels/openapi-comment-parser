@@ -66,22 +66,6 @@ function Page({ spec }) {
 
   const order = organizeSpec(dereference(spec));
 
-  // const docsSidebars = {
-  //   default: order.map((x) => {
-  //     return {
-  //       items: x.items.map((y) => {
-  //         return {
-  //           href: `#${y.hashId}`,
-  //           label: y.summary,
-  //           type: 'link',
-  //         };
-  //       }),
-  //       label: x.title,
-  //       type: 'category',
-  //     };
-  //   }),
-  // };
-
   const sidebar = order.map((x) => {
     return {
       items: x.items.map((y) => {
@@ -96,8 +80,6 @@ function Page({ spec }) {
     };
   });
 
-  // const sidebar = 'default';
-
   const activePage = findActivePage(order, location.hash);
 
   return (
@@ -105,8 +87,6 @@ function Page({ spec }) {
       {sidebar && (
         <div className={styles.docSidebarContainer}>
           <DocSidebar
-            // docsSidebars={docsSidebars}
-            // location={location}
             sidebar={sidebar}
             activePage={activePage}
             sidebarCollapsible

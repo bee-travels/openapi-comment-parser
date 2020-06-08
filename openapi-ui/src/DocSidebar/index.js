@@ -13,7 +13,7 @@ import styles from './styles.module.css';
 
 const MOBILE_TOGGLE_SIZE = 24;
 
-function DocSidebarItem({ item, onItemClick, collapsible, location }) {
+function DocSidebarItem({ item, onItemClick, collapsible, active }) {
   const { items, label } = item;
   const [collapsed, setCollapsed] = useState(item.collapsed);
   const [prevCollapsedProp, setPreviousCollapsedProp] = useState(null);
@@ -33,10 +33,8 @@ function DocSidebarItem({ item, onItemClick, collapsible, location }) {
 
   const spyItems = items.map((i) => i.href.replace(/^#/, ''));
 
-  const spy = spyItems.includes(location.hash.replace(/^#/, ''));
-
   // only spy when on proper page.
-  const ListComponent = spy ? Scrollspy : 'ul';
+  const ListComponent = active ? Scrollspy : 'ul';
 
   return (
     items.length > 0 && (
@@ -79,53 +77,16 @@ function DocSidebarItem({ item, onItemClick, collapsible, location }) {
   );
 }
 
-// Calculate the category collapsing state when a page navigation occurs.
-// We want to automatically expand the categories which contains the current page.
-function mutateSidebarCollapsingState(item, location) {
-  const { items, href, type } = item;
-  switch (type) {
-    case 'category': {
-      const anyChildItemsActive =
-        items
-          .map((childItem) => mutateSidebarCollapsingState(childItem, location))
-          .filter((val) => val).length > 0;
-      // eslint-disable-next-line no-param-reassign
-      item.collapsed = !anyChildItemsActive;
-      return anyChildItemsActive;
-    }
-
-    case 'link':
-    default:
-      return href === location.hash;
-  }
-}
-
-function DocSidebar(props) {
+function DocSidebar({ activePage, sidebar, sidebarCollapsible }) {
   const [showResponsiveSidebar, setShowResponsiveSidebar] = useState(false);
 
-  const {
-    docsSidebars,
-    location,
-    sidebar: currentSidebar,
-    sidebarCollapsible,
-  } = props;
-
-  if (!currentSidebar) {
-    return null;
-  }
-
-  const sidebarData = docsSidebars[currentSidebar];
-
-  if (!sidebarData) {
-    throw new Error(
-      `Cannot find the sidebar "${currentSidebar}" in the sidebar config!`
-    );
-  }
-
   if (sidebarCollapsible) {
-    sidebarData.forEach((sidebarItem) =>
-      mutateSidebarCollapsingState(sidebarItem, location)
-    );
+    // collapse all
+    sidebar.forEach((item) => {
+      item.collapsed = true;
+    });
+    // open active page
+    sidebar[activePage].collapsed = false;
   }
 
   return (
@@ -175,7 +136,7 @@ function DocSidebar(props) {
         </button>
 
         <ul className="menu__list">
-          {sidebarData.map((item) => (
+          {sidebar.map((item, i) => (
             <DocSidebarItem
               key={item.label}
               item={item}
@@ -183,7 +144,7 @@ function DocSidebar(props) {
                 setShowResponsiveSidebar(false);
               }}
               collapsible={sidebarCollapsible}
-              location={location}
+              active={i === activePage}
             />
           ))}
         </ul>
