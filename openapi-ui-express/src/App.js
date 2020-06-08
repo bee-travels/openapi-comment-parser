@@ -9,6 +9,7 @@ import styles from './App.module.css';
 
 import './default-dark.css';
 import { dereference } from 'x-dereference';
+import Navbar from 'Navbar';
 
 function slugify(string) {
   return string.toLowerCase().replace(/\s/g, '-');
@@ -120,9 +121,16 @@ function Page({ spec }) {
 }
 
 function App({ spec }) {
+  const title = spec.info.title;
+  const logo = {
+    src: spec.info['x-logo'],
+  };
   return (
     <Router>
-      <Page spec={spec} />
+      <Navbar title={title} logo={logo} />
+      <div className="main-wrapper">
+        <Page spec={spec} />
+      </div>
     </Router>
   );
 }
