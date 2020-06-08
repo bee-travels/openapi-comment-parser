@@ -31,6 +31,7 @@ function init({
       description: param.description,
       type: param.in,
       required: param.required,
+      schema: param.schema,
     });
   });
 

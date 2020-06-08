@@ -23,3 +23,7 @@
   background-position: right var(--ifm-pre-padding) top 50%;
   background-size: auto auto;
 }
+
+.selectInput:focus {
+  box-shadow: inset 0px 0px 0px 2px white;
+}

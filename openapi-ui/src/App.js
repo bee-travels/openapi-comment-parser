@@ -66,24 +66,37 @@ function Page({ spec }) {
 
   const order = organizeSpec(dereference(spec));
 
-  const docsSidebars = {
-    default: order.map((x) => {
-      return {
-        items: x.items.map((y) => {
-          return {
-            href: `#${y.hashId}`,
-            label: y.summary,
-            type: 'link',
-          };
-        }),
-        label: x.title,
-        type: 'category',
-      };
-    }),
-  };
+  // const docsSidebars = {
+  //   default: order.map((x) => {
+  //     return {
+  //       items: x.items.map((y) => {
+  //         return {
+  //           href: `#${y.hashId}`,
+  //           label: y.summary,
+  //           type: 'link',
+  //         };
+  //       }),
+  //       label: x.title,
+  //       type: 'category',
+  //     };
+  //   }),
+  // };
 
-  const sidebar = 'default';
-  const sidebarCollapsible = true;
+  const sidebar = order.map((x) => {
+    return {
+      items: x.items.map((y) => {
+        return {
+          href: `#${y.hashId}`,
+          label: y.summary,
+          type: 'link',
+        };
+      }),
+      label: x.title,
+      type: 'category',
+    };
+  });
+
+  // const sidebar = 'default';
 
   const activePage = findActivePage(order, location.hash);
 
@@ -92,10 +105,11 @@ function Page({ spec }) {
       {sidebar && (
         <div className={styles.docSidebarContainer}>
           <DocSidebar
-            docsSidebars={docsSidebars}
-            location={location}
+            // docsSidebars={docsSidebars}
+            // location={location}
             sidebar={sidebar}
-            sidebarCollapsible={sidebarCollapsible}
+            activePage={activePage}
+            sidebarCollapsible
           />
         </div>
       )}

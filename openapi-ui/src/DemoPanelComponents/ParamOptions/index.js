@@ -3,6 +3,7 @@ import React, { useState } from 'react';
 import styles from './styles.module.css';
 import { useSelector } from 'react-redux';
 import { useActions } from 'redux/actions';
+import FormMultiSelect from 'DemoPanelComponents/FormMultiSelect';
 
 function ParamOptions() {
   const [showOptional, setShowOptional] = useState(false);
@@ -25,6 +26,9 @@ function ParamOptions() {
   return (
     <>
       {requiredParams.map((param) => {
+        if (param.schema.type === 'array' && param.schema.items.enum) {
+          return <ParamMultiSelectFormItem param={param} />;
+        }
         return <ParamTextFormItem param={param} />;
       })}
       {optionalParams.length > 0 && (
@@ -56,6 +60,27 @@ function ParamOptions() {
         </>
       )}
     </>
+  );
+}
+
+function ParamMultiSelectFormItem({ param }) {
+  const { updateParam } = useActions();
+  return (
+    <FormMultiSelect
+      label={param.name}
+      type={param.type}
+      options={param.schema.items.enum}
+      onChange={(e) => {
+        const values = Array.prototype.filter
+          .call(e.target.options, (o) => o.selected)
+          .map((o) => o.value);
+
+        updateParam({
+          ...param,
+          value: values.length > 0 ? values : undefined,
+        });
+      }}
+    />
   );
 }
 
