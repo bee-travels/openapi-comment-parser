@@ -13,7 +13,7 @@ import styles from './styles.module.css';
 
 const MOBILE_TOGGLE_SIZE = 24;
 
-function DocSidebarItem({ item, onItemClick, collapsible, active }) {
+function DocSidebarItem({ item, onItemClick, collapsible, active, location }) {
   const { items, label } = item;
   const [collapsed, setCollapsed] = useState(item.collapsed);
   const [prevCollapsedProp, setPreviousCollapsedProp] = useState(null);
@@ -34,7 +34,7 @@ function DocSidebarItem({ item, onItemClick, collapsible, active }) {
   const spyItems = items.map((i) => i.href.replace(/^#/, ''));
 
   // only spy when on proper page.
-  const ListComponent = active ? Scrollspy : 'ul';
+  const ListComponent = !window.ONE_ITEM_PER_PAGE && active ? Scrollspy : 'ul';
 
   return (
     items.length > 0 && (
@@ -60,24 +60,35 @@ function DocSidebarItem({ item, onItemClick, collapsible, active }) {
           currentClassName="nick-is-active"
           offset={-50}
         >
-          {items.map((childItem) => (
-            <li className="menu__list-item" key={childItem.href}>
-              <a
-                className="menu__link"
-                href={childItem.href}
-                onClick={onItemClick}
+          {items.map((childItem) => {
+            let active;
+            if (window.ONE_ITEM_PER_PAGE && childItem.href === location.hash) {
+              active = true;
+            }
+            return (
+              <li
+                className={classnames('menu__list-item', {
+                  'nick-is-active': active,
+                })}
+                key={childItem.href}
               >
-                {childItem.label}
-              </a>
-            </li>
-          ))}
+                <a
+                  className="menu__link"
+                  href={childItem.href}
+                  onClick={onItemClick}
+                >
+                  {childItem.label}
+                </a>
+              </li>
+            );
+          })}
         </ListComponent>
       </li>
     )
   );
 }
 
-function DocSidebar({ activePage, sidebar, sidebarCollapsible }) {
+function DocSidebar({ activePage, sidebar, location, sidebarCollapsible }) {
   const [showResponsiveSidebar, setShowResponsiveSidebar] = useState(false);
 
   if (sidebarCollapsible) {
@@ -145,6 +156,7 @@ function DocSidebar({ activePage, sidebar, sidebarCollapsible }) {
               }}
               collapsible={sidebarCollapsible}
               active={i === activePage}
+              location={location}
             />
           ))}
         </ul>

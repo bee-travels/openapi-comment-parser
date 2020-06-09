@@ -1,9 +1,10 @@
 import React, { useState } from 'react';
 
-import styles from './styles.module.css';
 import { useSelector } from 'react-redux';
 import { useActions } from 'redux/actions';
 import FormMultiSelect from 'DemoPanelComponents/FormMultiSelect';
+
+import styles from './styles.module.css';
 
 function ParamOptions() {
   const [showOptional, setShowOptional] = useState(false);
@@ -44,11 +45,33 @@ function ParamOptions() {
                 textAlign: 'center',
               }}
             >
-              {showOptional ? '-' : '+'}
+              <span
+                className={showOptional ? styles.plusExpanded : styles.plus}
+              >
+                <div>
+                  <svg
+                    style={{
+                      fill: 'currentColor',
+                      width: '10px',
+                      height: '10px',
+                    }}
+                    height="16"
+                    viewBox="0 0 16 16"
+                    width="16"
+                    xmlns="http://www.w3.org/2000/svg"
+                  >
+                    <path
+                      d="M9 7h6a1 1 0 0 1 0 2H9v6a1 1 0 0 1-2 0V9H1a1 1 0 1 1 0-2h6V1a1 1 0 1 1 2 0z"
+                      fill-rule="evenodd"
+                    ></path>
+                  </svg>
+                </div>
+              </span>
+              {/* {showOptional ? '-' : '+'} */}
             </span>
             {showOptional
-              ? 'hide optional parameters'
-              : 'show optional parameters'}
+              ? 'Hide optional parameters'
+              : 'Show optional parameters'}
           </button>
           {showOptional && (
             <div>

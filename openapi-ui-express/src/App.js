@@ -10,6 +10,7 @@ import styles from './App.module.css';
 import './default-dark.css';
 import { dereference } from 'x-dereference';
 import Navbar from 'Navbar';
+import DocPaginator from 'DocPaginator';
 
 function slugify(string) {
   return string.toLowerCase().replace(/\s/g, '-');
@@ -93,6 +94,31 @@ function Page({ spec }) {
   });
 
   const activePage = findActivePage(order, location.hash);
+  const activeSubPage = Math.max(
+    order[activePage].items.findIndex(
+      (page) => `#${page.hashId}` === location.hash
+    ),
+    0
+  );
+
+  const prevPage = order[activePage].items[activeSubPage - 1];
+  const page = order[activePage].items[activeSubPage];
+  const nextPage = order[activePage].items[activeSubPage + 1];
+
+  const metadata = {};
+  if (prevPage) {
+    metadata.previous = {
+      permalink: `#${prevPage.hashId}`,
+      title: prevPage.summary,
+    };
+  }
+
+  if (nextPage) {
+    metadata.next = {
+      permalink: `#${nextPage.hashId}`,
+      title: nextPage.summary,
+    };
+  }
 
   return (
     <div className={styles.docPage}>
@@ -101,6 +127,7 @@ function Page({ spec }) {
           <DocSidebar
             sidebar={sidebar}
             activePage={activePage}
+            location={location}
             sidebarCollapsible
           />
         </div>
@@ -110,9 +137,30 @@ function Page({ spec }) {
           <div className="container" id={`page-${activePage}`}>
             <DocPageTitle page={order[activePage]} />
 
-            {order[activePage].items.map((item) => (
-              <DocItem item={item} />
-            ))}
+            {!window.ONE_ITEM_PER_PAGE &&
+              order[activePage].items.map((item) => {
+                if (window.ONE_ITEM_PER_PAGE) {
+                  if (`#${item.hashId}` !== location.hash) {
+                    return null;
+                  }
+                }
+                return <DocItem item={item} />;
+              })}
+            {window.ONE_ITEM_PER_PAGE && (
+              <DocItem item={page} metadata={metadata} />
+            )}
+            {window.ONE_ITEM_PER_PAGE && (
+              <div className="row">
+                <div className="col">
+                  <div className={styles.docItemContainer}>
+                    <div className="margin-vert--lg">
+                      <DocPaginator metadata={metadata} />
+                    </div>
+                  </div>
+                </div>
+                <div className="col col--5"></div>
+              </div>
+            )}
           </div>
         </div>
       </main>

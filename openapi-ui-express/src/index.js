@@ -3,6 +3,8 @@ import ReactDOM from 'react-dom';
 import App from './App';
 import * as serviceWorker from './serviceWorker';
 
+window.ONE_ITEM_PER_PAGE = false;
+
 fetch(process.env.PUBLIC_URL + '/spec.json')
   .then((r) => r.json())
   .then((spec) => {

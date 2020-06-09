@@ -2617,6 +2617,7 @@ html[data-theme='dark'] {
 /* NICK OVERRIDES */
 :root {
   --ifm-color-primary: #0f62fe;
+  --ifm-color-primary-hover: #0043ce;
   --ifm-codeblock-background-color: #f6f8fa;
 
   --code-blue: #2688fd;
@@ -2630,6 +2631,7 @@ html[data-theme='dark'] {
 }
 html[data-theme='dark'] {
   --ifm-color-primary: #78a9ff;
+  --ifm-color-primary-hover: #a6c8ff;
   --ifm-codeblock-background-color: #242526;
 
   --code-blue: #a4cdfe;
@@ -2640,6 +2642,14 @@ html[data-theme='dark'] {
   --input-background: #393939;
   --input-border: white;
   --button-dissabled: #525252;
+}
+
+table tr:nth-child(2n) {
+  background-color: var(--ifm-table-background);
+}
+
+table th {
+  background-color: var(--ifm-table-stripe-background);
 }
 
 .nick-monaco-padding {

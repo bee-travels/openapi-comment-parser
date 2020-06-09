@@ -1,3 +1,16 @@
+.plus {
+  transition: transform 0.2s ease;
+  display: inline-block;
+  transform: rotate(0deg);
+  transform-origin: center;
+  margin-right: 6px;
+}
+
+.plusExpanded {
+  composes: plus;
+  transform: rotate(45deg);
+}
+
 .inputBase {
   margin-top: calc(var(--ifm-pre-padding) / 2);
   /* height: 40px; */
@@ -55,6 +68,8 @@
 
 .showMoreButton:hover {
   /* text-decoration: underline; */
+  /* background-color: red; */
+  color: var(--ifm-color-primary-hover);
 }
 
 .showMoreButton:last-child {

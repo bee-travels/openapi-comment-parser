@@ -42,7 +42,7 @@ function ParamsTable({ parameters, type }) {
               <tr>
                 <td>
                   <code>{param.name}</code>
-                  <span style={{ color: '#ff83c0' }}>
+                  <span style={{ color: 'var(--code-red)' }}>
                     {param.required ? '*' : ''}{' '}
                   </span>
                   <span style={{ opacity: '0.6' }}>

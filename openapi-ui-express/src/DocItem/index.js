@@ -5,10 +5,15 @@ import ParamsTable from 'ParamsTable';
 import StatusCodesTable from 'StatusCodesTable';
 
 import styles from './styles.module.css';
+import RequestBodyTable from 'RequestBodyTable';
+import DocPaginator from 'DocPaginator';
 
-function DocItem({ item }) {
+function DocItem({ item, metadata }) {
   return (
-    <div id={item.hashId} className="row">
+    <div
+      id={window.ONE_ITEM_PER_PAGE ? undefined : item.hashId}
+      className="row"
+    >
       <div className="col">
         <div className={styles.docItemContainer}>
           <article>
@@ -20,10 +25,17 @@ function DocItem({ item }) {
               <ParamsTable parameters={item.parameters} type="header" />
               <ParamsTable parameters={item.parameters} type="cookie" />
 
+              <RequestBodyTable body={item.requestBody} />
+
               <StatusCodesTable responses={item.responses} />
             </div>
           </article>
         </div>
+        {/* {window.ONE_ITEM_PER_PAGE && (
+          <div className="margin-vert--lg">
+            <DocPaginator metadata={metadata} />
+          </div>
+        )} */}
       </div>
       <div className="col col--5">
         <ApiDemoPanel item={item} />
