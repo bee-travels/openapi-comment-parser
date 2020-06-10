@@ -4,7 +4,9 @@ import { useTheme } from 'theme';
 
 function initMonaco(theme) {
   const BRIGHT = theme === 'dark' ? 'f5f6f7' : '1c1e21';
-  const DIM = theme === 'dark' ? '7f7f7f' : '979899';
+  const DIM = theme === 'dark' ? '7f7f7f' : 'aaaaaa';
+  // aaaaaa
+  // 979899
   const BLUE = theme === 'dark' ? 'a4cdfe' : '2688fd';
   const GREEN = theme === 'dark' ? '85d996' : '35aa4c';
   const ORANGE = theme === 'dark' ? 'f8b886' : 'f1710e';
