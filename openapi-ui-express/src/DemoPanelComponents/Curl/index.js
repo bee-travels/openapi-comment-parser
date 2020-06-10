@@ -1,5 +1,6 @@
 import React, { useRef, useState, useEffect } from 'react';
 
+import cloneDeep from 'lodash/cloneDeep';
 import queryString from 'query-string';
 
 import codegen from 'postman-code-generators';
@@ -22,8 +23,8 @@ function Curl() {
   const [codeText, setCodeText] = useState('');
 
   useEffect(() => {
-    console.log(postman);
-    console.log(queryParams);
+    const clonedPostman = cloneDeep(postman);
+
     const qp = queryParams
       .filter((param) => param.value)
       .map(
@@ -32,18 +33,19 @@ function Curl() {
       );
 
     if (qp.length > 0) {
-      postman.addQueryParams(qp);
+      clonedPostman.addQueryParams(qp);
     }
 
-    postman.url.host = [window.location.origin];
-    if (postman.body && postman.body.mode === 'raw') {
-      postman.body.raw = body || '';
+    clonedPostman.url.host = [window.location.origin];
+
+    if (clonedPostman.body && clonedPostman.body.mode === 'raw') {
+      clonedPostman.body.raw = body || '';
     }
 
     codegen.convert(
       'curl',
       'curl',
-      postman,
+      clonedPostman,
       {
         longFormat: false,
         followRedirect: false,

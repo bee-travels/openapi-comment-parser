@@ -7,7 +7,10 @@ import { useActions } from 'redux/actions';
 function Body() {
   const contentType = useSelector((state) => state.contentType);
   const requestBodyMetadata = useSelector((state) => state.requestBodyMetadata);
+  const thingID = useSelector((state) => `${state.method} ${state.endpoint}`);
   const { setBody } = useActions();
+
+  console.log(thingID);
 
   if (contentType === 'application/json') {
     const exampleBodyString = JSON.stringify(
@@ -21,6 +24,7 @@ function Body() {
       <div className="nick-form-item">
         <code>Body</code>
         <VSCode
+          key={thingID}
           value={exampleBodyString}
           language={contentType.replace('application/', '')}
           onChange={setBody}
@@ -37,6 +41,7 @@ function Body() {
       <div className="nick-form-item">
         <code>Body</code>
         <VSCode
+          key={thingID}
           value={exampleBodyString}
           language={contentType.replace('application/', '')}
           onChange={setBody}
