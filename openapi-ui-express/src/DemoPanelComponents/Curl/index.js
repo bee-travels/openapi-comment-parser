@@ -1,6 +1,9 @@
-import React, { useRef, useState } from 'react';
+import React, { useRef, useState, useEffect } from 'react';
 
 import queryString from 'query-string';
+
+import codegen from 'postman-code-generators';
+import sdk from 'postman-collection';
 
 import { useSelector } from 'react-redux';
 
@@ -14,17 +17,48 @@ function Curl() {
   const contentType = useSelector((state) => state.contentType);
   const body = useSelector((state) => state.body);
   const accept = useSelector((state) => state.accept);
+  const postman = useSelector((state) => state.postman);
+
+  const [codeText, setCodeText] = useState('');
+
+  useEffect(() => {
+    console.log(postman);
+    console.log(queryParams);
+    const qp = queryParams
+      .filter((param) => param.value)
+      .map(
+        (param) =>
+          new sdk.QueryParam({ key: param.name, value: param.value.join(',') })
+      );
+
+    if (qp.length > 0) {
+      postman.addQueryParams(qp);
+    }
+
+    postman.url.host = [window.location.origin];
+    if (postman.body && postman.body.mode === 'raw') {
+      postman.body.raw = body || '';
+    }
+
+    codegen.convert(
+      'curl',
+      'curl',
+      postman,
+      {
+        longFormat: false,
+        followRedirect: false,
+        trimRequestBody: true,
+      },
+      (error, snippet) => {
+        if (error) {
+          return;
+        }
+        setCodeText(snippet);
+      }
+    );
+  }, [body, contentType, postman, queryParams]);
 
   const ref = useRef(null);
-
-  let query = {};
-  queryParams.forEach((param) => {
-    if (param.value) {
-      query[param.name] = param.value;
-    }
-  });
-
-  const qs = queryString.stringify(query);
 
   const handleCurlCopy = () => {
     setCopyText('Copied');
@@ -33,13 +67,6 @@ function Curl() {
     }, 2000);
     navigator.clipboard.writeText(ref.current.innerText);
   };
-
-  let bodyString;
-  try {
-    bodyString = JSON.stringify(JSON.stringify(JSON.parse(body)));
-  } catch {
-    bodyString = '"{}"';
-  }
 
   return (
     <div className="nick-floating-button">
@@ -51,54 +78,12 @@ function Curl() {
         }}
       >
         <code ref={ref}>
-          <span>
-            curl -X <span>{method.toUpperCase()}</span> "
-            {window.location.origin}
-            {endpoint.replace(/{([a-z0-9-_]+)}/gi, (_, p1) => {
-              return pathParams.find((p) => p.name === p1).value || `:${p1}`;
-            })}
-            {qs && '?'}
-            {qs}"
-          </span>
-          {accept && (
-            <>
-              {' \\'}
-              <br />
-              <span>
-                {' '}
-                -H{' '}
-                <span style={{ color: 'var(--code-green)' }}>
-                  "Accept: {accept}"
-                </span>
-              </span>
-            </>
-          )}
-          {contentType && (
-            <>
-              {' \\'}
-              <br />
-              <span>
-                {' '}
-                -H{' '}
-                <span style={{ color: 'var(--code-green)' }}>
-                  "Content-Type: {contentType}"
-                </span>
-              </span>
-            </>
-          )}
-
-          {/* TODO: buggy when really long */}
-          {body && (
-            <>
-              {' \\'}
-              <br />
-              <span>
-                {' '}
-                -d{' '}
-                <span style={{ color: 'var(--code-green)' }}>{bodyString}</span>
-              </span>
-            </>
-          )}
+          {codeText.split("'").map((x, i) => {
+            if (i % 2) {
+              return <span style={{ color: 'var(--code-green)' }}>'{x}'</span>;
+            }
+            return <span>{x}</span>;
+          })}
         </code>
       </pre>
     </div>

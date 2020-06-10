@@ -4,6 +4,7 @@ function init({
   parameters = [],
   requestBody = {},
   responses = {},
+  postman,
 }) {
   const { content = {} } = requestBody;
 
@@ -46,6 +47,7 @@ function init({
     accept: acceptArray[0],
     body: undefined,
     response: undefined,
+    postman: postman,
   };
 }
 

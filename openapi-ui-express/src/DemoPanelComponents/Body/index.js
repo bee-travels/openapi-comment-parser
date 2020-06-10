@@ -32,7 +32,7 @@ function Body() {
   if (contentType === 'application/xml') {
     const exampleBodyString = createXMLExample(
       requestBodyMetadata?.content?.['application/xml']?.schema
-    );
+    ).replace(/\t/g, '  ');
     return (
       <div className="nick-form-item">
         <code>Body</code>

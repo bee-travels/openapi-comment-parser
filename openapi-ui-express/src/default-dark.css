@@ -2654,23 +2654,31 @@ table th {
 
 .nick-monaco-padding {
   margin-top: calc(var(--ifm-pre-padding) / 2);
-  /* background-color: #393939; */
-  /* background-color: #242526; */
-  background-color: #18191a;
-
   border-radius: 4px;
   padding: var(--ifm-pre-padding);
+
+  background-color: #ffffff;
   border: 2px solid transparent;
-  box-shadow: 0 0 0 1px grey;
+  box-shadow: 0 0 0 1px #dadde1;
 }
 
 .nick-monaco-padding-focus {
   margin-top: calc(var(--ifm-pre-padding) / 2);
-  /* background-color: #393939; */
-  /* background-color: #242526; */
-  background-color: #18191a;
   border-radius: 4px;
   padding: var(--ifm-pre-padding);
+
+  background-color: #ffffff;
+  border: 2px solid #0f62fe;
+}
+
+html[data-theme='dark'] .nick-monaco-padding {
+  background-color: #18191a;
+  border: 2px solid transparent;
+  box-shadow: 0 0 0 1px grey;
+}
+
+html[data-theme='dark'] .nick-monaco-padding-focus {
+  background-color: #18191a;
   border: 2px solid white;
 }
 

@@ -19,40 +19,41 @@ import classnames from 'classnames';
 // import useTheme from '@theme/hooks/useTheme';
 
 import styles from './styles.module.css';
+import { useTheme } from 'theme';
 
-const inittheme = localStorage.getItem('theme');
+// const inittheme = localStorage.getItem('theme');
 
-const useTheme = () => {
-  const [theme, setTheme] = useState(
-    typeof document !== 'undefined'
-      ? inittheme || document.querySelector('html').getAttribute('data-theme')
-      : inittheme || ''
-  );
+// const useTheme = () => {
+//   const [theme, setTheme] = useState(
+//     typeof document !== 'undefined'
+//       ? inittheme || document.querySelector('html').getAttribute('data-theme')
+//       : inittheme || ''
+//   );
 
-  useEffect(() => {
-    try {
-      const savedTheme = localStorage.getItem('theme');
-      if (savedTheme) {
-        document.querySelector('html').setAttribute('data-theme', savedTheme);
-        setTheme(savedTheme);
-      }
-    } catch (err) {
-      console.error(err);
-    }
-  }, []);
+//   useEffect(() => {
+//     try {
+//       const savedTheme = localStorage.getItem('theme');
+//       if (savedTheme) {
+//         document.querySelector('html').setAttribute('data-theme', savedTheme);
+//         setTheme(savedTheme);
+//       }
+//     } catch (err) {
+//       console.error(err);
+//     }
+//   }, []);
 
-  const setThemeSyncWithLocalStorage = useCallback((nextTheme) => {
-    try {
-      document.querySelector('html').setAttribute('data-theme', nextTheme);
-      localStorage.setItem('theme', nextTheme);
-      setTheme(nextTheme);
-    } catch (err) {
-      console.error(err);
-    }
-  }, []);
+//   const setThemeSyncWithLocalStorage = useCallback((nextTheme) => {
+//     try {
+//       document.querySelector('html').setAttribute('data-theme', nextTheme);
+//       localStorage.setItem('theme', nextTheme);
+//       setTheme(nextTheme);
+//     } catch (err) {
+//       console.error(err);
+//     }
+//   }, []);
 
-  return [theme, setThemeSyncWithLocalStorage];
-};
+//   return [theme, setThemeSyncWithLocalStorage];
+// };
 
 // function NavLink({ to, href, label, position, ...props }) {
 //   const toUrl = useBaseUrl(to);
@@ -80,7 +81,7 @@ function Navbar({ title, logo, github, version }) {
   // const context = useDocusaurusContext();
   const [sidebarShown, setSidebarShown] = useState(false);
   const [isSearchBarExpanded, setIsSearchBarExpanded] = useState(false);
-  const [theme, setTheme] = useTheme();
+  const { theme, setDarkMode, setLightMode } = useTheme();
   // const { siteConfig = {} } = context;
   // const { baseUrl, themeConfig = {} } = siteConfig;
   // const { navbar = {}, disableDarkMode = false } = themeConfig;
@@ -98,8 +99,14 @@ function Navbar({ title, logo, github, version }) {
   // }, [setSidebarShown]);
 
   const onToggleChange = useCallback(
-    (e) => setTheme(e.target.checked ? 'dark' : 'light'),
-    [setTheme]
+    (e) => {
+      if (e.target.checked) {
+        setDarkMode();
+      } else {
+        setLightMode();
+      }
+    },
+    [setDarkMode, setLightMode]
   );
 
   // const [isClient, setIsClient] = useState(false);
