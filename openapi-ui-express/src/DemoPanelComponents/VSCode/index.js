@@ -99,7 +99,6 @@ function VSCode({ value, language, onChange }) {
           editor.onDidChangeModelDecorations(() => {
             updateEditorHeight(); // typing
             requestAnimationFrame(updateEditorHeight); // folding
-            console.log('typing', editor.getValue());
             onChange(editor.getValue());
           });
 

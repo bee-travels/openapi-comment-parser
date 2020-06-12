@@ -3,6 +3,7 @@ import React, { useState } from 'react';
 import { useSelector } from 'react-redux';
 import { useActions } from 'redux/actions';
 import FormMultiSelect from 'DemoPanelComponents/FormMultiSelect';
+import FormTextInput from 'DemoPanelComponents/FormTextInput';
 
 import styles from './styles.module.css';
 
@@ -110,19 +111,13 @@ function ParamMultiSelectFormItem({ param }) {
 function ParamTextFormItem({ param }) {
   const { updateParam } = useActions();
   return (
-    <div className="nick-form-item">
-      <code>{param.name}</code>
-      <span style={{ opacity: 0.6 }}> — {param.type}</span>
-      <div>
-        <input
-          className={styles.input}
-          type="text"
-          placeholder={param.description || param.name}
-          value={param.value}
-          onChange={(e) => updateParam({ ...param, value: e.target.value })}
-        />
-      </div>
-    </div>
+    <FormTextInput
+      label={param.name}
+      type={param.type}
+      placeholder={param.description || param.name}
+      value={param.value}
+      onChange={(e) => updateParam({ ...param, value: e.target.value })}
+    />
   );
 }
 

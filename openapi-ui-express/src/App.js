@@ -135,7 +135,7 @@ function Page({ spec }) {
       <main className={styles.docMainContainer}>
         <div className="padding-vert--lg">
           <div className="container" id={`page-${activePage}`}>
-            <DocPageTitle page={order[activePage]} />
+            {/* <DocPageTitle page={order[activePage]} /> */}
 
             {!window.ONE_ITEM_PER_PAGE &&
               order[activePage].items.map((item) => {

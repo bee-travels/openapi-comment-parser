@@ -17,8 +17,12 @@ function DocItem({ item, metadata }) {
       <div className="col">
         <div className={styles.docItemContainer}>
           <article>
+            <header>
+              <h1 className={styles.docTitle}>{item.summary}</h1>
+            </header>
+            {/* <p>{item.description}</p> */}
             <div className="markdown">
-              <h2>{item.summary}</h2>
+              {/* <h2>{item.summary}</h2> */}
               <p>{item.description}</p>
               <ParamsTable parameters={item.parameters} type="path" />
               <ParamsTable parameters={item.parameters} type="query" />
