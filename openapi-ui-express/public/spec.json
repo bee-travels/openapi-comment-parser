@@ -45,6 +45,37 @@
             }
           },
           {
+            "name": "enum-array",
+            "in": "query",
+            "schema": {
+              "type": "array",
+              "items": {
+                "$ref": "#/components/schemas/StatusEnum"
+              }
+            }
+          },
+          {
+            "name": "pass-array",
+            "in": "query",
+            "schema": {
+              "type": "array",
+              "items": {
+                "type": "string",
+                "format": "password"
+              }
+            }
+          },
+          {
+            "name": "str-array",
+            "in": "query",
+            "schema": {
+              "type": "array",
+              "items": {
+                "type": "string"
+              }
+            }
+          },
+          {
             "name": "enum",
             "in": "query",
             "schema": {

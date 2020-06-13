@@ -10,6 +10,14 @@ import FormSelect from 'DemoPanelComponents/FormSelect';
 import FormItem from 'DemoPanelComponents/FormItem';
 
 function ParamOption({ param }) {
+  if (param.schema.type === 'array' && param.schema.items.enum) {
+    return <ParamMultiSelectFormItem param={param} />;
+  }
+
+  if (param.schema.type === 'array') {
+    return <ParamArrayFormItem param={param} />;
+  }
+
   if (param.schema.enum) {
     return <ParamSelectFormItem param={param} />;
   }
@@ -27,22 +35,10 @@ function ParamOption({ param }) {
   return <ParamTextFormItem param={param} />;
 }
 
-function ParamOptionArrayOrPrimitive({ param }) {
-  if (param.schema.type === 'array' && param.schema.items.enum) {
-    return <ParamMultiSelectFormItem param={param} />;
-  }
-
-  if (param.schema.type === 'array') {
-    return <ParamArrayFormItem param={param} />;
-  }
-
-  return <ParamOption param={param} />;
-}
-
 function ParamOptionWrapper({ param }) {
   return (
     <FormItem label={param.name} type={param.type}>
-      <ParamOptionArrayOrPrimitive param={param} />
+      <ParamOption param={param} />
     </FormItem>
   );
 }
@@ -135,6 +131,29 @@ function uuidv4() {
   );
 }
 
+function ArrayItem({ param }) {
+  if (param.schema.items.type === 'boolean') {
+    return <FormSelect options={['true', 'false']} onChange={() => {}} />;
+  }
+
+  if (param.schema.items.format === 'password') {
+    return (
+      <FormTextInput
+        placeholder={param.description || param.name}
+        onChange={() => {}}
+        password
+      />
+    );
+  }
+
+  return (
+    <FormTextInput
+      placeholder={param.description || param.name}
+      onChange={() => {}}
+    />
+  );
+}
+
 function ParamArrayFormItem({ param }) {
   const [items, setItems] = useState([]);
   const { updateParam } = useActions();
@@ -159,10 +178,7 @@ function ParamArrayFormItem({ param }) {
     <>
       {items.map((item) => (
         <div key={item.id} style={{ display: 'flex' }}>
-          <FormTextInput
-            placeholder={param.description || param.name}
-            onChange={() => {}}
-          />
+          <ArrayItem param={param} />
           <button
             className={styles.buttonDelete}
             onClick={handleDeleteItem(item)}
@@ -192,34 +208,18 @@ function ParamArrayFormItem({ param }) {
 
 function ParamSelectFormItem({ param }) {
   const { updateParam } = useActions();
-  return (
-    <FormSelect
-      label={param.name}
-      type={param.type}
-      options={param.schema.enum}
-      onChange={(e) => {}}
-    />
-  );
+  return <FormSelect options={param.schema.enum} onChange={(e) => {}} />;
 }
 
 function ParamBooleanFormItem({ param }) {
   const { updateParam } = useActions();
-  return (
-    <FormSelect
-      label={param.name}
-      type={param.type}
-      options={['true', 'false']}
-      onChange={(e) => {}}
-    />
-  );
+  return <FormSelect options={['true', 'false']} onChange={(e) => {}} />;
 }
 
 function ParamMultiSelectFormItem({ param }) {
   const { updateParam } = useActions();
   return (
     <FormMultiSelect
-      label={param.name}
-      type={param.type}
       options={param.schema.items.enum}
       onChange={(e) => {
         const values = Array.prototype.filter
@@ -239,10 +239,7 @@ function ParamPasswordFormItem({ param }) {
   const { updateParam } = useActions();
   return (
     <FormTextInput
-      label={param.name}
-      type={param.type}
       placeholder={param.description || param.name}
-      value={param.value}
       onChange={(e) => updateParam({ ...param, value: e.target.value })}
       password
     />
@@ -253,10 +250,7 @@ function ParamTextFormItem({ param }) {
   const { updateParam } = useActions();
   return (
     <FormTextInput
-      label={param.name}
-      type={param.type}
       placeholder={param.description || param.name}
-      value={param.value}
       onChange={(e) => updateParam({ ...param, value: e.target.value })}
     />
   );
