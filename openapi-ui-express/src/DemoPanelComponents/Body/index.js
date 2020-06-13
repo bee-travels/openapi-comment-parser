@@ -65,6 +65,7 @@ function Body() {
                 </FormItem>
               );
             }
+            // TODO: support all the other types.
             return (
               <FormItem label={key}>
                 <FormTextInput placeholder={val.description || key} />

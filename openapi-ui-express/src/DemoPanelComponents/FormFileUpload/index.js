@@ -66,7 +66,17 @@ function FormFileUpload({ label, placeholder, onChange }) {
       multiple={false}
     >
       {file ? (
-        <RenderPreview file={file} />
+        <div className="nick-floating-button">
+          <button
+            onClick={(e) => {
+              e.stopPropagation();
+              setFile(undefined);
+            }}
+          >
+            Clear
+          </button>
+          <RenderPreview file={file} />
+        </div>
       ) : (
         <div className={styles.dropzoneContent}>{placeholder}</div>
       )}
