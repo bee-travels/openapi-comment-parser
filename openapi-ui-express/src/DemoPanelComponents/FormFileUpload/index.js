@@ -47,7 +47,7 @@ function RenderPreview({ file }) {
   }
 }
 
-function FormSelect({ label, placeholder, onChange }) {
+function FormFileUpload({ label, placeholder, onChange }) {
   const [hover, setHover] = useState(false);
   const [file, setFile] = useState(undefined);
 
@@ -58,25 +58,20 @@ function FormSelect({ label, placeholder, onChange }) {
   }
 
   return (
-    <div className="nick-form-item">
-      <code>{label}</code>
-      <div>
-        <MagicDropzone
-          className={hover ? styles.dropzoneHover : styles.dropzone}
-          onDrop={handleDrop}
-          onDragEnter={() => setHover(true)}
-          onDragLeave={() => setHover(false)}
-          multiple={false}
-        >
-          {file ? (
-            <RenderPreview file={file} />
-          ) : (
-            <div className={styles.dropzoneContent}>{placeholder}</div>
-          )}
-        </MagicDropzone>
-      </div>
-    </div>
+    <MagicDropzone
+      className={hover ? styles.dropzoneHover : styles.dropzone}
+      onDrop={handleDrop}
+      onDragEnter={() => setHover(true)}
+      onDragLeave={() => setHover(false)}
+      multiple={false}
+    >
+      {file ? (
+        <RenderPreview file={file} />
+      ) : (
+        <div className={styles.dropzoneContent}>{placeholder}</div>
+      )}
+    </MagicDropzone>
   );
 }
 
-export default FormSelect;
+export default FormFileUpload;

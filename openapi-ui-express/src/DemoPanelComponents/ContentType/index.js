@@ -2,19 +2,25 @@ import React from 'react';
 import FormSelect from 'DemoPanelComponents/FormSelect';
 import { useSelector } from 'react-redux';
 import { useActions } from 'redux/actions';
+import FormItem from 'DemoPanelComponents/FormItem';
 
 function ContentType() {
   const contentTypeOptions = useSelector((state) => state.contentTypeOptions);
   const contentType = useSelector((state) => state.contentType);
   const { setContentType } = useActions();
 
+  if (contentTypeOptions.length === 0) {
+    return null;
+  }
+
   return (
-    <FormSelect
-      label="Content-Type"
-      options={contentTypeOptions}
-      value={contentType}
-      onChange={(e) => setContentType(e.target.value)}
-    />
+    <FormItem label="Content-Type">
+      <FormSelect
+        options={contentTypeOptions}
+        value={contentType}
+        onChange={(e) => setContentType(e.target.value)}
+      />
+    </FormItem>
   );
 }
 

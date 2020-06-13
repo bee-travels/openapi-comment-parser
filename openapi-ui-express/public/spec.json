@@ -18,6 +18,40 @@
     "/ohai": {
       "get": {
         "summary": "ohaiiii",
+        "parameters": [
+          {
+            "name": "pass",
+            "in": "query",
+            "schema": {
+              "type": "string",
+              "format": "password"
+            }
+          },
+          {
+            "name": "bool",
+            "in": "query",
+            "schema": {
+              "type": "boolean"
+            }
+          },
+          {
+            "name": "bool-array",
+            "in": "query",
+            "schema": {
+              "type": "array",
+              "items": {
+                "type": "boolean"
+              }
+            }
+          },
+          {
+            "name": "enum",
+            "in": "query",
+            "schema": {
+              "$ref": "#/components/schemas/StatusEnum"
+            }
+          }
+        ],
         "responses": {
           "200": {
             "description": "successful operation"

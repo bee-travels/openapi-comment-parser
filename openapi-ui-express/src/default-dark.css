@@ -2633,6 +2633,8 @@ html[data-theme='dark'] {
 
   --dropzone-color: rgba(0, 0, 0, 0.5);
   --dropzone-background-color-hover: rgba(15, 98, 254, 0.2);
+
+  --inverse-color: var(--ifm-color-gray-100);
 }
 html[data-theme='dark'] {
   --ifm-color-primary: #78a9ff;
@@ -2652,6 +2654,8 @@ html[data-theme='dark'] {
 
   --dropzone-color: rgba(255, 255, 255, 0.3);
   --dropzone-background-color-hover: rgba(120, 169, 255, 0.2);
+
+  --inverse-color: var(--ifm-color-gray-900);
 }
 
 table tr:nth-child(2n) {

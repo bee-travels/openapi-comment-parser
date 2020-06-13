@@ -25,16 +25,16 @@ function Curl() {
   useEffect(() => {
     const clonedPostman = cloneDeep(postman);
 
-    const qp = queryParams
-      .filter((param) => param.value)
-      .map(
-        (param) =>
-          new sdk.QueryParam({ key: param.name, value: param.value.join(',') })
-      );
+    // const qp = queryParams
+    //   .filter((param) => param.value)
+    //   .map(
+    //     (param) =>
+    //       new sdk.QueryParam({ key: param.name, value: param.value.join(',') })
+    //   );
 
-    if (qp.length > 0) {
-      clonedPostman.addQueryParams(qp);
-    }
+    // if (qp.length > 0) {
+    //   clonedPostman.addQueryParams(qp);
+    // }
 
     clonedPostman.url.host = [window.location.origin];
 

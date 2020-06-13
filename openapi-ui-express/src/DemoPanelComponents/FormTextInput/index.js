@@ -2,22 +2,16 @@ import React from 'react';
 
 import styles from './styles.module.css';
 
-function ParamTextFormItem({ label, type, placeholder, value, onChange }) {
+function FormTextInput({ placeholder, value, onChange, password }) {
   return (
-    <div className="nick-form-item">
-      <code>{label}</code>
-      {type && <span style={{ opacity: 0.6 }}> — {type}</span>}
-      <div>
-        <input
-          className={styles.input}
-          type="text"
-          placeholder={placeholder}
-          value={value}
-          onChange={onChange}
-        />
-      </div>
-    </div>
+    <input
+      className={styles.input}
+      type={password ? 'password' : 'text'}
+      placeholder={placeholder}
+      value={value}
+      onChange={onChange}
+    />
   );
 }
 
-export default ParamTextFormItem;
+export default FormTextInput;

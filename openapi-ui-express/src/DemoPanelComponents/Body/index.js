@@ -5,6 +5,7 @@ import FormFileUpload from 'DemoPanelComponents/FormFileUpload';
 import { sampleFromSchema, createXMLExample } from 'x-utils';
 import { useSelector } from 'react-redux';
 import { useActions } from 'redux/actions';
+import FormItem from 'DemoPanelComponents/FormItem';
 
 function Body() {
   const contentType = useSelector((state) => state.contentType);
@@ -59,14 +60,15 @@ function Body() {
           ).map(([key, val]) => {
             if (val.format === 'binary') {
               return (
-                <FormFileUpload
-                  label={key}
-                  placeholder={val.description || key}
-                />
+                <FormItem label={key}>
+                  <FormFileUpload placeholder={val.description || key} />
+                </FormItem>
               );
             }
             return (
-              <FormTextInput label={key} placeholder={val.description || key} />
+              <FormItem label={key}>
+                <FormTextInput placeholder={val.description || key} />
+              </FormItem>
             );
           })}
         </div>
@@ -95,15 +97,14 @@ function Body() {
   }
 
   return (
-    <div className="nick-form-item">
-      <code>Body</code>
+    <FormItem label="Body">
       <VSCode
         key={thingID}
         value={exampleBodyString}
         language={language}
         onChange={setBody}
       />
-    </div>
+    </FormItem>
   );
 }
 

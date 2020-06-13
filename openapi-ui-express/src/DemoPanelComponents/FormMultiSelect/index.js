@@ -2,7 +2,7 @@ import React from 'react';
 
 import styles from './styles.module.css';
 
-function FormMultiSelect({ label, type, options, value, onChange }) {
+function FormMultiSelect({ options, value, onChange }) {
   if (options.length === 0) {
     return null;
   }
@@ -19,24 +19,18 @@ function FormMultiSelect({ label, type, options, value, onChange }) {
   }
 
   return (
-    <div className="nick-form-item">
-      <code>{label}</code>
-      {type && <span style={{ opacity: 0.6 }}> — {type}</span>}
-      <div>
-        <select
-          style={{ height: height }}
-          className={styles.selectInput}
-          value={value}
-          onChange={onChange}
-          size={Math.min(6, options.length + 1)}
-          multiple
-        >
-          {options.map((option) => {
-            return <option value={option}>{option}</option>;
-          })}
-        </select>
-      </div>
-    </div>
+    <select
+      style={{ height: height }}
+      className={styles.selectInput}
+      value={value}
+      onChange={onChange}
+      size={Math.min(6, options.length + 1)}
+      multiple
+    >
+      {options.map((option) => {
+        return <option value={option}>{option}</option>;
+      })}
+    </select>
   );
 }
 
