@@ -1,4 +1,5 @@
 import React from 'react';
+import MD from 'react-markdown';
 
 function getType(val) {
   if (val.type === 'object') {
@@ -87,23 +88,27 @@ function RequestBodyTable({ body }) {
           <tr>
             <th style={{ textAlign: 'left' }}>
               Request Body{' '}
+              {body.required && (
+                <>
+                  {
+                    <span style={{ opacity: '0.6', fontWeight: 'normal' }}>
+                      {' '}
+                      —{' '}
+                    </span>
+                  }
+                  <strong
+                    style={{
+                      fontSize: 'var(--ifm-code-font-size)',
+                      color: 'var(--code-red)',
+                    }}
+                  >
+                    {' '}
+                    REQUIRED
+                  </strong>
+                </>
+              )}
               <div style={{ fontWeight: 'normal' }}>
-                {body.required && (
-                  <>
-                    <strong
-                      style={{
-                        fontSize: 'var(--ifm-code-font-size)',
-                      }}
-                    >
-                      REQUIRED
-                    </strong>
-                    {body.description && (
-                      <span style={{ opacity: '0.6' }}> — </span>
-                    )}
-                  </>
-                )}
-                {/* TODO: update to support CommonMark */}
-                {body.description}
+                <MD className="table-markdown" source={body.description} />
               </div>
             </th>
           </tr>

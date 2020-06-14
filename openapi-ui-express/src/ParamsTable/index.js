@@ -65,20 +65,6 @@ function ParamsTable({ parameters, type }) {
                   )}
                   {param.description && (
                     <div className={styles.description}>
-                      {/* {param.required && (
-                      <>
-                        <strong
-                          style={{
-                            fontSize: 'var(--ifm-code-font-size)',
-                          }}
-                        >
-                          REQUIRED
-                        </strong>
-                        {param.description && (
-                          <span style={{ opacity: '0.6' }}> — </span>
-                        )}
-                      </>
-                    )} */}
                       <MD
                         className="table-markdown"
                         source={param.description}

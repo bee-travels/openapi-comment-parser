@@ -19,17 +19,6 @@ function StatusCodesTable({ responses }) {
           </tr>
         </thead>
         <tbody>
-          {/* <tr>
-            <td>
-              {codes.map((code) => {
-                return (
-                  <div>
-                    <code>{code}</code> {responses[code].description}
-                  </div>
-                );
-              })}
-            </td>
-          </tr> */}
           {codes.map((code) => {
             return (
               <tr>
