@@ -262,6 +262,9 @@
                 }
               }
             }
+          },
+          "400": {
+            "description": "Invalid request due to user input, for example:\n\n* Bad header parameter\n* Invalid output language\n* No input images\n* The size of the image file in the request is larger than the maximum supported size"
           }
         },
         "security": [

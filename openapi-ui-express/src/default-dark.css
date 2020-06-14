@@ -2666,6 +2666,10 @@ table th {
   background-color: var(--ifm-table-stripe-background);
 }
 
+.table-markdown > *:only-child {
+  margin-bottom: 0;
+}
+
 .admonition-icon svg {
   fill: black;
   stroke: black;

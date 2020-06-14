@@ -1,4 +1,5 @@
 import React from 'react';
+import MD from 'react-markdown';
 
 function StatusCodesTable({ responses }) {
   // openapi requires at least one response, so we shouldn't HAVE to check...
@@ -18,18 +19,38 @@ function StatusCodesTable({ responses }) {
           </tr>
         </thead>
         <tbody>
-          <tr>
+          {/* <tr>
             <td>
               {codes.map((code) => {
                 return (
                   <div>
-                    {/* TODO: update to support CommonMark */}
                     <code>{code}</code> {responses[code].description}
                   </div>
                 );
               })}
             </td>
-          </tr>
+          </tr> */}
+          {codes.map((code) => {
+            return (
+              <tr>
+                <td>
+                  <div style={{ display: 'flex' }}>
+                    <div
+                      style={{ marginRight: 'var(--ifm-table-cell-padding)' }}
+                    >
+                      <code>{code}</code>
+                    </div>
+                    <div>
+                      <MD
+                        className="table-markdown"
+                        source={responses[code].description}
+                      />
+                    </div>
+                  </div>
+                </td>
+              </tr>
+            );
+          })}
         </tbody>
       </table>
     </>
