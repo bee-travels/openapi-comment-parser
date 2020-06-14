@@ -6,9 +6,8 @@ import StatusCodesTable from 'StatusCodesTable';
 
 import styles from './styles.module.css';
 import RequestBodyTable from 'RequestBodyTable';
-import DocPaginator from 'DocPaginator';
 
-function DocItem({ item, metadata }) {
+function DocItem({ item }) {
   return (
     <div
       id={window.ONE_ITEM_PER_PAGE ? undefined : item.hashId}
@@ -20,9 +19,7 @@ function DocItem({ item, metadata }) {
             <header>
               <h1 className={styles.docTitle}>{item.summary}</h1>
             </header>
-            {/* <p>{item.description}</p> */}
             <div className="markdown">
-              {/* <h2>{item.summary}</h2> */}
               <p>{item.description}</p>
               <ParamsTable parameters={item.parameters} type="path" />
               <ParamsTable parameters={item.parameters} type="query" />
@@ -35,11 +32,6 @@ function DocItem({ item, metadata }) {
             </div>
           </article>
         </div>
-        {/* {window.ONE_ITEM_PER_PAGE && (
-          <div className="margin-vert--lg">
-            <DocPaginator metadata={metadata} />
-          </div>
-        )} */}
       </div>
       <div className="col col--5">
         <ApiDemoPanel item={item} />

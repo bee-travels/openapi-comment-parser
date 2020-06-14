@@ -10,7 +10,6 @@ import FormItem from 'DemoPanelComponents/FormItem';
 function Body() {
   const contentType = useSelector((state) => state.contentType);
   const requestBodyMetadata = useSelector((state) => state.requestBodyMetadata);
-  const thingID = useSelector((state) => `${state.method} ${state.endpoint}`);
   const { setBody } = useActions();
 
   // Lot's of possible content-types:
@@ -43,7 +42,6 @@ function Body() {
     contentType === 'multipart/form-data' ||
     contentType === 'application/x-www-form-urlencoded'
   ) {
-    console.log(requestBodyMetadata);
     return (
       <div className="nick-form-item">
         <code>Body</code>
@@ -77,7 +75,7 @@ function Body() {
     );
   }
 
-  let language = contentType.replace('application/', '');
+  let language = 'plaintext';
   let exampleBodyString = '';
   if (contentType === 'application/json') {
     exampleBodyString = JSON.stringify(
@@ -100,7 +98,6 @@ function Body() {
   return (
     <FormItem label="Body">
       <VSCode
-        key={thingID}
         value={exampleBodyString}
         language={language}
         onChange={setBody}

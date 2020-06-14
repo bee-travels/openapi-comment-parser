@@ -3,7 +3,6 @@ import { BrowserRouter as Router, useLocation } from 'react-router-dom';
 
 import DocSidebar from 'DocSidebar';
 import DocItem from 'DocItem';
-import DocPageTitle from 'DocPageTitle';
 
 import styles from './App.module.css';
 
@@ -139,15 +138,11 @@ function Page({ spec }) {
 
             {!window.ONE_ITEM_PER_PAGE &&
               order[activePage].items.map((item) => {
-                if (window.ONE_ITEM_PER_PAGE) {
-                  if (`#${item.hashId}` !== location.hash) {
-                    return null;
-                  }
-                }
                 return <DocItem item={item} />;
               })}
+
             {window.ONE_ITEM_PER_PAGE && (
-              <DocItem item={page} metadata={metadata} />
+              <DocItem key={`${page.method}-${page.path}`} item={page} />
             )}
             {window.ONE_ITEM_PER_PAGE && (
               <div className="row">
