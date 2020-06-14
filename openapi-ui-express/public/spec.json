@@ -20,6 +20,17 @@
         "summary": "ohaiiii",
         "parameters": [
           {
+            "name": "classifier_ids",
+            "in": "query",
+            "schema": {
+              "type": "array",
+              "items": {
+                "type": "string"
+              }
+            },
+            "description": "Which classifiers to apply. Overrides the **owners** parameter. You can specify both custom and built-in classifier IDs. The built-in `default` classifier is used if both **classifier_ids** and **owners** parameters are empty.\n\nThe following built-in classifier_ids require no training:\n* `default`: Returns classes from thousands of general tags.\n* `food`: Enhances specificity and accuracy for images of food items.\n* `explicit`: Evaluates whether the image might be pornographic."
+          },
+          {
             "name": "pass",
             "in": "query",
             "schema": {

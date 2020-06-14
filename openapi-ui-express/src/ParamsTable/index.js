@@ -1,6 +1,8 @@
 import React from 'react';
 import MD from 'react-markdown';
 
+import styles from './styles.module.css';
+
 function parseFinalSchema(schema) {
   if (schema.$ref) {
     return schema.$ref.replace('#/components/schemas/', '');
@@ -47,8 +49,23 @@ function ParamsTable({ parameters, type }) {
                     {' '}
                     {getSchemaName(param.schema)}
                   </span>
-                  <div>
-                    {param.required && (
+                  {param.required && (
+                    <>
+                      {<span style={{ opacity: '0.6' }}> — </span>}
+                      <strong
+                        style={{
+                          fontSize: 'var(--ifm-code-font-size)',
+                          color: 'var(--code-red)',
+                        }}
+                      >
+                        {' '}
+                        REQUIRED
+                      </strong>
+                    </>
+                  )}
+                  {param.description && (
+                    <div className={styles.description}>
+                      {/* {param.required && (
                       <>
                         <strong
                           style={{
@@ -61,10 +78,13 @@ function ParamsTable({ parameters, type }) {
                           <span style={{ opacity: '0.6' }}> — </span>
                         )}
                       </>
-                    )}
-                    {/* TODO: update to support CommonMark */}
-                    {param.description}
-                  </div>
+                    )} */}
+                      <MD
+                        className="table-markdown"
+                        source={param.description}
+                      />
+                    </div>
+                  )}
                 </td>
               </tr>
             );

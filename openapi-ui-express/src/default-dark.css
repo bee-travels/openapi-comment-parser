@@ -2644,7 +2644,9 @@ html[data-theme='dark'] {
   --code-blue: #a4cdfe;
   --code-green: #85d996;
   --code-orange: #f8b886;
-  --code-red: #ff83c0;
+  /* --code-red: #ff83c0;
+  --code-red: #ec4949; */
+  --code-red: #fc929e;
 
   --input-background: #393939;
   --input-border: white;
