@@ -12,7 +12,6 @@
   /* padding: 16px 11px; */
   border-radius: 4px;
   padding: var(--ifm-pre-padding);
-  margin-top: calc(var(--ifm-pre-padding) / 2);
   font-size: var(--ifm-code-font-size);
 }
 
@@ -26,7 +25,6 @@
   width: 100%;
   border-radius: 4px;
   padding: var(--ifm-pre-padding);
-  margin-top: calc(var(--ifm-pre-padding) / 2);
   font-size: var(--ifm-code-font-size);
   border: 2px dashed var(--ifm-color-primary);
   background-color: var(--dropzone-background-color-hover);

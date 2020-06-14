@@ -47,7 +47,7 @@ function RenderPreview({ file }) {
   }
 }
 
-function FormFileUpload({ label, placeholder, onChange }) {
+function FormFileUpload({ placeholder, onChange }) {
   const [hover, setHover] = useState(false);
   const [file, setFile] = useState(undefined);
 
@@ -58,29 +58,34 @@ function FormFileUpload({ label, placeholder, onChange }) {
   }
 
   return (
-    <MagicDropzone
-      className={hover ? styles.dropzoneHover : styles.dropzone}
-      onDrop={handleDrop}
-      onDragEnter={() => setHover(true)}
-      onDragLeave={() => setHover(false)}
-      multiple={false}
+    <div
+      className="nick-floating-button"
+      style={{ marginTop: 'calc(var(--ifm-pre-padding) / 2)' }}
     >
-      {file ? (
-        <div className="nick-floating-button">
-          <button
-            onClick={(e) => {
-              e.stopPropagation();
-              setFile(undefined);
-            }}
-          >
-            Clear
-          </button>
-          <RenderPreview file={file} />
-        </div>
-      ) : (
-        <div className={styles.dropzoneContent}>{placeholder}</div>
-      )}
-    </MagicDropzone>
+      <MagicDropzone
+        className={hover ? styles.dropzoneHover : styles.dropzone}
+        onDrop={handleDrop}
+        onDragEnter={() => setHover(true)}
+        onDragLeave={() => setHover(false)}
+        multiple={false}
+      >
+        {file ? (
+          <>
+            <button
+              onClick={(e) => {
+                e.stopPropagation();
+                setFile(undefined);
+              }}
+            >
+              Clear
+            </button>
+            <RenderPreview file={file} />
+          </>
+        ) : (
+          <div className={styles.dropzoneContent}>{placeholder}</div>
+        )}
+      </MagicDropzone>
+    </div>
   );
 }
 
