@@ -99,7 +99,7 @@ function RequestBodyTable({ body }) {
                   <strong
                     style={{
                       fontSize: 'var(--ifm-code-font-size)',
-                      color: 'var(--code-red)',
+                      color: 'var(--required)',
                     }}
                   >
                     {' '}

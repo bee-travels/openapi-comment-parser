@@ -2625,6 +2625,12 @@ html[data-theme='dark'] {
   --code-orange: #f1710e;
   --code-red: #ff037f;
 
+  --code-blue: #648bea;
+  --code-green: #39a351;
+  --code-orange: #eb662a;
+  --code-red: #f5003f;
+  --required: #f46679;
+
   --input-background: var(--ifm-code-background);
   --input-border: #0f62fe;
   --button-dissabled: #c6c6c6;
@@ -2644,9 +2650,11 @@ html[data-theme='dark'] {
   --code-blue: #a4cdfe;
   --code-green: #85d996;
   --code-orange: #f8b886;
+
   /* --code-red: #ff83c0;
   --code-red: #ec4949; */
   --code-red: #fc929e;
+  --required: var(--code-red);
 
   --input-background: #393939;
   --input-border: white;

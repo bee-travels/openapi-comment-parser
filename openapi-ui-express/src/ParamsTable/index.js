@@ -55,7 +55,7 @@ function ParamsTable({ parameters, type }) {
                       <strong
                         style={{
                           fontSize: 'var(--ifm-code-font-size)',
-                          color: 'var(--code-red)',
+                          color: 'var(--required)',
                         }}
                       >
                         {' '}
