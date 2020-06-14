@@ -415,6 +415,7 @@
     "/pet/findByTags": {
       "get": {
         "deprecated": true,
+        "x-deprecated-description": "The **Finds Pets by tags** endpoint has been deprecated and may be removed in future versions of the Petstore API.\n\nInstructions for updating: Use [Finds Pets by status](#finds-pets-by-status) instead.",
         "tags": [
           "pet"
         ],

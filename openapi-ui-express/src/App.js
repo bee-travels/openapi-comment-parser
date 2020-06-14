@@ -85,6 +85,7 @@ function Page({ spec }) {
           href: `#${y.hashId}`,
           label: y.summary,
           type: 'link',
+          deprecated: y.deprecated,
         };
       }),
       label: x.title,

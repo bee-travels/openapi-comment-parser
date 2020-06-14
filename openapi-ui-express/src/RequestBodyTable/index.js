@@ -88,7 +88,22 @@ function RequestBodyTable({ body }) {
             <th style={{ textAlign: 'left' }}>
               Request Body{' '}
               <div style={{ fontWeight: 'normal' }}>
-                (required) {body.description}
+                {body.required && (
+                  <>
+                    <strong
+                      style={{
+                        fontSize: 'var(--ifm-code-font-size)',
+                      }}
+                    >
+                      REQUIRED
+                    </strong>
+                    {body.description && (
+                      <span style={{ opacity: '0.6' }}> — </span>
+                    )}
+                  </>
+                )}
+                {/* TODO: update to support CommonMark */}
+                {body.description}
               </div>
             </th>
           </tr>

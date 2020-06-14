@@ -2666,6 +2666,35 @@ table th {
   background-color: var(--ifm-table-stripe-background);
 }
 
+.admonition-icon svg {
+  fill: black;
+  stroke: black;
+}
+
+.alert,
+.alert a {
+  color: black;
+}
+
+.alert a {
+  padding: 3px;
+  margin: -3px;
+}
+
+.alert a:hover {
+  background-color: rgba(255, 255, 255, 0.5);
+  border-radius: 4px;
+}
+
+.admonition .admonition-heading:last-child h5 {
+  margin-bottom: 0;
+}
+
+.nick-is-deprecated:not(.nick-is-active) {
+  opacity: 0.3;
+  text-decoration: line-through;
+}
+
 .nick-monaco-padding {
   margin-top: calc(var(--ifm-pre-padding) / 2);
   border-radius: 4px;

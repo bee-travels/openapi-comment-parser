@@ -1,4 +1,5 @@
 import React from 'react';
+import MD from 'react-markdown';
 
 function parseFinalSchema(schema) {
   if (schema.$ref) {
@@ -47,7 +48,21 @@ function ParamsTable({ parameters, type }) {
                     {getSchemaName(param.schema)}
                   </span>
                   <div>
-                    {param.required && <span>(required) </span>}
+                    {param.required && (
+                      <>
+                        <strong
+                          style={{
+                            fontSize: 'var(--ifm-code-font-size)',
+                          }}
+                        >
+                          REQUIRED
+                        </strong>
+                        {param.description && (
+                          <span style={{ opacity: '0.6' }}> — </span>
+                        )}
+                      </>
+                    )}
+                    {/* TODO: update to support CommonMark */}
                     {param.description}
                   </div>
                 </td>

@@ -23,6 +23,7 @@ function StatusCodesTable({ responses }) {
               {codes.map((code) => {
                 return (
                   <div>
+                    {/* TODO: update to support CommonMark */}
                     <code>{code}</code> {responses[code].description}
                   </div>
                 );
