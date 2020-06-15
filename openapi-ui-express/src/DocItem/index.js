@@ -22,10 +22,10 @@ function DocItem({ item }) {
             </header>
             <div className="markdown">
               {item.deprecated && (
-                <div class="admonition admonition-caution alert alert--warning">
-                  <div class="admonition-heading">
+                <div className="admonition admonition-caution alert alert--warning">
+                  <div className="admonition-heading">
                     <h5>
-                      <span class="admonition-icon">
+                      <span className="admonition-icon">
                         <svg
                           xmlns="http://www.w3.org/2000/svg"
                           width="16"
@@ -33,7 +33,7 @@ function DocItem({ item }) {
                           viewBox="0 0 16 16"
                         >
                           <path
-                            fill-rule="evenodd"
+                            fillRule="evenodd"
                             d="M8.893 1.5c-.183-.31-.52-.5-.887-.5s-.703.19-.886.5L.138 13.499a.98.98 0 0 0 0 1.001c.193.31.53.501.886.501h13.964c.367 0 .704-.19.877-.5a1.03 1.03 0 0 0 .01-1.002L8.893 1.5zm.133 11.497H6.987v-2.003h2.039v2.003zm0-3.004H6.987V5.987h2.039v4.006z"
                           ></path>
                         </svg>
@@ -42,7 +42,7 @@ function DocItem({ item }) {
                     </h5>
                   </div>
                   {item['x-deprecated-description'] && (
-                    <div class="admonition-content">
+                    <div className="admonition-content">
                       <MD source={item['x-deprecated-description']} />
                     </div>
                   )}

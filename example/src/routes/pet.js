@@ -5,6 +5,7 @@ const router = Router();
 /**
  * GET /hello-world
  * @summary Hello World
+ * @queryParam {password} fun
  * @response 200 - OK
  */
 

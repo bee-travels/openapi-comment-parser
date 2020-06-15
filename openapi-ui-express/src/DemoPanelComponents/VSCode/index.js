@@ -5,17 +5,12 @@ import { useTheme } from 'theme';
 function initMonaco(theme) {
   const BRIGHT = theme === 'dark' ? 'f5f6f7' : '1c1e21';
   const DIM = theme === 'dark' ? '7f7f7f' : 'aaaaaa';
-  // aaaaaa
-  // 979899
-  const BLUE = theme === 'dark' ? 'a4cdfe' : '2688fd';
-  const GREEN = theme === 'dark' ? '85d996' : '35aa4c';
-  const ORANGE = theme === 'dark' ? 'f8b886' : 'f1710e';
+
+  const BLUE = theme === 'dark' ? 'a4cdfe' : '648bea';
+  const GREEN = theme === 'dark' ? '85d996' : '39a351';
 
   const BACKGROUND = theme === 'dark' ? '#18191a' : '#ffffff';
   const SELECT = theme === 'dark' ? '#515151' : '#ebedef';
-  // e2e4e6
-  // ebf2f4
-  // e0e0e0
 
   monaco
     .init()

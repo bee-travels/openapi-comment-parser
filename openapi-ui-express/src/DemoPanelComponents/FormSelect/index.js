@@ -10,7 +10,11 @@ function FormSelect({ options, value, onChange }) {
   return (
     <select className={styles.selectInput} value={value} onChange={onChange}>
       {options.map((option) => {
-        return <option value={option}>{option}</option>;
+        return (
+          <option key={option} value={option}>
+            {option}
+          </option>
+        );
       })}
     </select>
   );

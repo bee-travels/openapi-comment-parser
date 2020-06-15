@@ -42,7 +42,7 @@ function ParamsTable({ parameters, type }) {
         <tbody>
           {params.map((param) => {
             return (
-              <tr>
+              <tr key={`${param.in}-${param.name}`}>
                 <td>
                   <code>{param.name}</code>
                   <span style={{ opacity: '0.6' }}>

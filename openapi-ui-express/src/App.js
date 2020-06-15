@@ -135,28 +135,17 @@ function Page({ spec }) {
       <main className={styles.docMainContainer}>
         <div className="padding-vert--lg">
           <div className="container" id={`page-${activePage}`}>
-            {/* <DocPageTitle page={order[activePage]} /> */}
-
-            {!window.ONE_ITEM_PER_PAGE &&
-              order[activePage].items.map((item) => {
-                return <DocItem item={item} />;
-              })}
-
-            {window.ONE_ITEM_PER_PAGE && (
-              <DocItem key={`${page.method}-${page.path}`} item={page} />
-            )}
-            {window.ONE_ITEM_PER_PAGE && (
-              <div className="row">
-                <div className="col">
-                  <div className={styles.docItemContainer}>
-                    <div className="margin-vert--lg">
-                      <DocPaginator metadata={metadata} />
-                    </div>
+            <DocItem key={`${page.method}-${page.path}`} item={page} />
+            <div className="row">
+              <div className="col">
+                <div className={styles.docItemContainer}>
+                  <div className="margin-vert--lg">
+                    <DocPaginator metadata={metadata} />
                   </div>
                 </div>
-                <div className="col col--5"></div>
               </div>
-            )}
+              <div className="col col--5"></div>
+            </div>
           </div>
         </div>
       </main>

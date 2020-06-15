@@ -130,7 +130,7 @@ function RequestBodyTable({ body }) {
       </table>
 
       {Object.entries(other).map(([key, val]) => (
-        <table style={{ display: 'table' }}>
+        <table key={key} style={{ display: 'table' }}>
           <thead>
             <tr>
               <th style={{ textAlign: 'left' }}>{key}</th>

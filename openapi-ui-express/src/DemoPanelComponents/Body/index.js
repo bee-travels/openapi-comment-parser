@@ -58,14 +58,14 @@ function Body() {
           ).map(([key, val]) => {
             if (val.format === 'binary') {
               return (
-                <FormItem label={key}>
+                <FormItem key={key} label={key}>
                   <FormFileUpload placeholder={val.description || key} />
                 </FormItem>
               );
             }
             // TODO: support all the other types.
             return (
-              <FormItem label={key}>
+              <FormItem key={key} label={key}>
                 <FormTextInput placeholder={val.description || key} />
               </FormItem>
             );

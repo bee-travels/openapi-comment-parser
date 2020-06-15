@@ -7,7 +7,6 @@
 
 import React, { useState } from 'react';
 import classnames from 'classnames';
-import Scrollspy from 'react-scrollspy';
 
 import styles from './styles.module.css';
 
@@ -31,11 +30,6 @@ function DocSidebarItem({ item, onItemClick, collapsible, active, location }) {
     setCollapsed((state) => !state);
   };
 
-  const spyItems = items.map((i) => i.href.replace(/^#/, ''));
-
-  // only spy when on proper page.
-  const ListComponent = !window.ONE_ITEM_PER_PAGE && active ? Scrollspy : 'ul';
-
   return (
     items.length > 0 && (
       <li
@@ -54,17 +48,10 @@ function DocSidebarItem({ item, onItemClick, collapsible, active, location }) {
         >
           {label}
         </a>
-        <ListComponent
-          items={spyItems}
-          className="menu__list"
-          currentClassName="nick-is-active"
-          offset={-50}
-        >
+        <ul className="menu__list">
           {items.map((childItem) => {
-            let active;
-            if (window.ONE_ITEM_PER_PAGE && childItem.href === location.hash) {
-              active = true;
-            }
+            const active = childItem.href === location.hash;
+
             return (
               <li
                 className={classnames('menu__list-item', {
@@ -105,7 +92,7 @@ function DocSidebarItem({ item, onItemClick, collapsible, active, location }) {
               </li>
             );
           })}
-        </ListComponent>
+        </ul>
       </li>
     )
   );

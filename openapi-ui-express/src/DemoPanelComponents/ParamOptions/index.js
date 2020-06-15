@@ -26,12 +26,11 @@ function ParamOption({ param }) {
     return <ParamBooleanFormItem param={param} />;
   }
 
-  if (param.schema.format === 'password') {
-    return <ParamPasswordFormItem param={param} />;
-  }
+  // NOTE: We used to support `password` type, but curl still shows it and
+  // Chrome's autocomplete is a huge dick.
 
   // integer, number, string, int32, int64, float, double, object, byte, binary,
-  // date-time, date
+  // date-time, date, password
   return <ParamTextFormItem param={param} />;
 }
 
@@ -65,7 +64,7 @@ function ParamOptions() {
     <>
       {/* Required Parameters */}
       {requiredParams.map((param) => (
-        <ParamOptionWrapper param={param} />
+        <ParamOptionWrapper key={`${param.in}-${param.name}`} param={param} />
       ))}
 
       {/* Optional Parameters */}
@@ -99,7 +98,7 @@ function ParamOptions() {
                   >
                     <path
                       d="M9 7h6a1 1 0 0 1 0 2H9v6a1 1 0 0 1-2 0V9H1a1 1 0 1 1 0-2h6V1a1 1 0 1 1 2 0z"
-                      fill-rule="evenodd"
+                      fillRule="evenodd"
                     ></path>
                   </svg>
                 </div>
@@ -109,13 +108,17 @@ function ParamOptions() {
               ? 'Hide optional parameters'
               : 'Show optional parameters'}
           </button>
-          {showOptional && (
-            <div>
-              {optionalParams.map((param) => (
-                <ParamOptionWrapper param={param} />
-              ))}
-            </div>
-          )}
+
+          <div
+            className={showOptional ? styles.showOptions : styles.hideOptions}
+          >
+            {optionalParams.map((param) => (
+              <ParamOptionWrapper
+                key={`${param.in}-${param.name}`}
+                param={param}
+              />
+            ))}
+          </div>
         </>
       )}
     </>
@@ -156,7 +159,7 @@ function ArrayItem({ param }) {
 
 function ParamArrayFormItem({ param }) {
   const [items, setItems] = useState([]);
-  const { updateParam } = useActions();
+  // const { updateParam } = useActions();
 
   function handleAddItem() {
     setItems((i) => [
@@ -207,12 +210,12 @@ function ParamArrayFormItem({ param }) {
 }
 
 function ParamSelectFormItem({ param }) {
-  const { updateParam } = useActions();
+  // const { updateParam } = useActions();
   return <FormSelect options={param.schema.enum} onChange={(e) => {}} />;
 }
 
 function ParamBooleanFormItem({ param }) {
-  const { updateParam } = useActions();
+  // const { updateParam } = useActions();
   return <FormSelect options={['true', 'false']} onChange={(e) => {}} />;
 }
 
@@ -231,17 +234,6 @@ function ParamMultiSelectFormItem({ param }) {
           value: values.length > 0 ? values : undefined,
         });
       }}
-    />
-  );
-}
-
-function ParamPasswordFormItem({ param }) {
-  const { updateParam } = useActions();
-  return (
-    <FormTextInput
-      placeholder={param.description || param.name}
-      onChange={(e) => updateParam({ ...param, value: e.target.value })}
-      password
     />
   );
 }

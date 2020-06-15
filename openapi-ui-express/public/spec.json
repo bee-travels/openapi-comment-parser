@@ -20,6 +20,24 @@
         "summary": "ohaiiii",
         "parameters": [
           {
+            "name": "cookie1",
+            "description": "tasty",
+            "required": true,
+            "in": "cookie",
+            "schema": {
+              "type": "string"
+            }
+          },
+          {
+            "name": "cookie2",
+            "description": "tasty",
+            "required": true,
+            "in": "cookie",
+            "schema": {
+              "type": "string"
+            }
+          },
+          {
             "name": "classifier_ids",
             "in": "query",
             "schema": {

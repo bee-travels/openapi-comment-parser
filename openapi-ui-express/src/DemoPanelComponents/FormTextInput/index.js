@@ -2,14 +2,15 @@ import React from 'react';
 
 import styles from './styles.module.css';
 
-function FormTextInput({ placeholder, value, onChange, password }) {
+function FormTextInput({ placeholder, value, onChange }) {
   return (
     <input
       className={styles.input}
-      type={password ? 'password' : 'text'}
+      type="text"
       placeholder={placeholder}
       value={value}
       onChange={onChange}
+      autoComplete="off"
     />
   );
 }

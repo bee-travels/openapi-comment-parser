@@ -35,7 +35,8 @@
 
   color: var(--ifm-color-primary);
   cursor: pointer;
-  margin: var(--ifm-pre-padding) 0;
+  margin-top: var(--ifm-pre-padding);
+  margin-bottom: 0;
   text-align: left;
   display: block;
 }
@@ -54,9 +55,9 @@
   margin-top: 0;
 }
 
-.showMoreButton:last-child {
+/* .showMoreButton:last-child {
   margin-bottom: 0;
-}
+} */
 
 .buttonDelete {
   -webkit-appearance: none;
@@ -166,4 +167,14 @@
 
 .input:focus {
   box-shadow: inset 0px 0px 0px 2px var(--input-border);
+}
+
+.showOptions {
+  visibility: visible;
+  margin-top: var(--ifm-pre-padding);
+}
+
+.hideOptions {
+  display: none;
+  visibility: hidden;
 }

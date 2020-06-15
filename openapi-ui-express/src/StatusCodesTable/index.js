@@ -21,7 +21,7 @@ function StatusCodesTable({ responses }) {
         <tbody>
           {codes.map((code) => {
             return (
-              <tr>
+              <tr key={code}>
                 <td>
                   <div style={{ display: 'flex' }}>
                     <div

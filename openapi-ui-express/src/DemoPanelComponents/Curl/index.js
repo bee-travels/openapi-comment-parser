@@ -38,6 +38,38 @@ function setPathParams(postman, queryParams) {
   postman.url.variables.assimilate(source);
 }
 
+function buildCookie(cookieParams) {
+  const cookies = cookieParams.map((param) => {
+    if (param.value) {
+      return new sdk.Cookie({
+        name: param.name,
+        value: param.value,
+      });
+    }
+    return undefined;
+  });
+  const list = new sdk.CookieList(null, cookies);
+  return list.toString();
+}
+
+function setHeaders(postman, contentType, accept, cookie, headerParams) {
+  postman.headers.clear();
+  if (contentType) {
+    postman.addHeader({ key: 'Content-Type', value: contentType });
+  }
+  if (accept) {
+    postman.addHeader({ key: 'Accept', value: accept });
+  }
+  headerParams.forEach((param) => {
+    if (param.value) {
+      postman.addHeader({ key: param.name, value: param.value });
+    }
+  });
+  if (cookie) {
+    postman.addHeader({ key: 'Cookie', value: cookie });
+  }
+}
+
 function Curl() {
   const [copyText, setCopyText] = useState('Copy');
 
@@ -61,6 +93,9 @@ function Curl() {
     setQueryParams(clonedPostman, queryParams);
     setPathParams(clonedPostman, pathParams);
 
+    const cookie = buildCookie(cookieParams);
+    setHeaders(clonedPostman, contentType, accept, cookie, headerParams);
+
     clonedPostman.url.host = [window.location.origin];
 
     if (clonedPostman.body && clonedPostman.body.mode === 'raw') {
@@ -83,7 +118,16 @@ function Curl() {
         setCodeText(snippet);
       }
     );
-  }, [body, pathParams, postman, queryParams]);
+  }, [
+    accept,
+    body,
+    contentType,
+    cookieParams,
+    headerParams,
+    pathParams,
+    postman,
+    queryParams,
+  ]);
 
   const ref = useRef(null);
 
@@ -107,9 +151,13 @@ function Curl() {
         <code ref={ref}>
           {codeText.split("'").map((x, i) => {
             if (i % 2) {
-              return <span style={{ color: 'var(--code-green)' }}>'{x}'</span>;
+              return (
+                <span key={i} style={{ color: 'var(--code-green)' }}>
+                  '{x}'
+                </span>
+              );
             }
-            return <span>{x}</span>;
+            return <span key={i}>{x}</span>;
           })}
         </code>
       </pre>
