@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 
 import { useSelector } from 'react-redux';
 import { useActions } from 'redux/actions';
@@ -134,17 +134,15 @@ function uuidv4() {
   );
 }
 
-function ArrayItem({ param }) {
+function ArrayItem({ param, onChange }) {
   if (param.schema.items.type === 'boolean') {
-    return <FormSelect options={['true', 'false']} onChange={() => {}} />;
-  }
-
-  if (param.schema.items.format === 'password') {
     return (
-      <FormTextInput
-        placeholder={param.description || param.name}
-        onChange={() => {}}
-        password
+      <FormSelect
+        options={['---', 'true', 'false']}
+        onChange={(e) => {
+          const val = e.target.value;
+          onChange(val === '---' ? undefined : val);
+        }}
       />
     );
   }
@@ -152,14 +150,16 @@ function ArrayItem({ param }) {
   return (
     <FormTextInput
       placeholder={param.description || param.name}
-      onChange={() => {}}
+      onChange={(e) => {
+        onChange(e.target.value);
+      }}
     />
   );
 }
 
 function ParamArrayFormItem({ param }) {
   const [items, setItems] = useState([]);
-  // const { updateParam } = useActions();
+  const { updateParam } = useActions();
 
   function handleAddItem() {
     setItems((i) => [
@@ -170,9 +170,31 @@ function ParamArrayFormItem({ param }) {
     ]);
   }
 
+  useEffect(() => {
+    const values = items.map((item) => item.value).filter((item) => item);
+
+    updateParam({
+      ...param,
+      value: values.length > 0 ? values : undefined,
+    });
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [items]);
+
   function handleDeleteItem(itemToDelete) {
     return () => {
       const newItems = items.filter((i) => i.id !== itemToDelete.id);
+      setItems(newItems);
+    };
+  }
+
+  function handleChangeItem(itemToUpdate) {
+    return (value) => {
+      const newItems = items.map((i) => {
+        if (i.id === itemToUpdate.id) {
+          return { ...i, value: value };
+        }
+        return i;
+      });
       setItems(newItems);
     };
   }
@@ -181,7 +203,7 @@ function ParamArrayFormItem({ param }) {
     <>
       {items.map((item) => (
         <div key={item.id} style={{ display: 'flex' }}>
-          <ArrayItem param={param} />
+          <ArrayItem param={param} onChange={handleChangeItem(item)} />
           <button
             className={styles.buttonDelete}
             onClick={handleDeleteItem(item)}
@@ -197,7 +219,7 @@ function ParamArrayFormItem({ param }) {
               aria-hidden="true"
             >
               <path d="M24 9.4L22.6 8 16 14.6 9.4 8 8 9.4 14.6 16 8 22.6 9.4 24 16 17.4 22.6 24 24 22.6 17.4 16 24 9.4z"></path>
-              <title>Close</title>
+              <title>Delete</title>
             </svg>
           </button>
         </div>
@@ -210,17 +232,42 @@ function ParamArrayFormItem({ param }) {
 }
 
 function ParamSelectFormItem({ param }) {
-  // const { updateParam } = useActions();
-  return <FormSelect options={param.schema.enum} onChange={(e) => {}} />;
+  const { updateParam } = useActions();
+
+  return (
+    <FormSelect
+      options={['---', ...param.schema.enum]}
+      onChange={(e) => {
+        const val = e.target.value;
+        updateParam({
+          ...param,
+          value: val === '---' ? undefined : val,
+        });
+      }}
+    />
+  );
 }
 
 function ParamBooleanFormItem({ param }) {
-  // const { updateParam } = useActions();
-  return <FormSelect options={['true', 'false']} onChange={(e) => {}} />;
+  const { updateParam } = useActions();
+
+  return (
+    <FormSelect
+      options={['---', 'true', 'false']}
+      onChange={(e) => {
+        const val = e.target.value;
+        updateParam({
+          ...param,
+          value: val === '---' ? undefined : val,
+        });
+      }}
+    />
+  );
 }
 
 function ParamMultiSelectFormItem({ param }) {
   const { updateParam } = useActions();
+
   return (
     <FormMultiSelect
       options={param.schema.items.enum}
@@ -240,6 +287,7 @@ function ParamMultiSelectFormItem({ param }) {
 
 function ParamTextFormItem({ param }) {
   const { updateParam } = useActions();
+
   return (
     <FormTextInput
       placeholder={param.description || param.name}
