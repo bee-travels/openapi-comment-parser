@@ -2668,6 +2668,10 @@ html[data-theme='dark'] {
   --inverse-color: var(--ifm-color-gray-900);
 }
 
+/* .token.arrow {
+  color: #d9a0f9 !important;
+} */
+
 table tr:nth-child(2n) {
   background-color: var(--ifm-table-background);
 }

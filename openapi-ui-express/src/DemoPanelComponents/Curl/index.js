@@ -67,138 +67,113 @@ const languageTheme = {
     color: 'var(--ifm-code-color)',
   },
   styles: [
-    {
-      types: ['changed'],
-      style: {
-        color: 'rgb(162, 191, 252)',
-        fontStyle: 'italic',
-      },
-    },
-    {
-      types: ['deleted'],
-      style: {
-        color: 'rgba(239, 83, 80, 0.56)',
-        fontStyle: 'italic',
-      },
-    },
+    // {
+    //   types: ['changed'],
+    //   style: {
+    //     color: 'rgb(162, 191, 252)',
+    //     fontStyle: 'italic',
+    //   },
+    // },
+    // {
+    //   types: ['deleted'],
+    //   style: {
+    //     color: 'rgba(239, 83, 80, 0.56)',
+    //     fontStyle: 'italic',
+    //   },
+    // },
     {
       types: ['inserted', 'attr-name'],
       style: {
-        color: 'rgb(173, 219, 103)',
-        fontStyle: 'italic',
+        color: 'var(--code-green)',
+        // color: 'rgb(173, 219, 103)',
+        // fontStyle: 'italic',
       },
     },
-    {
-      types: ['comment'],
-      style: {
-        color: 'rgb(99, 119, 119)',
-        fontStyle: 'italic',
-      },
-    },
+    // {
+    //   types: ['comment'],
+    //   style: {
+    //     color: 'rgb(99, 119, 119)',
+    //     fontStyle: 'italic',
+    //   },
+    // },
     {
       types: ['string', 'url'],
       style: {
-        color: 'rgb(173, 219, 103)',
+        color: 'var(--code-green)',
+        // color: 'rgb(173, 219, 103)',
       },
     },
-    {
-      types: ['variable'],
-      style: {
-        color: 'rgb(214, 222, 235)',
-      },
-    },
-    {
-      types: ['number'],
-      style: {
-        color: 'rgb(247, 140, 108)',
-      },
-    },
+    // {
+    //   types: ['variable'],
+    //   style: {
+    //     color: 'rgb(214, 222, 235)',
+    //   },
+    // },
+    // {
+    //   types: ['number'],
+    //   style: {
+    //     color: 'rgb(247, 140, 108)',
+    //   },
+    // },
     {
       types: ['builtin', 'char', 'constant', 'function'],
       style: {
-        color: 'rgb(130, 170, 255)',
+        // color: 'rgb(130, 170, 255)',
+        color: 'var(--code-blue)',
       },
     },
     {
       // This was manually added after the auto-generation
       // so that punctuations are not italicised
-      types: ['punctuation'],
+      types: ['punctuation', 'operator'], // +operator
       style: {
-        color: 'rgb(199, 146, 234)',
+        // color: 'rgb(199, 146, 234)',
+        color: '#7f7f7f',
       },
     },
-    {
-      types: ['selector', 'doctype'],
-      style: {
-        color: 'rgb(199, 146, 234)',
-        fontStyle: 'italic',
-      },
-    },
+    // {
+    //   types: ['selector', 'doctype'],
+    //   style: {
+    //     color: 'rgb(199, 146, 234)',
+    //     fontStyle: 'italic',
+    //   },
+    // },
     {
       types: ['class-name'],
       style: {
-        color: 'rgb(255, 203, 139)',
+        // color: 'rgb(255, 203, 139)',
+        color: 'var(--code-orange)',
       },
     },
     {
-      types: ['tag', 'operator', 'keyword'],
+      types: ['tag', 'arrow', 'keyword'], // -operator, +arrow
       style: {
-        color: 'rgb(127, 219, 202)',
+        // arrow is actually handled globally
+        // color: 'rgb(127, 219, 202)',
+        color: '#d9a0f9',
       },
     },
     {
       types: ['boolean'],
       style: {
-        color: 'rgb(255, 88, 116)',
+        // color: 'rgb(255, 88, 116)',
+        color: 'var(--code-red)',
       },
     },
-    {
-      types: ['property'],
-      style: {
-        color: 'rgb(128, 203, 196)',
-      },
-    },
-    {
-      types: ['namespace'],
-      style: {
-        color: 'rgb(178, 204, 214)',
-      },
-    },
+    // {
+    //   types: ['property'],
+    //   style: {
+    //     color: 'rgb(128, 203, 196)',
+    //   },
+    // },
+    // {
+    //   types: ['namespace'],
+    //   style: {
+    //     color: 'rgb(178, 204, 214)',
+    //   },
+    // },
   ],
 };
-
-// var languageTheme = {
-//   plain: {
-//     color: 'var(--ifm-code-color)',
-//   },
-//   styles: [
-//     {
-//       types: ['inserted', 'function'],
-//       style: {
-//         color: 'var(--code-blue)',
-//       },
-//     },
-//     {
-//       types: ['punctuation', 'symbol'],
-//       style: {
-//         color: 'pink',
-//       },
-//     },
-//     {
-//       types: ['string', 'char', 'tag', 'selector'],
-//       style: {
-//         color: 'var(--code-green)',
-//       },
-//     },
-//     {
-//       types: ['keyword', 'variable'],
-//       style: {
-//         color: 'var(--code-red)',
-//         // fontStyle: 'italic',
-//       },
-//     },
-//   ],
-// };
 
 function setQueryParams(postman, queryParams) {
   postman.url.query.clear();
@@ -267,6 +242,8 @@ function setBody(clonedPostman, body) {
   if (clonedPostman.body === undefined) {
     return;
   }
+  console.log(clonedPostman);
+  console.log(clonedPostman.body.mode);
   switch (clonedPostman.body.mode) {
     case 'raw': {
       clonedPostman.body.raw = body || '';
@@ -277,9 +254,26 @@ function setBody(clonedPostman, body) {
       if (body === undefined) {
         return;
       }
+      if (typeof body !== 'object') {
+        // treat it like raw.
+        clonedPostman.body.mode = 'raw';
+        clonedPostman.body.raw = body || '';
+        return;
+      }
+      if (body.type === 'file') {
+        // treat it like file.
+        clonedPostman.body.mode = 'file';
+        clonedPostman.body.file = { src: body.src };
+        return;
+      }
       const params = Object.entries(body)
         .filter(([_, val]) => val)
-        .map(([key, val]) => new sdk.FormParam({ key: key, value: val }));
+        .map(([key, val]) => {
+          if (val.type === 'file') {
+            return new sdk.FormParam({ key: key, ...val });
+          }
+          return new sdk.FormParam({ key: key, value: val });
+        });
       clonedPostman.body.formdata.assimilate(params);
       return;
     }
@@ -317,7 +311,6 @@ function Curl() {
 
   useEffect(() => {
     const clonedPostman = cloneDeep(postman);
-    console.log(clonedPostman);
 
     clonedPostman.url.host = [window.location.origin];
 
@@ -367,25 +360,25 @@ function Curl() {
     <>
       <div className={styles.buttonGroup}>
         <button
-          className={language === 'curl' && styles.selected}
+          className={language === 'curl' ? styles.selected : undefined}
           onClick={() => setLanguage('curl')}
         >
           cURL
         </button>
         <button
-          className={language === 'node' && styles.selected}
+          className={language === 'node' ? styles.selected : undefined}
           onClick={() => setLanguage('node')}
         >
           Node
         </button>
         <button
-          className={language === 'go' && styles.selected}
+          className={language === 'go' ? styles.selected : undefined}
           onClick={() => setLanguage('go')}
         >
           Go
         </button>
         <button
-          className={language === 'python' && styles.selected}
+          className={language === 'python' ? styles.selected : undefined}
           onClick={() => setLanguage('python')}
         >
           Python
@@ -398,12 +391,11 @@ function Curl() {
         code={codeText}
         language={languageSet[language].highlight}
       >
-        {({ className, style, tokens, getLineProps, getTokenProps }) => (
+        {({ className, tokens, getLineProps, getTokenProps }) => (
           <div className="nick-floating-button">
             <button onClick={handleCurlCopy}>{copyText}</button>
             <pre
               className={className}
-              // style={style}
               style={{
                 background: 'var(--ifm-codeblock-background-color)',
                 paddingRight: '60px',
@@ -414,9 +406,12 @@ function Curl() {
               <code ref={ref}>
                 {tokens.map((line, i) => (
                   <span {...getLineProps({ line, key: i })}>
-                    {line.map((token, key) => (
-                      <span {...getTokenProps({ token, key })} />
-                    ))}
+                    {line.map((token, key) => {
+                      if (token.types.includes('arrow')) {
+                        token.types = ['arrow'];
+                      }
+                      return <span {...getTokenProps({ token, key })} />;
+                    })}
                     {'\n'}
                   </span>
                 ))}

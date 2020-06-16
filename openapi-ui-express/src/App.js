@@ -16,21 +16,22 @@ function slugify(string) {
 }
 
 function getPaths(spec) {
-  let seen = new Map();
+  const seen = {};
   return Object.entries(spec.paths)
     .map(([path, pathObj]) => {
       const entries = Object.entries(pathObj);
       return entries.map(([method, methodObj]) => {
         let summary = methodObj.summary || 'Missing summary';
-        let baseId = slugify(summary);
-        let count = seen.get(baseId);
+        const baseId = slugify(summary);
+        let count = seen[baseId];
 
-        // Random doesn't work because it needs to stay consistent.
+        let hashId;
         if (count) {
-          baseId += `-${count}`;
-          seen.set(baseId, count + 1);
+          hashId = `${baseId}-${count}`;
+          seen[baseId] = count + 1;
         } else {
-          seen.set(baseId, 1);
+          hashId = baseId;
+          seen[baseId] = 1;
         }
 
         return {
@@ -38,7 +39,7 @@ function getPaths(spec) {
           summary: summary,
           method: method,
           path: path,
-          hashId: baseId,
+          hashId: hashId,
         };
       });
     })

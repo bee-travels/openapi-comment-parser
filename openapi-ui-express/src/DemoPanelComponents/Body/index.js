@@ -39,6 +39,40 @@ function Body() {
   }
 
   if (
+    contentType === 'multipart/form-data' &&
+    requestBodyMetadata?.content?.[contentType]?.schema.type !== 'object'
+  ) {
+    const val = requestBodyMetadata?.content?.[contentType]?.schema;
+    return (
+      <FormItem label="Body">
+        {val.format === 'binary' ? (
+          <FormFileUpload
+            placeholder={val.description || 'Body'}
+            onChange={(file) => {
+              if (file === undefined) {
+                setBody(undefined);
+                return;
+              }
+              setBody({
+                type: 'file',
+                src: `/path/to/${file.name}`,
+              });
+            }}
+          />
+        ) : (
+          // this should never actually happen...
+          <FormTextInput
+            placeholder={val.description || 'Body'}
+            onChange={(e) => {
+              setBody(e.target.value);
+            }}
+          />
+        )}
+      </FormItem>
+    );
+  }
+
+  if (
     contentType === 'multipart/form-data' ||
     contentType === 'application/x-www-form-urlencoded'
   ) {
@@ -66,7 +100,13 @@ function Body() {
                         setForm({ key: key, value: undefined });
                         return;
                       }
-                      setForm({ key: key, value: `@/path/to/${file.name}` });
+                      setForm({
+                        key: key,
+                        value: {
+                          type: 'file',
+                          src: `/path/to/${file.name}`,
+                        },
+                      });
                     }}
                   />
                 </FormItem>
