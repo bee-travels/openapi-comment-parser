@@ -9,7 +9,7 @@ function reducer(state, action) {
     case 'light':
       localStorage.setItem('theme', 'light');
       document.querySelector('html').setAttribute('data-theme', 'light');
-      return { theme: 'light' };
+      return { ...state, theme: 'light' };
     case 'update-language':
       localStorage.setItem('code-lang', action.language);
       return { ...state, language: action.language };

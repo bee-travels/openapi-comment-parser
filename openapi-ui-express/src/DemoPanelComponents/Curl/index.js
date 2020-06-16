@@ -1,4 +1,5 @@
 import React, { useRef, useState, useEffect } from 'react';
+import Highlight, { defaultProps } from 'prism-react-renderer';
 
 import cloneDeep from 'lodash/cloneDeep';
 
@@ -18,6 +19,7 @@ const globalOptions = {
 
 const languageSet = {
   js: {
+    highlight: 'javascript',
     language: 'javascript',
     variant: 'fetch',
     options: {
@@ -25,6 +27,7 @@ const languageSet = {
     },
   },
   curl: {
+    highlight: 'bash',
     language: 'curl',
     variant: 'curl',
     options: {
@@ -33,6 +36,7 @@ const languageSet = {
     },
   },
   go: {
+    highlight: 'go',
     language: 'go',
     variant: 'native',
     options: {
@@ -40,6 +44,7 @@ const languageSet = {
     },
   },
   python: {
+    highlight: 'python',
     language: 'python',
     variant: 'requests',
     options: {
@@ -47,6 +52,7 @@ const languageSet = {
     },
   },
   node: {
+    highlight: 'javascript',
     language: 'nodejs',
     variant: 'axios',
     options: {
@@ -55,6 +61,144 @@ const languageSet = {
     },
   },
 };
+
+const languageTheme = {
+  plain: {
+    color: 'var(--ifm-code-color)',
+  },
+  styles: [
+    {
+      types: ['changed'],
+      style: {
+        color: 'rgb(162, 191, 252)',
+        fontStyle: 'italic',
+      },
+    },
+    {
+      types: ['deleted'],
+      style: {
+        color: 'rgba(239, 83, 80, 0.56)',
+        fontStyle: 'italic',
+      },
+    },
+    {
+      types: ['inserted', 'attr-name'],
+      style: {
+        color: 'rgb(173, 219, 103)',
+        fontStyle: 'italic',
+      },
+    },
+    {
+      types: ['comment'],
+      style: {
+        color: 'rgb(99, 119, 119)',
+        fontStyle: 'italic',
+      },
+    },
+    {
+      types: ['string', 'url'],
+      style: {
+        color: 'rgb(173, 219, 103)',
+      },
+    },
+    {
+      types: ['variable'],
+      style: {
+        color: 'rgb(214, 222, 235)',
+      },
+    },
+    {
+      types: ['number'],
+      style: {
+        color: 'rgb(247, 140, 108)',
+      },
+    },
+    {
+      types: ['builtin', 'char', 'constant', 'function'],
+      style: {
+        color: 'rgb(130, 170, 255)',
+      },
+    },
+    {
+      // This was manually added after the auto-generation
+      // so that punctuations are not italicised
+      types: ['punctuation'],
+      style: {
+        color: 'rgb(199, 146, 234)',
+      },
+    },
+    {
+      types: ['selector', 'doctype'],
+      style: {
+        color: 'rgb(199, 146, 234)',
+        fontStyle: 'italic',
+      },
+    },
+    {
+      types: ['class-name'],
+      style: {
+        color: 'rgb(255, 203, 139)',
+      },
+    },
+    {
+      types: ['tag', 'operator', 'keyword'],
+      style: {
+        color: 'rgb(127, 219, 202)',
+      },
+    },
+    {
+      types: ['boolean'],
+      style: {
+        color: 'rgb(255, 88, 116)',
+      },
+    },
+    {
+      types: ['property'],
+      style: {
+        color: 'rgb(128, 203, 196)',
+      },
+    },
+    {
+      types: ['namespace'],
+      style: {
+        color: 'rgb(178, 204, 214)',
+      },
+    },
+  ],
+};
+
+// var languageTheme = {
+//   plain: {
+//     color: 'var(--ifm-code-color)',
+//   },
+//   styles: [
+//     {
+//       types: ['inserted', 'function'],
+//       style: {
+//         color: 'var(--code-blue)',
+//       },
+//     },
+//     {
+//       types: ['punctuation', 'symbol'],
+//       style: {
+//         color: 'pink',
+//       },
+//     },
+//     {
+//       types: ['string', 'char', 'tag', 'selector'],
+//       style: {
+//         color: 'var(--code-green)',
+//       },
+//     },
+//     {
+//       types: ['keyword', 'variable'],
+//       style: {
+//         color: 'var(--code-red)',
+//         // fontStyle: 'italic',
+//       },
+//     },
+//   ],
+// };
 
 function setQueryParams(postman, queryParams) {
   postman.url.query.clear();
@@ -248,30 +392,39 @@ function Curl() {
         </button>
       </div>
 
-      <div className="nick-floating-button">
-        <button onClick={handleCurlCopy}>{copyText}</button>
-        <pre
-          style={{
-            background: 'var(--ifm-codeblock-background-color)',
-            paddingRight: '60px',
-            borderRadius:
-              'calc(var(--ifm-pre-border-radius) / 3) calc(var(--ifm-pre-border-radius) / 3) var(--ifm-pre-border-radius) var(--ifm-pre-border-radius)',
-          }}
-        >
-          <code ref={ref}>
-            {codeText.split("'").map((x, i) => {
-              if (i % 2) {
-                return (
-                  <span key={i} style={{ color: 'var(--code-green)' }}>
-                    '{x}'
+      <Highlight
+        {...defaultProps}
+        theme={languageTheme}
+        code={codeText}
+        language={languageSet[language].highlight}
+      >
+        {({ className, style, tokens, getLineProps, getTokenProps }) => (
+          <div className="nick-floating-button">
+            <button onClick={handleCurlCopy}>{copyText}</button>
+            <pre
+              className={className}
+              // style={style}
+              style={{
+                background: 'var(--ifm-codeblock-background-color)',
+                paddingRight: '60px',
+                borderRadius:
+                  'calc(var(--ifm-pre-border-radius) / 3) calc(var(--ifm-pre-border-radius) / 3) var(--ifm-pre-border-radius) var(--ifm-pre-border-radius)',
+              }}
+            >
+              <code ref={ref}>
+                {tokens.map((line, i) => (
+                  <span {...getLineProps({ line, key: i })}>
+                    {line.map((token, key) => (
+                      <span {...getTokenProps({ token, key })} />
+                    ))}
+                    {'\n'}
                   </span>
-                );
-              }
-              return <span key={i}>{x}</span>;
-            })}
-          </code>
-        </pre>
-      </div>
+                ))}
+              </code>
+            </pre>
+          </div>
+        )}
+      </Highlight>
     </>
   );
 }
