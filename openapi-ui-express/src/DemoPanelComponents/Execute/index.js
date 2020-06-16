@@ -1,34 +1,10 @@
 import React from 'react';
 import { useSelector } from 'react-redux';
-import queryString from 'query-string';
 
 import styles from './styles.module.css';
 import { useActions } from 'redux/actions';
-
-async function buildAndMakeFetch(state) {
-  const url = state.endpoint.replace(/{([a-z0-9-_]+)}/gi, (_, p1) => {
-    return state.params.path.find((p) => p.name === p1).value || `:${p1}`;
-  });
-
-  const queryObj = {};
-  state.params.query.forEach((q) => {
-    if (q.value) {
-      queryObj[q.name] = q.value;
-    }
-  });
-
-  const fullPath = queryString.stringifyUrl({ url: url, query: queryObj });
-
-  const response = await fetch(fullPath, {
-    method: state.method.toUpperCase(),
-    headers: {
-      Accept: state.accept,
-      'Content-Type': state.contextType,
-    },
-  });
-
-  return await response.text();
-}
+import { convert } from './util';
+import { buildPostmanRequest } from 'build-postman-request';
 
 function isRequestComplete(params) {
   for (let paramList of Object.values(params)) {
@@ -42,17 +18,37 @@ function isRequestComplete(params) {
 }
 
 function Execute() {
-  const state = useSelector((state) => state);
+  const postman = useSelector((state) => state.postman);
+
+  const pathParams = useSelector((state) => state.params.path);
+  const queryParams = useSelector((state) => state.params.query);
+  const cookieParams = useSelector((state) => state.params.cookie);
+  const headerParams = useSelector((state) => state.params.header);
+  const contentType = useSelector((state) => state.contentType);
+  const body = useSelector((state) => state.body);
+  const accept = useSelector((state) => state.accept);
+
+  const params = useSelector((state) => state.params);
+  const finishedRequest = isRequestComplete(params);
+
   const { setResponse } = useActions();
 
-  const finishedRequest = isRequestComplete(state.params);
+  const postmanRequest = buildPostmanRequest(postman, {
+    queryParams,
+    pathParams,
+    cookieParams,
+    contentType,
+    accept,
+    headerParams,
+    body,
+  });
 
   return (
     <button
       className={styles.executeButton}
       disabled={!finishedRequest}
       onClick={async () => {
-        const res = await buildAndMakeFetch(state);
+        const res = await convert(postmanRequest, body);
         setResponse(res);
       }}
     >

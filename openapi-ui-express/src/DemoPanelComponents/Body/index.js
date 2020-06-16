@@ -38,43 +38,32 @@ function Body() {
     return null;
   }
 
-  if (
-    contentType === 'multipart/form-data' &&
-    requestBodyMetadata?.content?.[contentType]?.schema.type !== 'object'
-  ) {
-    const val = requestBodyMetadata?.content?.[contentType]?.schema;
+  const schema = requestBodyMetadata?.content?.[contentType]?.schema;
+  if (schema.format === 'binary') {
     return (
       <FormItem label="Body">
-        {val.format === 'binary' ? (
-          <FormFileUpload
-            placeholder={val.description || 'Body'}
-            onChange={(file) => {
-              if (file === undefined) {
-                setBody(undefined);
-                return;
-              }
-              setBody({
-                type: 'file',
-                src: `/path/to/${file.name}`,
-              });
-            }}
-          />
-        ) : (
-          // this should never actually happen...
-          <FormTextInput
-            placeholder={val.description || 'Body'}
-            onChange={(e) => {
-              setBody(e.target.value);
-            }}
-          />
-        )}
+        <FormFileUpload
+          placeholder={schema.description || 'Body'}
+          onChange={(file) => {
+            if (file === undefined) {
+              setBody(undefined);
+              return;
+            }
+            setBody({
+              type: 'file',
+              src: `/path/to/${file.name}`,
+              content: file,
+            });
+          }}
+        />
       </FormItem>
     );
   }
 
   if (
-    contentType === 'multipart/form-data' ||
-    contentType === 'application/x-www-form-urlencoded'
+    (contentType === 'multipart/form-data' ||
+      contentType === 'application/x-www-form-urlencoded') &&
+    requestBodyMetadata?.content?.[contentType]?.schema.type === 'object'
   ) {
     return (
       <div className="nick-form-item">
@@ -105,6 +94,7 @@ function Body() {
                         value: {
                           type: 'file',
                           src: `/path/to/${file.name}`,
+                          content: file,
                         },
                       });
                     }}
@@ -130,7 +120,8 @@ function Body() {
   }
 
   let language = 'plaintext';
-  let exampleBodyString = '';
+  let exampleBodyString = 'body content';
+
   if (contentType === 'application/json') {
     exampleBodyString = JSON.stringify(
       sampleFromSchema(

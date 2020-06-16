@@ -2614,7 +2614,7 @@ html[data-theme='dark'] {
   --ifm-color-feedback-background: #fff;
 }
 
-/* NICK OVERRIDES */
+/*  - NICK OVERRIDES - */
 :root {
   --ifm-color-primary: #0f62fe;
   --ifm-color-primary-hover: #0043ce;
@@ -2781,7 +2781,7 @@ html[data-theme='dark'] .nick-monaco-padding-focus {
   background: var(--ifm-menu-color-background-active);
 }
 
-/* NICK OVERRIDES */
+/* - NICK OVERRIDES - */
 
 html[data-theme='dark'] {
   --ifm-color-feedback-background: #f0f8ff;

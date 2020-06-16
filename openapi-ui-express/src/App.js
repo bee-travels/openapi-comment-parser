@@ -48,7 +48,7 @@ function getPaths(spec) {
 
 function organizeSpec(spec) {
   const paths = getPaths(spec);
-  // TODO: untagged go into default
+
   const tagged = spec.tags.map((tag) => {
     return {
       title: tag.name,

@@ -94,12 +94,12 @@ function VSCode({ value, language, onChange }) {
           editor.onDidChangeModelDecorations(() => {
             updateEditorHeight(); // typing
             requestAnimationFrame(updateEditorHeight); // folding
-            onChange(editor.getValue());
           });
 
           let prevHeight = 0;
 
           const updateEditorHeight = () => {
+            onChange(editor.getValue());
             const editorElement = editor.getDomNode();
 
             if (!editorElement) {
@@ -119,6 +119,8 @@ function VSCode({ value, language, onChange }) {
               editor.layout();
             }
           };
+
+          updateEditorHeight();
         }}
       />
     </div>
