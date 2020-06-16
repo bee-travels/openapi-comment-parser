@@ -7,6 +7,8 @@ import sdk from 'postman-collection';
 
 import { useSelector } from 'react-redux';
 
+import { useTheme } from 'theme';
+
 import styles from './styles.module.css';
 
 const globalOptions = {
@@ -154,11 +156,10 @@ function setBody(clonedPostman, body) {
 }
 
 function Curl() {
-  const [language, setLanguage] = useState('curl');
+  const { language, setLanguage } = useTheme();
+
   const [copyText, setCopyText] = useState('Copy');
 
-  // const method = useSelector((state) => state.method);
-  // const endpoint = useSelector((state) => state.endpoint);
   const pathParams = useSelector((state) => state.params.path);
   const queryParams = useSelector((state) => state.params.query);
   const cookieParams = useSelector((state) => state.params.cookie);
