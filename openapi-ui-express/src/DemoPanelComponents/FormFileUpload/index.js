@@ -51,9 +51,14 @@ function FormFileUpload({ placeholder, onChange }) {
   const [hover, setHover] = useState(false);
   const [file, setFile] = useState(undefined);
 
+  function setAndNotifyFile(file) {
+    setFile(file);
+    onChange(file);
+  }
+
   function handleDrop(accepted, _) {
     const [file] = accepted;
-    setFile(file);
+    setAndNotifyFile(file);
     setHover(false);
   }
 
@@ -74,7 +79,7 @@ function FormFileUpload({ placeholder, onChange }) {
             <button
               onClick={(e) => {
                 e.stopPropagation();
-                setFile(undefined);
+                setAndNotifyFile(undefined);
               }}
             >
               Clear

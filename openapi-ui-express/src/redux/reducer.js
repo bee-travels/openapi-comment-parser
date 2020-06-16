@@ -19,6 +19,13 @@ const reducer = produce((draft, action) => {
       draft.body = action.body;
       break;
     }
+    case types.setForm: {
+      if (draft.body === undefined) {
+        draft.body = {};
+      }
+      draft.body[action.body.key] = action.body.value;
+      break;
+    }
     case types.setAccept: {
       draft.accept = action.accept;
       break;

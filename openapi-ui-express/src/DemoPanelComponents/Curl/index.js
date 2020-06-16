@@ -7,6 +7,53 @@ import sdk from 'postman-collection';
 
 import { useSelector } from 'react-redux';
 
+import styles from './styles.module.css';
+
+const globalOptions = {
+  followRedirect: true,
+  trimRequestBody: true,
+};
+
+const languageSet = {
+  js: {
+    language: 'javascript',
+    variant: 'fetch',
+    options: {
+      ...globalOptions,
+    },
+  },
+  curl: {
+    language: 'curl',
+    variant: 'curl',
+    options: {
+      longFormat: false,
+      ...globalOptions,
+    },
+  },
+  go: {
+    language: 'go',
+    variant: 'native',
+    options: {
+      ...globalOptions,
+    },
+  },
+  python: {
+    language: 'python',
+    variant: 'requests',
+    options: {
+      ...globalOptions,
+    },
+  },
+  node: {
+    language: 'nodejs',
+    variant: 'axios',
+    options: {
+      ES6_enabled: true,
+      ...globalOptions,
+    },
+  },
+};
+
 function setQueryParams(postman, queryParams) {
   postman.url.query.clear();
 
@@ -70,7 +117,44 @@ function setHeaders(postman, contentType, accept, cookie, headerParams) {
   }
 }
 
+function setBody(clonedPostman, body) {
+  if (clonedPostman.body === undefined) {
+    return;
+  }
+  switch (clonedPostman.body.mode) {
+    case 'raw': {
+      clonedPostman.body.raw = body || '';
+      return;
+    }
+    case 'formdata': {
+      clonedPostman.body.formdata.clear();
+      if (body === undefined) {
+        return;
+      }
+      const params = Object.entries(body)
+        .filter(([_, val]) => val)
+        .map(([key, val]) => new sdk.FormParam({ key: key, value: val }));
+      clonedPostman.body.formdata.assimilate(params);
+      return;
+    }
+    case 'urlencoded': {
+      clonedPostman.body.urlencoded.clear();
+      if (body === undefined) {
+        return;
+      }
+      const params = Object.entries(body)
+        .filter(([_, val]) => val)
+        .map(([key, val]) => new sdk.QueryParam({ key: key, value: val }));
+      clonedPostman.body.urlencoded.assimilate(params);
+      return;
+    }
+    default:
+      return;
+  }
+}
+
 function Curl() {
+  const [language, setLanguage] = useState('curl');
   const [copyText, setCopyText] = useState('Copy');
 
   // const method = useSelector((state) => state.method);
@@ -90,27 +174,21 @@ function Curl() {
     const clonedPostman = cloneDeep(postman);
     console.log(clonedPostman);
 
+    clonedPostman.url.host = [window.location.origin];
+
     setQueryParams(clonedPostman, queryParams);
     setPathParams(clonedPostman, pathParams);
 
     const cookie = buildCookie(cookieParams);
     setHeaders(clonedPostman, contentType, accept, cookie, headerParams);
 
-    clonedPostman.url.host = [window.location.origin];
-
-    if (clonedPostman.body && clonedPostman.body.mode === 'raw') {
-      clonedPostman.body.raw = body || '';
-    }
+    setBody(clonedPostman, body);
 
     codegen.convert(
-      'curl',
-      'curl',
+      languageSet[language].language,
+      languageSet[language].variant,
       clonedPostman,
-      {
-        longFormat: false,
-        followRedirect: false,
-        trimRequestBody: true,
-      },
+      languageSet[language].options,
       (error, snippet) => {
         if (error) {
           return;
@@ -124,6 +202,7 @@ function Curl() {
     contentType,
     cookieParams,
     headerParams,
+    language,
     pathParams,
     postman,
     queryParams,
@@ -140,28 +219,59 @@ function Curl() {
   };
 
   return (
-    <div className="nick-floating-button">
-      <button onClick={handleCurlCopy}>{copyText}</button>
-      <pre
-        style={{
-          background: 'var(--ifm-codeblock-background-color)',
-          paddingRight: '60px',
-        }}
-      >
-        <code ref={ref}>
-          {codeText.split("'").map((x, i) => {
-            if (i % 2) {
-              return (
-                <span key={i} style={{ color: 'var(--code-green)' }}>
-                  '{x}'
-                </span>
-              );
-            }
-            return <span key={i}>{x}</span>;
-          })}
-        </code>
-      </pre>
-    </div>
+    <>
+      <div className={styles.buttonGroup}>
+        <button
+          className={language === 'curl' && styles.selected}
+          onClick={() => setLanguage('curl')}
+        >
+          cURL
+        </button>
+        <button
+          className={language === 'node' && styles.selected}
+          onClick={() => setLanguage('node')}
+        >
+          Node
+        </button>
+        <button
+          className={language === 'go' && styles.selected}
+          onClick={() => setLanguage('go')}
+        >
+          Go
+        </button>
+        <button
+          className={language === 'python' && styles.selected}
+          onClick={() => setLanguage('python')}
+        >
+          Python
+        </button>
+      </div>
+
+      <div className="nick-floating-button">
+        <button onClick={handleCurlCopy}>{copyText}</button>
+        <pre
+          style={{
+            background: 'var(--ifm-codeblock-background-color)',
+            paddingRight: '60px',
+            borderRadius:
+              'calc(var(--ifm-pre-border-radius) / 3) calc(var(--ifm-pre-border-radius) / 3) var(--ifm-pre-border-radius) var(--ifm-pre-border-radius)',
+          }}
+        >
+          <code ref={ref}>
+            {codeText.split("'").map((x, i) => {
+              if (i % 2) {
+                return (
+                  <span key={i} style={{ color: 'var(--code-green)' }}>
+                    '{x}'
+                  </span>
+                );
+              }
+              return <span key={i}>{x}</span>;
+            })}
+          </code>
+        </pre>
+      </div>
+    </>
   );
 }
 

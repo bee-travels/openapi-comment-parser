@@ -21,7 +21,8 @@ function getPaths(spec) {
     .map(([path, pathObj]) => {
       const entries = Object.entries(pathObj);
       return entries.map(([method, methodObj]) => {
-        let baseId = slugify(methodObj.summary);
+        let summary = methodObj.summary || 'Missing summary';
+        let baseId = slugify(summary);
         let count = seen.get(baseId);
 
         // Random doesn't work because it needs to stay consistent.
@@ -34,6 +35,7 @@ function getPaths(spec) {
 
         return {
           ...methodObj,
+          summary: summary,
           method: method,
           path: path,
           hashId: baseId,

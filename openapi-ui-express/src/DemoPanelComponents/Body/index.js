@@ -10,7 +10,7 @@ import FormItem from 'DemoPanelComponents/FormItem';
 function Body() {
   const contentType = useSelector((state) => state.contentType);
   const requestBodyMetadata = useSelector((state) => state.requestBodyMetadata);
-  const { setBody } = useActions();
+  const { setBody, setForm } = useActions();
 
   // Lot's of possible content-types:
   // - application/json
@@ -59,14 +59,28 @@ function Body() {
             if (val.format === 'binary') {
               return (
                 <FormItem key={key} label={key}>
-                  <FormFileUpload placeholder={val.description || key} />
+                  <FormFileUpload
+                    placeholder={val.description || key}
+                    onChange={(file) => {
+                      if (file === undefined) {
+                        setForm({ key: key, value: undefined });
+                        return;
+                      }
+                      setForm({ key: key, value: `@/path/to/${file.name}` });
+                    }}
+                  />
                 </FormItem>
               );
             }
             // TODO: support all the other types.
             return (
               <FormItem key={key} label={key}>
-                <FormTextInput placeholder={val.description || key} />
+                <FormTextInput
+                  placeholder={val.description || key}
+                  onChange={(e) => {
+                    setForm({ key: key, value: e.target.value });
+                  }}
+                />
               </FormItem>
             );
           })}

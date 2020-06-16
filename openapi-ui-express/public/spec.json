@@ -17,7 +17,6 @@
   "paths": {
     "/ohai": {
       "get": {
-        "summary": "ohaiiii",
         "parameters": [
           {
             "name": "cookie1",

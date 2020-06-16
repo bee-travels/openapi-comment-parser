@@ -4,6 +4,7 @@ export const types = {
   updateParam: 'UPDATE_PARAM',
   setResponse: 'SET_RESPONSE',
   setBody: 'SET_BODY',
+  setForm: 'SET_FORM',
   setAccept: 'SET_ACCEPT',
   setContentType: 'SET_CONTENT_TYPE',
 };
@@ -27,6 +28,10 @@ export function useActions() {
     dispatch({ type: types.setBody, body });
   }
 
+  function setForm(body) {
+    dispatch({ type: types.setForm, body });
+  }
+
   function setAccept(accept) {
     dispatch({ type: types.setAccept, accept });
   }
@@ -42,5 +47,6 @@ export function useActions() {
     setResponse,
     clearResponse,
     setBody,
+    setForm,
   };
 }
