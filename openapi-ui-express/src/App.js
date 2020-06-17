@@ -52,14 +52,16 @@ function organizeSpec(spec) {
   let tagNames = [];
   let tagged = [];
   if (spec.tags) {
-    tagNames = spec.tags.map((t) => t.name);
-    tagged = spec.tags.map((tag) => {
-      return {
-        title: tag.name,
-        description: tag.description,
-        items: paths.filter((p) => p.tags && p.tags.includes(tag.name)),
-      };
-    });
+    tagged = spec.tags
+      .map((tag) => {
+        return {
+          title: tag.name,
+          description: tag.description,
+          items: paths.filter((p) => p.tags && p.tags.includes(tag.name)),
+        };
+      })
+      .filter((i) => i.items.length > 0);
+    tagNames = tagged.map((t) => t.title);
   }
 
   const all = [

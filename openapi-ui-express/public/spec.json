@@ -1166,6 +1166,9 @@
   },
   "tags": [
     {
+      "name": "bloop"
+    },
+    {
       "name": "pet",
       "description": "Everything about your Pets",
       "externalDocs": {
