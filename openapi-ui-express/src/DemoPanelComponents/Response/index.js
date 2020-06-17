@@ -10,6 +10,11 @@ function Response() {
     return null;
   }
 
+  let prettyResponse = response;
+  try {
+    prettyResponse = JSON.stringify(JSON.parse(response), null, 2);
+  } catch {}
+
   return (
     <div className="nick-floating-button">
       <button onClick={() => clearResponse()}>Clear</button>
@@ -18,7 +23,7 @@ function Response() {
           background: 'var(--ifm-codeblock-background-color)',
         }}
       >
-        {response || 'No Response'}
+        {prettyResponse || 'No Response'}
       </pre>
     </div>
   );

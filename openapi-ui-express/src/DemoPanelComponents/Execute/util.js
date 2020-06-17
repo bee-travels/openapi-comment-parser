@@ -25,9 +25,11 @@ export async function convert(request, _body) {
   const headers = request.toJSON().header;
 
   let myHeaders = new Headers();
-  headers.forEach((header) => {
-    myHeaders.append(header.key, header.value);
-  });
+  if (headers) {
+    headers.forEach((header) => {
+      myHeaders.append(header.key, header.value);
+    });
+  }
 
   // The following code handles multiple files in the same formdata param.
   // It removes the form data params where the src property is an array of filepath strings

@@ -49,20 +49,35 @@ function getPaths(spec) {
 function organizeSpec(spec) {
   const paths = getPaths(spec);
 
-  const tagged = spec.tags.map((tag) => {
-    return {
-      title: tag.name,
-      description: tag.description,
-      items: paths.filter((p) => p.tags && p.tags.includes(tag.name)),
-    };
-  });
+  let tagNames = [];
+  let tagged = [];
+  if (spec.tags) {
+    tagNames = spec.tags.map((t) => t.name);
+    tagged = spec.tags.map((tag) => {
+      return {
+        title: tag.name,
+        description: tag.description,
+        items: paths.filter((p) => p.tags && p.tags.includes(tag.name)),
+      };
+    });
+  }
 
   const all = [
     ...tagged,
     {
       title: 'API',
       description: '',
-      items: paths.filter((p) => p.tags === undefined || p.tags.length === 0),
+      items: paths.filter((p) => {
+        if (p.tags === undefined || p.tags.length === 0) {
+          return true;
+        }
+        for (let tag of p.tags) {
+          if (tagNames.includes(tag)) {
+            return false;
+          }
+        }
+        return true;
+      }),
     },
   ];
 

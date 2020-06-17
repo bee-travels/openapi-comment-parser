@@ -33,6 +33,7 @@ function getRefPathValue(schema, refPath) {
   const ret = keys.reduce(function (value, key) {
     return value[key];
   }, schema);
+
   if (refPath.startsWith('#/components/schemas/')) {
     if (ret.xml === undefined) {
       ret.xml = {};
