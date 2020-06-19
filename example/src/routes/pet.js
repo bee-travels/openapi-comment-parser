@@ -2,16 +2,18 @@ const { Router } = require('express');
 
 const router = Router();
 
+/* block comments aren't parsed */
+
 /**
- * GET /hello-world
- * @summary Hello World
- * @response 200 - OK
+ * Doc comments are only parsed if they have `METHOD /path` at the top of the
+ * comment.
  */
 
-/* block comment */
-
 /**
- * Doc comment
+ * For example, this comment is ignored.
+ * GET /hello/world
+ * @summary Says hello
+ * @response 200 - OK
  */
 
 /**

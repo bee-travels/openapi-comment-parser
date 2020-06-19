@@ -1,6 +1,6 @@
 {
   "name": "openapi-ui-express",
-  "version": "0.0.7",
+  "version": "0.0.8",
   "license": "MIT",
   "dependencies": {
     "express": "^4.17.1"

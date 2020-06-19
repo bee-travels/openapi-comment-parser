@@ -264,7 +264,6 @@ describe('commentsToOpenApi', () => {
 			 */
 		});
 
-		// TODO: this isn't valid openapi, schema isn't allowed here.
 		const expected = {
 			paths: {
 				'/hello': {
