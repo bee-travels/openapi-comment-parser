@@ -15,7 +15,7 @@ info:
   x-github: https://github.com/bee-travels
 
 tags: 
-- name: Pet
+- name: pet
   description: Everything about your Pets
   externalDocs: 
     description: Find out more
