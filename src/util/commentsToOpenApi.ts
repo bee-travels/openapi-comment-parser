@@ -104,7 +104,7 @@ function parseDescription(tag: any) {
 	}
 
 	// remove the optional dash from the description.
-	let description = tag.description.replace(/^- /, '');
+	let description = tag.description.trim().replace(/^- /, '');
 	if (description === '') {
 		description = undefined;
 	}
@@ -129,7 +129,7 @@ function tagsToObjects(tags: any[], verbose?: boolean) {
 			nameAndDescription += parsedResponse.name;
 		}
 		if (parsedResponse.description) {
-			nameAndDescription += ` ${parsedResponse.description}`;
+			nameAndDescription += ` ${parsedResponse.description.trim()}`;
 		}
 
 		switch (tag.tag) {
@@ -341,11 +341,11 @@ function commentsToOpenApi(
 ): { spec: OpenApiObject; loc: number }[] {
 	const openAPIRegex = /^(GET|PUT|POST|DELETE|OPTIONS|HEAD|PATCH|TRACE) \/.*$/;
 
-	const jsDocComments = parseComments(fileContents);
+	const jsDocComments = parseComments(fileContents, { trim: false });
 
 	const filteredComments = jsDocComments
 		.filter((comment) => {
-			const validComment = openAPIRegex.test(comment.description);
+			const validComment = openAPIRegex.test(comment.description.trim());
 
 			return validComment;
 		})
@@ -364,8 +364,8 @@ function commentsToOpenApi(
 			const [method, path] = comment.description.split(' ');
 
 			const pathsObject: PathsObject = {
-				[path]: {
-					[method.toLowerCase()]: {
+				[path.trim()]: {
+					[method.toLowerCase().trim()]: {
 						...res,
 					},
 				},

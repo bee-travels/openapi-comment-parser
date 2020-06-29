@@ -9,6 +9,43 @@ function _(func: { (): void }): string {
 		.replace(/\r\n/g, '\n');
 }
 
+describe('code blocks', () => {
+	it('keeps spacing', () => {
+		const comment = _(() => {
+			/**
+			 * GET /
+			 * @description List API versions
+			 * ```xml
+			 * <Fun>
+			 *   <InTheSun>😎</InTheSun>
+			 * </Fun>
+			 * ```
+			 * bye
+			 *
+			 * @response 200 - ok
+			 */
+		});
+
+		const expected = {
+			paths: {
+				'/': {
+					get: {
+						description:
+							'List API versions\n```xml\n<Fun>\n  <InTheSun>😎</InTheSun>\n</Fun>\n```\nbye',
+						responses: {
+							'200': {
+								description: 'ok',
+							},
+						},
+					},
+				},
+			},
+		};
+		const [specification] = commentsToOpenApi(comment).map((i) => i.spec);
+		expect(specification).to.deep.equal(expected);
+	});
+});
+
 describe('commentsToOpenApi', () => {
 	it('big stuff', () => {
 		const comment = _(() => {
