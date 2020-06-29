@@ -4,6 +4,9 @@
   "engines": {
     "node": ">=10.0.0"
   },
+  "bin": {
+    "openapi-comment-parser": "./bin/index.js"
+  },
   "license": "MIT",
   "description": "JSDoc Comments for the OpenApi Specification",
   "homepage": "https://github.com/bee-travels/openapi-comment-parser",
@@ -23,6 +26,7 @@
     "express"
   ],
   "files": [
+    "/bin",
     "/dist"
   ],
   "main": "dist/openapi-comment-parser.js",
