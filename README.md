@@ -69,6 +69,22 @@ const spec = openapi({
 | `throwLevel`         | `off` |
 
 
+## CLI
+```bash
+npm install -g openapi-comment-parser
+```
+
+(optional) generate a `.openapirc.js` config file:
+```bash
+openapi-comment-parser --init
+```
+
+Generate an `openapi.json` file:
+```bash
+openapi-comment-parser . openapi.json
+```
+
+
 ## Eslint plugin
 To enable linting of the OpenAPI jsdoc comments, install the `eslint` plugin:
 ```bash
