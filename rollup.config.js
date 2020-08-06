@@ -23,4 +23,20 @@ export default [
       { file: pkg.module, format: 'es' },
     ],
   },
+  {
+    input: 'src/options.ts',
+    plugins: [
+      resolve(), // so Rollup can find external packages
+      commonjs({ ignoreGlobal: true }), // so Rollup can convert external packages to ES modules
+      sucrase({
+        // so Rollup can convert TypeScript to JavaScript
+        exclude: ['node_modules/**', '**/?(*.)test.ts'],
+        transforms: ['typescript'],
+      }),
+    ],
+    output: [
+      { file: 'dist/options.js', format: 'cjs' },
+      { file: 'dist/options.esm.js', format: 'es' },
+    ],
+  },
 ];
