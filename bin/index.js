@@ -13,7 +13,7 @@ if (process.argv[2] === '--init') {
   fs.writeFileSync(
     '.openapirc.js',
     `module.exports = {
-  extension: ['.js', '.cjs', '.mjs', '.ts', '.tsx', '.jsx', '.yaml', '.yml'],
+  extension: ['.js', '.cjs', '.mjs', '.ts', '.tsx', '.jsx', '.yaml', '.yml', '.py'],
   include: ['**'],
   exclude: [
     'coverage/**',

@@ -61,7 +61,7 @@ const spec = openapi({
 | Option name          | Default |
 | -------------------- | ------- |
 | `cwd`                | The directory where `commentParser` was called |
-| `extension`          | `['.js', '.cjs', '.mjs', '.ts', '.tsx', '.jsx', '.yaml', '.yml']` |
+| `extension`          | `['.js', '.cjs', '.mjs', '.ts', '.tsx', '.jsx', '.yaml', '.yml', '.py']` |
 | `include`            | `['**']`|
 | `exclude`            | A large list that covers tests, coverage, and various development configs |
 | `excludeNodeModules` | `true` |
