@@ -21,7 +21,7 @@
     "@testing-library/react": "^9.3.2",
     "@testing-library/user-event": "^7.1.2",
     "dag-map": "^2.0.2",
-    "immer": "^6.0.9",
+    "immer": "^9.0.6",
     "lodash": "^4.17.15",
     "md5": "^2.2.1",
     "openapi-to-postmanv2": "^1.1.18",
