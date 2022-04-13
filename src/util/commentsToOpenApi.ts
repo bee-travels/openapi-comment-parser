@@ -189,6 +189,23 @@ function tagsToObjects(tags: any[], verbose?: boolean) {
 					},
 				};
 
+			case 'bodyExample': {
+				const [contentType, example] = parsedResponse.name.split('.');
+				return {
+					requestBody: {
+						content: {
+							[contentType]: {
+								examples: {
+									[example]: {
+										$ref: `#/components/examples/${parsedResponse.rawType}`,
+									},
+								},
+							},
+						},
+					},
+				};
+			}
+
 			case 'bodyDescription':
 				return { requestBody: { description: nameAndDescription } };
 
