@@ -65,6 +65,7 @@ describe('commentsToOpenApi', () => {
 			 *
 			 * @bodyDescription an optional description
 			 * @bodyContent {string} application/json
+			 * @bodyExample {ExampleExample} application/json.ExampleExample
 			 * @bodyRequired
 			 *
 			 * @response                           200 - sup
@@ -164,6 +165,11 @@ describe('commentsToOpenApi', () => {
 							required: true,
 							content: {
 								'application/json': {
+									"examples": {
+										"ExampleExample": {
+											"$ref": "#/components/examples/ExampleExample"
+										}
+									},
 									schema: {
 										type: 'string',
 									},
