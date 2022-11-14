@@ -57,6 +57,20 @@ function parseFile(
 
 			return { parsedFile: [], messages: messages };
 		} catch (e) {
+			if(!e.mark) {
+				return {
+					parsedFile: [],
+					messages: [
+						{
+							severity: 1,
+							message: `cannot parse yaml ${file}, skipping file.`,
+							line: 0,
+							column: 0
+						},
+					],
+				};
+			}
+
 			return {
 				parsedFile: [],
 				messages: [
